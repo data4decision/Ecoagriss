@@ -1,0 +1,106 @@
+@import "tailwindcss";
+
+:root {
+  --white: #FFFFFF;
+  --green: #008100;
+  --dark-green: #007D00;
+  --olive-green: #007C00;
+  --medium-green: #008000;
+  --yellow: #ffdc24;
+  --wine: #7a0917;
+  --red: #ec0606;
+}
+
+/* Correct usage of CSS variables */
+.bg-\[var\(--medium-green\)\] {
+  background-color: var(--medium-green);
+}
+
+.bg-\[var\(--red\)\] {
+  background-color: var(--red);
+}
+
+.bg-\[var\(--yellow\)\] {
+  background-color: var(--yellow);
+}
+
+.bg-\[var\(--wine\)\] {
+  background-color: var(--wine);
+}
+
+.bg-\[var\(--dark-green\)\] {
+  background-color: var(--dark-green);
+}
+
+.bg-\[var\(--white\)\] {
+  background-color: var(--white);
+}
+
+.text-\[var\(--medium-green\)\] {
+  color: var(--medium-green);
+}
+
+.text-\[var\(--red\)\] {
+  color: var(--red);
+}
+
+.text-\[var\(--yellow\)\] {
+  color: var(--yellow);
+}
+
+.text-\[var\(--wine\)\] {
+  color: var(--wine);
+}
+
+.text-\[var\(--dark-green\)\] {
+  color: var(--dark-green);
+}
+
+.text-\[var\(--white\)\] {
+  color: var(--white);
+}
+
+.text-\[var\(--olive-green\)\] {
+  color: var(--olive-green);
+}
+
+.text-\[var\(--green\)\] {
+  color: var(--green);
+}
+
+.border-\[var\(--yellow\)\] {
+  border-color: var(--yellow);
+}
+
+.hover\:bg-\[var\(--medium-green\)\]\/90:hover {
+  background-color: rgba(var(--medium-green-rgb, 0, 128, 0), 0.9);
+}
+
+.hover\:bg-\[var\(--yellow\)\]:hover {
+  background-color: var(--yellow);
+}
+
+/* Consistent custom classes for dynamic usage */
+.bg-custom-green {
+  background-color: var(--green);
+}
+
+.text-custom-green {
+  color: var(--green);
+}
+
+.bg-custom-dark-green {
+  background-color: var(--dark-green);
+}
+
+.text-custom-dark-green {
+  color: var(--dark-green);
+}
+
+.bg-custom-olive-green {
+  background-color: var(--olive-green);
+}
+
+.text-custom-olive-green {
+  color: var(--olive-green);
+}

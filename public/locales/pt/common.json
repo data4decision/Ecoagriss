@@ -1,0 +1,1425 @@
+{
+  "navbar": {
+    "about": "Sobre",
+    "countries": "Países",
+    "adminLogin": "Login de Administrador",
+    "getStarted": "Começar",
+    "ecoagris": "ECOAGRIS"
+  },
+  "hero": {
+    "headline": "Fortalecendo a Agricultura Sustentável na CEDEAO",
+    "subheadline": "Conectando países da CEDEAO com insights agrícolas para crescimento e resiliência.",
+    "cta": "Explorar Dados",
+    "slides": {
+      "agricInput": {
+        "title": "Insumos Agrícolas",
+        "desc": "Explore dados sobre fertilizantes, sementes e pesticidas para otimizar a produtividade agrícola na CEDEAO."
+      },
+      "agroHydro": {
+        "title": "Agro-hidro-meteorologia",
+        "desc": "Acesse insights meteorológicos e hidrológicos para apoiar práticas agrícolas inteligentes em relação ao clima."
+      },
+      "agricProduction": {
+        "title": "Produção Agrícola",
+        "desc": "Analise os rendimentos das culturas e tendências de produção para melhorar a segurança alimentar na região."
+      },
+      "agricMarket": {
+        "title": "Mercado Agrícola",
+        "desc": "Acompanhe preços de mercado e dados comerciais para empoderar agricultores e partes interessadas."
+      },
+      "foodStocks": {
+        "title": "Estoques Alimentares",
+        "desc": "Monitore reservas de alimentos para garantir estabilidade e preparação para escassez."
+      },
+      "nutrition": {
+        "title": "Nutrição",
+        "desc": "Entenda os resultados nutricionais para promover dietas e sistemas alimentares mais saudáveis."
+      },
+      "livestock": {
+        "title": "Pecuária",
+        "desc": "Mergulhe nos dados de produção e saúde do gado para impulsionar a pecuária."
+      },
+      "fishery": {
+        "title": "Pesca",
+        "desc": "Descubra métricas de produção e sustentabilidade da pesca para comunidades costeiras."
+      },
+      "aquaculture": {
+        "title": "Aquicultura",
+        "desc": "Saiba mais sobre práticas de aquicultura para melhorar a criação de peixes e o abastecimento alimentar."
+      },
+      "research": {
+        "title": "Resultados de Pesquisa Agrícola",
+        "desc": "Acesse pesquisas de ponta para impulsionar a inovação na agricultura."
+      },
+      "macro": {
+        "title": "Índices Macroeconômicos",
+        "desc": "Examine indicadores econômicos que impactam a agricultura para uma formulação de políticas informada."
+      }
+    }
+  },
+  "about": {
+    "experience": "Mais de 25 anos de experiência",
+    "title": "Alimentos cultivados naturalmente por agricultores apaixonados.",
+    "description": "ECOAGRIS conecta países da CEDEAO por meio de dados agrícolas, empoderando as partes interessadas com insights para uma melhor tomada de decisão.",
+    "missionTitle": "Nossa Missão",
+    "mission": "Nossa missão é empoderar as partes interessadas agrícolas da CEDEAO com insights baseados em dados para melhorar a produtividade, sustentabilidade e resiliência em sistemas de pecuária e culturas.",
+    "visionTitle": "Nossa Visão",
+    "vision": "Um cenário agrícola próspero e orientado por dados na CEDEAO, onde análises inovadoras impulsionam crescimento equitativo, gestão ambiental e soberania alimentar para todos.",
+    "callUs": "Ligue para nós: +234 704 000 9930",
+    "readMore": "Leia Mais"
+  },
+  "keyData": {
+    "title": "Principais Informações de Dados na CEDEAO",
+    "subtitle": "Descubra as tendências agrícolas que impulsionam o crescimento, a sustentabilidade e a resiliência.",
+    "insights": {
+      "cropYield": "Crescimento médio do rendimento das colheitas",
+      "irrigation": "Cobertura de terras irrigadas",
+      "fertilizer": "Aumento do uso de fertilizantes",
+      "trade": "Comércio regional de culturas",
+      "dataCoverage": "Cobertura de dados em toda a CEDEAO",
+      "smartFarming": "Adoção de ferramentas de agricultura inteligente"
+    },
+    "cta": "Explorar estatísticas detalhadas por país"
+  },
+  "flagGrid": {
+    "title": "Explorar os países membros da CEDEAO",
+    "description": "Selecione um país para explorar dados e informações agrícolas."
+  },
+  
+  "challenges": {
+    "title": "Enfrentando os desafios agrícolas na CEDEAO",
+    "subtitle": "A inovação e os dados são essenciais para superar os desafios agrícolas enfrentados pelos países da CEDEAO. A ECOAGRIS está comprometida em oferecer soluções práticas para um futuro sustentável.",
+    "list": {
+      "climateChange": {
+        "title": "Mudança climática",
+        "desc": "A mudança climática afeta os rendimentos das colheitas, a disponibilidade de água e as condições agrícolas em toda a região da CEDEAO."
+      },
+      "dataAccess": {
+        "title": "Acesso limitado a dados",
+        "desc": "Muitos agricultores não têm acesso a dados agrícolas atualizados que possam ajudá-los a tomar decisões informadas."
+      },
+      "infrastructure": {
+        "title": "Infraestrutura deficiente",
+        "desc": "A infraestrutura inadequada impede o transporte e a distribuição eficientes de produtos agrícolas."
+      },
+      "lowProductivity": {
+        "title": "Baixa produtividade",
+        "desc": "Muitas regiões enfrentam produtividade agrícola estagnada ou baixa devido a práticas agrícolas ultrapassadas e falta de inovação."
+      }
+    },
+    "cta": "Saiba mais sobre o nosso impacto"
+  },
+  "solutions": {
+    "list": {
+      "climateSmart": {
+        "title": "Agricultura inteligente para o clima",
+        "desc": "Implementar práticas agrícolas inteligentes que aumentem a resiliência às mudanças climáticas e melhorem a produtividade."
+      },
+      "dataTransparency": {
+        "title": "Transparência de dados",
+        "desc": "Fornecer aos agricultores dados transparentes, precisos e oportunos para melhorar a tomada de decisões."
+      },
+      "resourceOptimization": {
+        "title": "Otimização de recursos",
+        "desc": "Otimizar o uso de recursos como água, fertilizantes e terras para melhorar a eficiência e a sustentabilidade da produção."
+      },
+      "regionalCollaboration": {
+        "title": "Colaboração regional",
+        "desc": "Promover a colaboração regional para compartilhar conhecimento agrícola, infraestrutura e políticas para aumentar a produtividade."
+      }
+    }
+  },
+  "collaborators": {
+  "title": "Nossos Parceiros e Colaboradores",
+  "description": "O ECOAGRIS prospera por meio da colaboração. Nossos parceiros — desde instituições da CEDEAO até organizações internacionais — trabalham juntos para fortalecer os sistemas alimentares, melhorar a confiabilidade dos dados e promover o desenvolvimento agrícola sustentável na África Ocidental.",
+  "roles": {
+    "ecowas": "Coordenação Regional",
+    "fao": "Segurança Alimentar e Sistemas de Dados",
+    "ifad": "Inovação Agrícola",
+    "worldBank": "Desenvolvimento Sustentável",
+    "afdb": "Investimento e Fortalecimento de Capacidades"
+  },
+  "ctaText": "Interessado em colaborar com",
+  "ctaButton": "Torne-se um Parceiro"
+},
+"contact": {
+  "title": "Envolva-se com o ECOAGRIS",
+  "subtitle": "Junte-se à nossa rede crescente de inovadores agrícolas, formuladores de políticas e pesquisadores que trabalham para fortalecer a segurança alimentar em toda a CEDEAO.",
+  "form": {
+    "name": "Seu nome",
+    "email": "Seu e-mail",
+    "message": "Sua mensagem",
+    "submit": "Contacte-nos"
+  },
+  "success": "Mensagem enviada com sucesso! Entraremos em contato em breve.",
+  "joinTitle": "Junte-se ao movimento",
+  "joinDesc": "Mantenha-se conectado com o ECOAGRIS para obter informações, atualizações e oportunidades em toda a CEDEAO.",
+  "info": {
+    "address": "Data4Decision International, Ilorin, Nigéria",
+    "email": "info@data4decision.org",
+    "phone": "+234 704 000 9930"
+  }
+},
+
+  "footer": {
+    "about": "Fortalecendo a inteligência agrícola em toda a CEDEAO. O ECOAGRIS conecta os países da CEDEAO por meio de sistemas inteligentes de dados agrícolas que promovem a tomada de decisões baseadas em evidências e a segurança alimentar regional.",
+    "quickLinks": {
+      "title": "Links rápidos",
+      "home": "Início",
+      "about": "Sobre",
+      "dashboard": "Painel de Dados",
+      "news": "Notícias e Atualizações",
+      "contact": "Contato"
+    },
+    "connect": {
+      "title": "Conecte-se Conosco"
+    },
+    "legal": {
+      "privacy": "Política de Privacidade",
+      "terms": "Termos de Uso"
+    },
+    "rights": "Todos os direitos reservados.",
+    "poweredBy": "Desenvolvido por"
+  },
+  
+  "signup": {
+    "hello": "Olá,",
+    "welcome": "Bem-vindo!",
+    "welcome_text": "Bem-vindo ao Sistema de Informação Agrícola da CEDEAO (ECOAGRIS). Cadastre-se inserindo seus dados e selecionando seu país.",
+    "first_name": "Nome",
+    "last_name": "Sobrenome",
+    "occupation": "Profissão",
+    "gender": "Gênero",
+    "select_gender": "Selecione o gênero",
+    "male": "Masculino",
+    "female": "Feminino",
+    "other": "Outro",
+    "phone_number": "Número de telefone (ex.: +22912345678)",
+    "select_country": "Selecione seu país",
+    "email": "E-mail",
+    "password": "Senha",
+    "signup_button": "Cadastrar-se",
+    "already_account": "Já tem uma conta?",
+    "login_link": "Entrar",
+    "errors": {
+      "invalid_country": "País selecionado inválido.",
+      "country_code_mismatch": "O código do país do número de telefone não corresponde ao país selecionado.",
+      "invalid_phone": "Insira um número de telefone válido com o código do país correto.",
+      "email_in_use": "Este e-mail já está associado a uma conta existente. Faça login ou use outro e-mail.",
+      "unknown": "Erro ao cadastrar: {{message}}"
+    }
+  },
+  
+  "login": {
+    "hello": "Olá,",
+    "welcome": "Bem-vindo!",
+    "welcome_text": "Faça login para acessar seu painel personalizado. Assim que você fizer login com suas credenciais registradas, será automaticamente direcionado ao painel específico do seu país, onde poderá visualizar dados, recursos e informações agrícolas relevantes para a sua região da CEDEAO.",
+    "email_placeholder": "Insira seu e-mail",
+    "password_placeholder": "Insira sua senha",
+    "login_button": "Entrar",
+    "not_registered": "Ainda não registrado?",
+    "signup_link": "Inscrever-se",
+    "loading": "Carregando...",
+    "errors": {
+      "missing_country": "Erro: Informações do país ausentes.",
+      "no_user_data": "Erro: Dados do usuário não encontrados.",
+      "invalid_credentials": "Erro ao entrar: E-mail ou senha inválidos."
+    }
+  },
+  
+  "productDashboard": {
+    "title": "Visão geral de {{productName}} para {{countryName}}",
+    "data_not_available": "Dados não disponíveis para {{countryName}}. Selecione um país suportado (por exemplo: Benim, Nigéria)."
+  },
+  
+  "productSelection": {
+    "title": "Selecione um produto para {{countryName}}",
+    "items": {
+      "agric_input": "Insumos agrícolas",
+      "agro_hydro_meteorology": "Agro-hidro-meteorologia",
+      "agricultural_production": "Produção agrícola",
+      "agricultural_market": "Mercado agrícola",
+      "food_stocks": "Estoques de alimentos",
+      "nutrition": "Nutrição",
+      "livestock": "Pecuária",
+      "fishery": "Pesca",
+      "aquaculture": "Aquacultura",
+      "agric_research_results": "Resultados de pesquisa agrícola",
+      "macroeconomics_indices": "Índices macroeconômicos",
+      "rice_production": "Produção de arroz"
+    }
+  },
+  "agricDashboard": {
+    "title": "Visão Geral de Insumos Agrícolas para {{countryName}}",
+    "loading": "Carregando Painel de Insumos Agrícolas...",
+    "errors": {
+      "loadingError": "Erro ao carregar o painel de insumos agrícolas"
+    }
+  },
+  "agricSidebar": {
+    "ariaLabel": "Navegação do Usuário",
+    "logoAlt": "Logotipo ECOAGRIS",
+    "brand": "ECOAGRIS",
+    "logout": "Sair",
+    "nav": {
+      "overview": "Visão Geral",
+      "supplyChain": "Cadeia de Suprimentos",
+      "economicIndicators": "Indicadores Econômicos",
+      "adoptionMechanization": "Adoção e Mecanização",
+      "forecastSimulation": "Previsão e Simulação",
+      "inputMetrics": "Métricas de Insumos",
+      "dataMethodology": "Dados e Metodologia"
+    }
+  },
+    "supplyChain": {
+    "title": "Cadeia de Suprimentos - {{countryName}}",
+    "ariaTitle": "Visão Geral da Cadeia de Suprimentos para {{country}}",
+    "loading": "Carregando Cadeia de Suprimentos...",
+    "simulatedDataNote": "Dados simulados para fins de planejamento. Valide antes do uso operacional.",
+    "na": "N/D",
+    "downloadCSV": "Baixar CSV",
+    "downloadCSVLabel": "Baixar dados da cadeia de suprimentos como CSV",
+    "downloadPNG": "Baixar PNG",
+    "downloadPNGLabel": "Baixar painel da cadeia de suprimentos como PNG",
+    "downloadPDF": "Baixar PDF",
+    "downloadPDFLabel": "Baixar painel da cadeia de suprimentos como PDF",
+    "yearSelectLabel": "Selecionar Ano para Métricas",
+    "metricSelectLabel": "Selecionar Métrica para Comparação Anual",
+    "report_exported": "Exportado em: {{date}}",
+    "metrics": "Métricas: Sementes de Cereais, Fertilizantes, Pesticidas, Dias de Falta de Estoque, Tempestividade de Distribuição, Contagem de Agro-Revendedores, Insumos de Produção Local",
+    "errors": {
+      "fetchFailed": "Falha ao buscar dados da cadeia de suprimentos",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "invalidCountry": "Parâmetro de país inválido",
+      "pngFailed": "Falha no download do PNG. Verifique o console para detalhes.",
+      "pdfFailed": "Falha no download do PDF. Verifique o console para detalhes.",
+      "invalidCanvas": "Canvas está vazio ou inválido",
+      "invalidImageData": "Falha ao gerar dados de imagem a partir do canvas"
+    },
+    "totalInput": "Disponibilidade Total de Insumos ({{year}})",
+    "totalInputCard": "Cartão de Disponibilidade Total de Insumos para {{year}}",
+    "metricCard": "Cartão de {{label}} para {{year}}",
+    "trendsTitle": "Tendências da Cadeia de Suprimentos (2006–{{year}})",
+    "trendsChart": "Gráfico de Tendências da Cadeia de Suprimentos",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "cerealSeeds": "Sementes de Cereais (toneladas)",
+    "fertilizer": "Fertilizantes (toneladas)",
+    "pesticides": "Pesticidas (litros)",
+    "stockoutDays": "Dias de Falta de Estoque",
+    "distributionTimeliness": "Tempestividade de Distribuição (%)",
+    "agroDealerCount": "Contagem de Agro-Revendedores",
+    "localProductionInputs": "Insumos de Produção Local (toneladas)",
+    "units": "unidades"
+  },
+  
+  "overview": {
+    "title": "Visão Geral de Insumos Agrícolas - {{countryName}}",
+    "downloadCSV": "Baixar CSV",
+    "downloadPNG": "Baixar PNG",
+    "downloadPDF": "Baixar PDF",
+    "yearSelectLabel": "Selecionar Ano",
+    "exploreCategories": "Explorar Categorias de Insumos Agrícolas",
+    "navigateTo": "Navegar para {{title}}",
+    "errors": {
+      "invalidCountry": "País inválido selecionado",
+      "fetchFailed": "Falha ao buscar dados",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados",
+      "pngFailed": "Falha no download do PNG",
+      "pdfFailed": "Falha no download do PDF",
+      "invalidImageData": "Dados de imagem inválidos gerados"
+    },
+    "loading": "Carregando Visão Geral de Insumos Agrícolas...",
+    "na": "N/D",
+    "simulatedDataNote": "Dados simulados para fins de planejamento. Explore as categorias para tendências detalhadas.",
+    "metrics": "Métricas: Insumos Agrícolas",
+    "report_exported": "Exportado em: {{date}}",
+      "overview": "Visão Geral",
+      "overviewDescription": "Resumo de alto nível das métricas de insumos agrícolas.",
+      "supplyChain": "Cadeia de Suprimentos",
+      "supplyChainDescription": "Métricas sobre sementes de cereais, fertilizantes, pesticidas e distribuição.",
+      "economicIndicators": "Indicadores Econômicos",
+      "economicIndicatorsDescription": "Orçamentos de subsídios, acesso ao crédito e tendências de preços de insumos.",
+      "adoptionMechanization": "Adoção e Mecanização",
+      "adoptionMechanizationDescription": "Intensidade de fertilizantes, adoção de sementes melhoradas e métricas de mecanização.",
+      "forecastSimulation": "Previsão e Simulação",
+      "forecastSimulationDescription": "Projeções e simulações para insumos agrícolas.",
+      "dataMethodology": "Dados e Metodologia",
+      "dataMethodologyDescription": "Detalhes sobre fontes de dados e metodologia de simulação."
+    },
+    
+  "economicIndicators": {
+    "title": "Indicadores Econômicos - {{countryName}}",
+    "ariaTitle": "Visão Geral dos Indicadores Econômicos para {{country}}",
+    "loading": "Carregando Indicadores Econômicos...",
+    "simulatedDataNote": "Dados simulados para fins de planejamento. Valide antes do uso operacional.",
+    "na": "N/D",
+    "downloadCSV": "Baixar CSV",
+    "downloadCSVLabel": "Baixar dados dos indicadores econômicos como CSV",
+    "downloadPNG": "Baixar PNG",
+    "downloadPNGLabel": "Baixar painel dos indicadores econômicos como PNG",
+    "downloadPDF": "Baixar PDF",
+    "downloadPDFLabel": "Baixar painel dos indicadores econômicos como PDF",
+    "yearSelectLabel": "Selecionar Ano para Métricas",
+    "metricSelectLabel": "Selecionar Métrica para Comparação Anual",
+    "report_exported": "Exportado em: {{date}}",
+    "metrics": "Métricas: Orçamento de Subsídios, Acesso ao Crédito, Índice de Preços de Insumos, Valor de Importação de Insumos",
+    "errors": {
+      "fetchFailed": "Falha ao buscar dados dos indicadores econômicos",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "invalidCountry": "Parâmetro de país inválido",
+      "pngFailed": "Falha no download do PNG. Verifique o console para detalhes.",
+      "pdfFailed": "Falha no download do PDF. Verifique o console para detalhes.",
+      "invalidCanvas": "Canvas está vazio ou inválido",
+      "invalidImageData": "Falha ao gerar dados de imagem a partir do canvas"
+    },
+    "metricCard": "Cartão {{label}} para {{year}}",
+    "trendsTitle": "Tendências Econômicas (2006–{{year}})",
+    "trendsChart": "Gráfico de Tendências Econômicas",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "subsidyBudget": "Orçamento de Subsídios (USD)",
+    "creditAccess": "Acesso ao Crédito (%)",
+    "inputPriceIndex": "Índice de Preços de Insumos (Base 2006)",
+    "inputImportValue": "Valor de Importação de Insumos (USD)"
+  },
+  
+  "adoptionMechanization": {
+    "title": "Adoção e Mecanização - {{countryName}}",
+    "ariaTitle": "Visão Geral de Adoção e Mecanização para {{country}}",
+    "loading": "Carregando Adoção e Mecanização...",
+    "simulatedDataNote": "Dados simulados para fins de planejamento. Valide antes do uso operacional.",
+    "na": "N/D",
+    "downloadCSV": "Baixar CSV",
+    "downloadCSVLabel": "Baixar dados de adoção e mecanização como CSV",
+    "downloadPNG": "Baixar PNG",
+    "downloadPNGLabel": "Baixar painel de adoção e mecanização como PNG",
+    "downloadPDF": "Baixar PDF",
+    "downloadPDFLabel": "Baixar painel de adoção e mecanização como PDF",
+    "yearSelectLabel": "Selecionar Ano para Métricas",
+    "metricSelectLabel": "Selecionar Métrica para Comparação Anual",
+    "report_exported": "Exportado em: {{date}}",
+    "metrics": "Métricas: Adoção de Sementes Melhoradas, Intensidade de Fertilizantes, Mecanização",
+    "errors": {
+      "fetchFailed": "Falha ao buscar dados de adoção e mecanização",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "invalidCountry": "Parâmetro de país inválido",
+      "pngFailed": "Falha no download do PNG. Verifique o console para detalhes.",
+      "pdfFailed": "Falha no download do PDF. Verifique o console para detalhes.",
+      "invalidCanvas": "Canvas está vazio ou inválido",
+      "invalidImageData": "Falha ao gerar dados de imagem a partir do canvas"
+    },
+    "improvedSeedCard": "Cartão de Adoção de Sementes Melhoradas para {{year}}",
+    "fertilizerCard": "Cartão de Intensidade de Fertilizantes para {{year}}",
+    "mechanizationCard": "Cartão de Mecanização para {{year}}",
+    "trendsTitle": "Tendências de Adoção (2006–{{year}})",
+    "trendsChart": "Gráfico de Tendências de Adoção",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "improvedSeed": "Adoção de Sementes Melhoradas (%)",
+    "fertilizerIntensity": "Intensidade de Fertilizantes (kg/ha)",
+    "mechanization": "Mecanização (Unidades/1.000 Fazendas)",
+    "cerealSeeds": "Sementes de Cereais (toneladas)",
+    "fertilizer": "Fertilizantes (toneladas)",
+    "pesticides": "Pesticidas (litros)"
+  },
+  
+  "forecastSimulation": {
+    "title": "Previsão e Simulação - {{countryName}}",
+    "ariaTitle": "Visão Geral de Previsão e Simulação para {{country}}",
+    "loading": "Carregando Previsão e Simulação...",
+    "simulatedDataNote": "Dados simulados para fins de planejamento (2006–2025). Valide antes do uso operacional.",
+    "na": "N/D",
+    "downloadCSV": "Baixar CSV",
+    "downloadCSVLabel": "Baixar dados de previsão e simulação como CSV",
+    "downloadPNG": "Baixar PNG",
+    "downloadPNGLabel": "Baixar painel de previsão e simulação como PNG",
+    "downloadPDF": "Baixar PDF",
+    "downloadPDFLabel": "Baixar painel de previsão e simulação como PDF",
+    "yearSelectLabel": "Selecionar Ano para Métricas",
+    "metricSelectLabel": "Selecionar Métrica para Comparação Anual",
+    "report_exported": "Exportado em: {{date}}",
+    "metrics": "Métricas: Uso Total de Insumos, Orçamento de Subsídios, Acesso ao Crédito",
+    "errors": {
+      "fetchFailed": "Falha ao buscar dados de previsão e simulação",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "invalidCountry": "Parâmetro de país inválido",
+      "pngFailed": "Falha no download do PNG. Verifique o console para detalhes.",
+      "pdfFailed": "Falha no download do PDF. Verifique o console para detalhes.",
+      "invalidCanvas": "Canvas está vazio ou inválido",
+      "invalidImageData": "Falha ao gerar dados de imagem a partir do canvas"
+    },
+    "totalInput": "Uso Total de Insumos",
+    "totalInputCard": "Cartão de Uso Total de Insumos para {{year}}",
+    "inputSubsidyCard": "Cartão de Orçamento de Subsídios para {{year}}",
+    "creditAccessCard": "Cartão de Acesso ao Crédito para {{year}}",
+    "trendsTitle": "Tendências de Previsão de Uso de Insumos (2006–{{year}})",
+    "trendsChart": "Gráfico de Tendências de Previsão de Uso de Insumos",
+    "comparisonTitle": "Comparação de Métricas Financeiras ({{country}})",
+    "comparisonChart": "Gráfico de Comparação de Métricas Financeiras",
+    "cerealSeeds": "Sementes de Cereais (toneladas)",
+    "fertilizer": "Fertilizantes (toneladas)",
+    "pesticides": "Pesticidas (litros)",
+    "inputSubsidy": "Orçamento de Subsídios (USD)",
+    "creditAccess": "Acesso ao Crédito (%)",
+    "seedGrowthRate": "Taxa de Crescimento da Adoção de Sementes Melhoradas (%)",
+    "mechanizationGrowthRate": "Taxa de Crescimento da Mecanização (%)"
+  },
+  "inputMetrics": {
+    "title": "Métricas de Insumos - {{countryName}}",
+    "ariaTitle": "Visão Geral das Métricas de Insumos para {{country}}",
+    "loading": "Carregando Métricas de Insumos...",
+    "simulatedDataNote": "Dados simulados para fins de planejamento. Valide antes do uso operacional.",
+    "na": "N/D",
+    "downloadCSV": "Baixar CSV",
+    "downloadCSVLabel": "Baixar dados de métricas de insumos como CSV",
+    "downloadPNG": "Baixar PNG",
+    "downloadPNGLabel": "Baixar painel de métricas de insumos como PNG",
+    "downloadPDF": "Baixar PDF",
+    "downloadPDFLabel": "Baixar painel de métricas de insumos como PDF",
+    "yearSelectLabel": "Selecionar Ano para Métricas",
+    "report_exported": "Exportado em: {{date}}",
+    "metrics": "Métricas: Rapidez de Distribuição, Índice de Preços de Insumos, Contagem de Agrodealers, Valor de Importação de Insumos, Produção Local de Insumos",
+    "errors": {
+      "fetchFailed": "Falha ao buscar dados de métricas de insumos",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "invalidCountry": "Parâmetro de país inválido",
+      "pngFailed": "Falha no download do PNG. Verifique o console para detalhes.",
+      "pdfFailed": "Falha no download do PDF. Verifique o console para detalhes.",
+      "invalidCanvas": "Canvas está vazio ou inválido",
+      "invalidImageData": "Falha ao gerar dados de imagem a partir do canvas"
+    },
+    "percentageChartTitle": "Métricas Baseadas em Percentuais (2006–{{year}})",
+    "valueChartTitle": "Métricas Baseadas em Valores (2006–{{year}})",
+    "summaryTitle": "Resumo de Dados ({{year}})",
+    "summaryTooltip": "Resumo das métricas de insumos para o ano selecionado",
+    "distributionTimeliness": "Rapidez de Distribuição (%)",
+    "inputPriceIndex": "Índice de Preços de Insumos (Base 2006)",
+    "agroDealerCount": "Contagem de Agrodealers",
+    "inputImportValue": "Valor de Importação de Insumos (USD)",
+    "localProductionInputs": "Produção Local de Insumos (toneladas)",
+    "metric": "Métrica",
+    "value": "Valor"
+  },
+  "dataAndMethodology": {
+    "title": "Dados e Metodologia - {{countryName}}",
+    "ariaTitle": "Visão Geral de Dados e Metodologia para {{country}}",
+    "loading": "Carregando Dados e Metodologia...",
+    "simulatedDataNote": "Dados simulados para fins de planejamento (2006–2025). Valide antes do uso operacional.",
+    "na": "N/D",
+    "downloadCSV": "Baixar CSV",
+    "downloadCSVLabel": "Baixar dados e metodologia como CSV",
+    "downloadPNG": "Baixar PNG",
+    "downloadPNGLabel": "Baixar painel de dados e metodologia como PNG",
+    "downloadPDF": "Baixar PDF",
+    "downloadPDFLabel": "Baixar painel de dados e metodologia como PDF",
+    "yearSelectLabel": "Selecionar Ano para Resumo de Dados",
+    "report_exported": "Exportado em: {{date}}",
+    "metrics": "Métricas: Sementes de Cereais, Fertilizantes, Pesticidas, Orçamento de Subsídios, Acesso ao Crédito, Rupturas de Estoque, Intensidade de Fertilizantes, Adoção de Sementes Melhoradas, Mecanização, Rapidez de Distribuição, Índice de Preços de Insumos, Contagem de Agrodealers, Valor de Importação de Insumos, Produção Local de Insumos",
+    "errors": {
+      "fetchFailed": "Falha ao buscar dados e metodologia",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "invalidCountry": "Parâmetro de país inválido",
+      "pngFailed": "Falha no download do PNG. Verifique o console para detalhes.",
+      "pdfFailed": "Falha no download do PDF. Verifique o console para detalhes.",
+      "invalidCanvas": "Canvas está vazio ou inválido",
+      "invalidImageData": "Falha ao gerar dados de imagem a partir do canvas"
+    },
+    "dataSectionTitle": "Descrição do Conjunto de Dados",
+    "source": "Fonte: ",
+    "datasetDescription": "O conjunto de dados contém dados simulados sobre insumos agrícolas para {{country}} de 2006 a 2025. Os campos disponíveis incluem:",
+    "methodologySectionTitle": "Metodologia e Suposições",
+    "simulationMethod": "Método de Simulação: ",
+    "assumptionsDescription": "Os dados são simulados com base nas seguintes suposições:",
+    "noMethodology": "Nenhuma metodologia ou suposição fornecida no conjunto de dados.",
+    "summaryTitle": "Resumo de Dados para {{year}}",
+    "summaryTooltip": "Métricas-chave para {{country}} em {{year}}",
+    "cerealSeeds": "Sementes de Cereais (toneladas)",
+    "cerealSeedsDesc": "Uso anual de sementes de cereais para plantio.",
+    "fertilizer": "Fertilizantes (toneladas)",
+    "fertilizerDesc": "Total de fertilizantes aplicados anualmente.",
+    "pesticides": "Pesticidas (litros)",
+    "pesticidesDesc": "Volume de pesticidas usado anualmente.",
+    "inputSubsidy": "Orçamento de Subsídios (USD)",
+    "inputSubsidyDesc": "Orçamento governamental alocado para subsídios de insumos.",
+    "creditAccess": "Acesso ao Crédito (%)",
+    "creditAccessDesc": "Percentual de agricultores com acesso ao crédito agrícola.",
+    "stockouts": "Rupturas de Estoque (Dias/Ano)",
+    "stockoutsDesc": "Número de dias por ano em que os insumos estão indisponíveis.",
+    "fertilizerIntensity": "Intensidade de Fertilizantes (kg/ha)",
+    "fertilizerIntensityDesc": "Aplicação de fertilizantes por hectare de terras agrícolas.",
+    "improvedSeedAdoption": "Adoção de Sementes Melhoradas (%)",
+    "improvedSeedAdoptionDesc": "Percentual de agricultores que usam variedades de sementes melhoradas.",
+    "mechanization": "Mecanização (Unidades/1.000 Fazendas)",
+    "mechanizationDesc": "Número de unidades de mecanização por 1.000 fazendas.",
+    "distributionTimeliness": "Rapidez de Distribuição (%)",
+    "distributionTimelinessDesc": "Percentual de insumos entregues no prazo aos agricultores.",
+    "inputPriceIndex": "Índice de Preços de Insumos (Base 2006)",
+    "inputPriceIndexDesc": "Índice de preços de insumos agrícolas, normalizado para 2006.",
+    "agroDealerCount": "Contagem de Agrodealers",
+    "agroDealerCountDesc": "Número de distribuidores de insumos agrícolas no país.",
+    "inputImportValue": "Valor de Importação de Insumos (USD)",
+    "inputImportValueDesc": "Valor dos insumos agrícolas importados em USD.",
+    "localProductionInputs": "Produção Local de Insumos (toneladas)",
+    "localProductionInputsDesc": "Insumos agrícolas produzidos localmente em toneladas.",
+    "metric": "Métrica",
+    "value": "Valor"
+  },
+  
+  "livestockOverview": {
+  "title": "{{countryName}} Visão Geral do Gado em",
+    "loading": "Carregando dados de gado...",
+    "errors": {
+      "noData": "Nenhum dado de gado disponível para este país.",
+      "invalidCountry": "Parâmetro de país inválido.",
+      "fetchFailed": "Falha ao carregar dados.",
+      "invalidDataFormat": "Formato de dados inválido recebido.",
+      "loadingError": "Ocorreu um erro ao carregar os dados.",
+      "pngFailed": "Falha ao exportar PNG.",
+      "pdfFailed": "Falha ao exportar PDF.",
+      "invalidImageData": "Dados de imagem inválidos gerados."
+    },
+    "yearSelectLabel": "Selecionar ano",
+    "downloadCSV": "CSV",
+    "downloadPNG": "PNG",
+    "downloadPDF": "PDF",
+    "simulatedDataNote": "Dados simulados para planejamento e análise",
+    "lastUpdated": "Última atualização: {{date}}",
+    "totalAnimals": "Animais to raggiungais",
+    "cattle": "Gado bovino",
+    "smallRuminants": "Pequenos ruminantes",
+    "poultry": "Aves",
+    "milk": "Produção de leite",
+    "meat": "Produção de carne",
+    "vaccination": "Vacinação",
+    "priceIndex": "Índice de preços",
+    "fmdIncidents": "Incidentes de FMD",
+    "vetFacilities": "Instalações veterinárias",
+    "grazingArea": "Área de pastagem",
+    "offtakeRate": "Taxa de abate",
+    "heads": "Cabeças",
+    "tons": "Toneladas",
+    "coverage": "Cobertura",
+    "country": "País",
+    "year": "Ano",
+    "report_exported": "Gerado em {{date}}",
+    "metrics": "Painel de Métricas de Gado"
+  },
+  "layout": {
+    "loading": "Carregando...",
+    "user": "Usuário",
+    "username": "Nome de usuário",
+    "noEmail": "Sem e-mail",
+    "profile": "Perfil",
+    "settings": "Configurações",
+    "logout": "Sair",
+    "greeting": "Olá, {{name}}",
+    "welcomeBack": "Bem-vindo de volta!",
+    "dashboard": "Painel",
+    "sidebar": {
+      "collapse": "Recolher barra lateral",
+      "expand": "Expandir barra lateral"
+    }
+  },
+  "populationChart": {
+  "title": "População Pecuária - {{countryName}}",
+  "chartTitle": "Tendências de População",
+  "loading": "Carregando dados de população...",
+  "noData": "Nenhum dado de população disponível para {{countryName}}.",
+  "year": "Ano",
+  "headCount": "Contagem de Cabeças",
+  "cattle": "Bovinos",
+  "smallRuminants": "Pequenos Ruminantes",
+  "pigs": "Suínos",
+  "poultry": "Aves",
+  "errors": {
+    "fetchFailed": "Falha ao carregar dados de população.",
+    "loadingError": "Erro ao carregar dados de população."
+  }
+},
+"LivestockSidebar": {
+    "overview": "Visão Geral",
+    "population": "População",
+    "production": "Produção",
+    "economic": "Indicadores Econômicos",
+    "health": "Saúde e Bem-Estar",
+    "grazing": "Pastagem e Transumância",
+    "forecast": "Previsão e Simulação",
+    "methodology": "Dados e Metodologia"
+  },
+  "population": {
+  "title": "População de Gado em {{countryName}}",
+  "loading": "Carregando dados de população...",
+  "trendTitle": "Tendência da População (2006–2025)",
+  "total": "População Total",
+  "cattle": "Gado Bovino",
+  "smallRuminants": "Pequenos Ruminantes",
+  "pigs": "Suínos",
+  "poultry": "Aves",
+  "heads": "Cabeças",
+  "country": "País",
+  "year": "Ano",
+  "downloadCSV": "CSV",
+  "downloadPNG": "PNG",
+  "downloadPDF": "PDF",
+  "simulatedDataNote": "Dados simulados para planejamento e análise",
+  "lastUpdated": "Última atualização: {{date}}",
+  "report_exported": "Gerado em {{date}}",
+  "errors": {
+    "noData": "Nenhum dado de população disponível para este país.",
+    "fetchFailed": "Falha ao carregar dados.",
+    "loadingError": "Ocorreu um erro ao carregar os dados.",
+    "pngFailed": "Falha ao exportar PNG.",
+    "pdfFailed": "Falha ao exportar PDF."
+  }
+},
+"production": {
+  "title": "Produção Pecuária em {{countryName}}",
+  "loading": "Carregando dados de produção...",
+  "simulatedDataNote": "Dados simulados para fins de análise.",
+  "lastUpdated": "Última atualização: {{date}}",
+  "trendTitle": "Tendência da Produção (2006–2025)",
+  "total": "Produção Total",
+  "milk": "Leite",
+  "meat": "Carne",
+  "tons": "toneladas",
+  "country": "País",
+  "year": "Ano",
+  "downloadCSV": "CSV",
+  "downloadPNG": "PNG",
+  "downloadPDF": "PDF",
+  "report_exported": "Relatório exportado em {{date}}",
+  "errors": {
+    "fetchFailed": "Falha ao carregar dados de produção.",
+    "noData": "Nenhum dado de produção encontrado para {{country}}.",
+    "loadingError": "Erro ao carregar dados.",
+    "pngFailed": "Falha ao exportar PNG.",
+    "pdfFailed": "Falha ao exportar PDF."
+  }
+},
+"economic": {
+  "title": "Economia de Gado em {countryName}",
+  "loading": "Carregando dados econômicos...",
+  "simulatedDataNote": "Dados do Modelo de Simulação de Gado da ECOWAS.",
+  "lastUpdated": "Última atualização: {date}",
+  "trendTitle": "Tendências Econômicas (2006–2025)",
+  "priceIndex": "Índice de Preços",
+  "exports": "Exportações",
+  "offtake": "Taxa de Retirada",
+  "feedImports": "Importação de Ração",
+  "localFeed": "Ração Local",
+  "tons": "toneladas",
+  "pct": "%",
+  "country": "País",
+  "year": "Ano",
+  "downloadCSV": "CSV",
+  "downloadPNG": "PNG",
+  "downloadPDF": "PDF",
+  "report_exported": "Relatório exportado em {date}",
+  "errors": {
+    "fetchFailed": "Falha ao carregar os dados econômicos.",
+    "noData": "Sem dados econômicos para {country}.",
+    "loadingError": "Erro ao carregar os dados.",
+    "pngFailed": "Falha ao exportar PNG.",
+    "pdfFailed": "Falha ao exportar PDF."
+  }
+},
+  "health": {
+    "title": "Painel de Saúde Animal – {{countryName}}",
+    "ariaTitle": "Painel de Saúde Animal para {{country}}",
+    "simulatedDataNote": "Todos os dados são simulados para fins de demonstração.",
+    "loading": "Carregando dados de saúde...",
+    "yearSelectLabel": "Selecionar Ano",
+    "metricSelectLabel": "Selecionar Métrica",
+    "downloadCSV": "Baixar CSV",
+    "downloadPNG": "Baixar PNG",
+    "downloadPDF": "Baixar PDF",
+    "downloadCSVLabel": "Baixar dados de saúde como CSV",
+    "downloadPNGLabel": "Baixar painel como imagem PNG",
+    "downloadPDFLabel": "Baixar painel como relatório PDF",
+    "na": "N/D",
+    "reportExported": "Relatório exportado em {{date}}",
+    "trendsTitle": "Tendências de Saúde ao Longo do Tempo",
+    "comparisonTitle": "Comparação Anual – {{country}}",
+    "vaccinationCoverage": "Cobertura de Vacinação",
+    "fmdIncidents": "Incidentes de Febre Aftosa",
+    "veterinaryFacilities": "Instalações Veterinárias",
+    "metricCard": "{{label}} em {{year}}",
+    "errors": {
+      "fetchFailed": "Falha ao carregar dados. Tente novamente.",
+      "noData": "Nenhum dado de saúde disponível para {{country}}.",
+      "invalidCountry": "País selecionado inválido.",
+      "pngFailed": "Falha ao gerar PNG. Tente novamente.",
+      "pdfFailed": "Falha ao gerar PDF. Tente novamente.",
+      "invalidCanvas": "A imagem gerada está vazia.",
+      "invalidImageData": "Falha ao criar dados da imagem."
+    }
+  },
+  "grazing": {
+    "title": "Painel de Pastagem – {{countryName}}",
+    "ariaTitle": "Painel de Pastagem para {{country}}",
+    "simulatedDataNote": "Todos os dados de pastagem são simulados.",
+    "loading": "Carregando dados de pastagem...",
+    "yearSelectLabel": "Selecionar Ano",
+    "metricSelectLabel": "Selecionar Métrica",
+    "downloadCSV": "Baixar CSV",
+    "downloadPNG": "Baixar PNG",
+    "downloadPDF": "Baixar PDF",
+    "downloadCSVLabel": "Baixar dados como CSV",
+    "downloadPNGLabel": "Baixar painel como PNG",
+    "downloadPDFLabel": "Baixar painel como PDF",
+    "na": "N/D",
+    "reportExported": "Relatório exportado em {{date}}",
+    "trendsTitle": "Tendências de Pastagem ao Longo do Tempo",
+    "comparisonTitle": "Comparação Anual – {{country}}",
+    "area": "Área de Pastagem (ha)",
+    "events": "Eventos de Transumância",
+    "metricCard": "{{label}} em {{year}}",
+    "errors": {
+      "fetchFailed": "Falha ao carregar dados.",
+      "noData": "Sem dados para {{country}}.",
+      "invalidCountry": "País inválido.",
+      "pngFailed": "Falha ao gerar PNG.",
+      "pdfFailed": "Falha ao gerar PDF."
+    }
+  },
+  "forecast": {
+    "title": "Previsão Pecuária – {{countryName}}",
+    "simulatedDataNote": "Previsões baseadas em tendências históricas simuladas (2006–2025).",
+    "loading": "Gerando previsões...",
+    "yearsAhead": "{{count}} anos à frente",
+    "projected": "Projeção {{year}}: {{value}} ({{growth}}% crescimento)",
+    "historical": "Histórico",
+    "forecast": "Previsão",
+    "trendsTitle": "Tendência Histórica & Previsão",
+    "downloadCSV": "CSV",
+    "downloadPNG": "PNG",
+    "downloadPDF": "PDF",
+    "reportExported": "Exportado em {{date}}",
+    "cattle": "Gado Bovino (cabeças)",
+    "smallRuminants": "Pequenos Ruminantes (cabeças)",
+    "pigs": "Suínos (cabeças)",
+    "poultry": "Aves (cabeças)",
+    "milk": "Produção de Leite (toneladas)",
+    "meat": "Produção de Carne (toneladas)",
+    "priceIndex": "Índice de Preço do Gado",
+    "vaccination": "Cobertura de Vacinação (%)",
+    "fmd": "Incidentes de Febre Aftosa",
+    "grazingArea": "Área de Pastagem (ha)",
+    "transhumance": "Eventos de Transumância",
+    "vetFacilities": "Instalações Veterinárias",
+    "feedImports": "Importações de Ração (toneladas)",
+    "localFeed": "Produção Local de Ração (toneladas)",
+    "exports": "Exportações de Gado (toneladas)",
+    "offtake": "Taxa de Abate (%)",
+    "errors": {
+      "fetchFailed": "Falha ao carregar dados.",
+      "noData": "Sem dados para {{country}}.",
+      "pngFailed": "Falha ao exportar PNG.",
+      "pdfFailed": "Falha ao exportar PDF."
+    },
+    "howItWorksTitle": "Como funciona a Previsão",
+    "howItWorks": {
+      "1": "Usamos os números reais de 2006 a 2025 do país selecionado.",
+      "2": "Uma fórmula matemática simples (tendência linear + pequena onda sazonal) analisa o crescimento passado.",
+      "3": "A fórmula estende a linha para o futuro pelos anos que você escolher (1 a 10 anos).",
+      "4": "Linha contínua = dados passados, linha tracejada = previsão futura."
+    },
+    "howItWorks.note": "São estimativas baseadas em tendências, não resultados garantidos."
+  },
+  "methodology": {
+    "title": "Metodologia – {{countryName}}",
+    "assumptionsTitle": "Premissas e Metodologia de Simulação",
+    "loading": "Carregando metodologia...",
+    "downloadPDF": "Baixar PDF",
+    "reportExported": "Exportado em {{date}}",
+    "noDetails": "As premissas detalhadas serão adicionadas em atualizações futuras.",
+    "defaultAssumptions": "Esta simulação usa análise de tendência linear em dados históricos de 2006–2025, com ajustes para sazonalidade e fatores regionais. As premissas incluem taxas de produtividade constantes e melhorias graduais na cobertura veterinária.",
+    "dataSource": "Fonte: Conjunto de Dados Simulados APMD CEDEAO (2006–2025)",
+    "errors": {
+      "fetchFailed": "Falha ao carregar a metodologia.",
+      "noData": "Nenhuma metodologia disponível para {{country}}.",
+      "pdfFailed": "Falha na exportação do PDF."
+    }
+  },
+  "sidebar": {
+    "brand": "ECOAGRIS",
+    "logo": { "alt": "Logotipo ECOAGRIS" },
+    "aria": { "navigation": "Navegação Principal" },
+    "overview": "Visão Geral",
+    "malnutrition": "Indicadores de Desnutrição",
+    "dietary": "Ingestão Dietética e Nutrientes",
+    "micronutrient": "Deficiências de Micronutrientes",
+    "healthOutcomes": "Resultados de Saúde",
+    "interventions": "Intervenções Nutricionais",
+    "ariaLabel": "Navegação do Usuário",
+    "logoAlt": "LOGO ECOAGRIS",
+    "riceProduction": "Produção de Arroz",
+    "policyFunding": "Política e Financiamento",
+    "coverage": "Cobertura de Programas e Vigilância",
+    "dataMethodology": "Dados e Metodologia",
+    "logout": "Sair",
+    "expand": "Expandir Barra Lateral",
+    "collapse": "Recolher Barra Lateral"
+  },
+  "nutritionOverview": {
+    "title": "Visão Geral de Nutrição - {{countryName}}",
+    "loading": "Carregando dados de nutrição...",
+    "country": "País",
+    "current": "Atual",
+    "year": "Ano",
+    "selected": "Selecionado",
+    "population": "População",
+    "people": "pessoas",
+    "comingSoon": "Mais Métricas",
+    "moreSoon": "Em breve",
+    "exploreCategories": "Explorar Categorias de Nutrição",
+    "viewDetails": "Ver detalhes",
+    "downloadCSV": "Baixar CSV",
+    "yearSelectLabel": "Selecionar ano",
+    "simulatedDataNote": "Dados simulados para fins de planejamento. Validar antes do uso.",
+    "lastUpdated": "Última atualização: {{date}}",
+    "malnutrition": "Indicadores de Desnutrição",
+    "dietary": "Ingestão Dietética e Nutrientes",
+    "micronutrient": "Deficiências de Micronutrientes",
+    "healthOutcomes": "Resultados de Saúde",
+    "interventions": "Intervenções Nutricionais",
+    "policyFunding": "Política e Financiamento",
+    "coverage": "Cobertura de Programas e Vigilância",
+    "dataMethodology": "Qualidade dos Dados e Metodologia",
+    "errors": {
+      "fetchFailed": "Falha ao carregar dados",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar"
+    }
+  },
+  "malnutrition": {
+    "title": "Desnutrição",
+    "overview": "Visão Geral da Desnutrição para {{country}}",
+    "loading": "Carregando dados de desnutrição...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Validar antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "selectYear": "Selecionar Ano para Métricas",
+    "selectMetric": "Selecionar Métrica para Comparação Anual",
+    "year": "Ano",
+    "na": "N/D",
+    "undernourishment": "Prevalência de Subnutrição (%)",
+    "stunting": "Nanismo Infantil (Menores de 5, %)",
+    "wasting": "Emaciação Infantil (Menores de 5, %)",
+    "overweight": "Sobrepeso Infantil (Menores de 5, %)",
+    "adultObesity": "Obesidade Adulta (%)",
+    "adultUnderweight": "Baixo Peso Adulto (%)",
+    "childObesity": "Obesidade Infantil (%)",
+    "trendsTitle": "Tendências de Desnutrição (2006–{{end}})",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "trendsChart": "Gráfico de Tendências de Desnutrição",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "cardLabel": "Cartão {{label}} para {{year}}",
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados de desnutrição: {{status}} {{text}}",
+      "invalidFormat": "Formato de conjunto de dados inválido: Nutrition_Data ausente ou não é um array",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados de desnutrição: {{message}}",
+      "dashboardNotFound": "Conteúdo do painel não encontrado para geração de PDF",
+      "pdfError": "Erro na geração do PDF:"
+    }
+  },
+  "dietary": {
+    "title": "Ingestão Alimentar & Nutricional",
+    "overview": "Visão Geral da Ingestão Alimentar & Nutricional para {{country}}",
+    "loading": "Carregando dados de ingestão alimentar e nutricional...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Validar antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "selectYear": "Selecionar Ano para Métricas",
+    "selectMetric": "Selecionar Métrica para Comparação Anual",
+    "year": "Ano",
+    "na": "N/D",
+    "caloricIntake": "Ingestão Calórica Diária Média (kcal)",
+    "proteinIntake": "Ingestão de Proteínas (g/hab/dia)",
+    "energySupply": "Suprimento Energético Alimentar (kcal/hab/dia)",
+    "fruitVeg": "Consumo de Frutas & Vegetais (g/dia)",
+    "animalProtein": "Participação de Proteínas Animais (%)",
+    "foodExpenditure": "Participação das Despesas Alimentares do Domicílio (%)",
+    "foodInsecurity": "Insegurança Alimentar Doméstica (%)",
+    "trendsTitle": "Tendências Alimentares (2006–{{end}})",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "trendsChart": "Gráfico de Tendências Alimentares",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "cardLabel": "Cartão {{label}} para {{year}}",
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados de ingestão alimentar",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados de ingestão alimentar"
+    }
+  },
+  "micronutrient": {
+    "title": "Deficiências de Micronutrientes",
+    "overview": "Visão Geral das Deficiências de Micronutrientes para {{country}}",
+    "loading": "Carregando dados de deficiências de micronutrientes...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Validar antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "selectYear": "Selecionar Ano para Métricas",
+    "selectMetric": "Selecionar Métrica para Comparação Anual",
+    "year": "Ano",
+    "na": "N/D",
+    "vitaminAChildren": "Deficiência de Vitamina A em Crianças (%)",
+    "ironWomen": "Deficiência de Ferro em Mulheres (%)",
+    "anemiaWomen": "Prevalência de Anemia em Mulheres (%)",
+    "vitaminACoverage": "Cobertura de Suplementação de Vitamina A (%)",
+    "ironFolicPregnant": "Gestantes Recebendo Ferro + Ácido Fólico (%)",
+    "trendsTitle": "Tendências de Deficiências de Micronutrientes (2006–{{end}})",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "trendsChart": "Gráfico de Tendências de Deficiências",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "cardLabel": "Cartão {{label}} para {{year}}",
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados de deficiências",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados de deficiências"
+    }
+  },
+  "healthOutcomes": {
+    "title": "Resultados de Saúde",
+    "overview": "Visão Geral dos Resultados de Saúde para {{country}}",
+    "loading": "Carregando dados de resultados de saúde...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Validar antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "selectYear": "Selecionar Ano para Métricas",
+    "selectMetric": "Selecionar Métrica para Comparação Anual",
+    "year": "Ano",
+    "na": "N/D",
+    "childObesity": "Prevalência de Obesidade Infantil (%)",
+    "maternalMortality": "Razão de Mortalidade Materna (por 100.000)",
+    "lowBirthWeight": "Prevalência de Baixo Peso ao Nascer (%)",
+    "trendsTitle": "Tendências de Resultados de Saúde (2006–{{end}})",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "trendsChart": "Gráfico de Tendências de Saúde",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "cardLabel": "Cartão {{label}} para {{year}}",
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados de saúde: {{status}} {{text}}",
+      "invalidFormat": "Formato de conjunto de dados inválido: Nutrition_Data ausente ou não é array",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados de saúde: {{message}}",
+      "dashboardNotFound": "Conteúdo do painel não encontrado para geração de PDF",
+      "pdfError": "Erro na geração do PDF:"
+    }
+  },
+  "interventions": {
+    "title": "Intervenções Nutricionais",
+    "overview": "Visão Geral das Intervenções Nutricionais para {{country}}",
+    "loading": "Carregando dados de intervenções...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Validar antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "selectYear": "Selecionar Ano para Métricas",
+    "selectMetric": "Selecionar Métrica para Comparação Anual",
+    "year": "Ano",
+    "na": "N/D",
+    "breastfeeding": "Aleitamento Materno Exclusivo (Menores de 6 meses, %)",
+    "dietaryDiversity": "Diversidade Alimentar Mínima (Crianças, %)",
+    "schoolMeals": "Cobertura de Refeições Escolares (%)",
+    "wfpBeneficiaries": "Beneficiários da Assistência Alimentar do PMA",
+    "trendsTitle": "Tendências de Intervenções Nutricionais (2006–{{end}})",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "trendsChart": "Gráfico de Tendências de Intervenções",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "cardLabel": "Cartão {{label}} para {{year}}",
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados de intervenções: {{status}} {{text}}",
+      "invalidFormat": "Formato de conjunto de dados inválido: Nutrition_Data ausente ou não é array",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados de intervenções: {{message}}",
+      "dashboardNotFound": "Conteúdo do painel não encontrado para geração de PDF",
+      "pdfError": "Erro na geração do PDF:"
+    }
+  },
+  "policyFunding": {
+    "title": "Política e Financiamento",
+    "overview": "Visão Geral de Política e Financiamento para {{country}}",
+    "loading": "Carregando dados de política e financiamento...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Validar antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "selectYear": "Selecionar Ano para Métricas",
+    "selectMetric": "Selecionar Métrica para Comparação Anual",
+    "year": "Ano",
+    "yearLabel": "Ano",
+    "na": "N/D",
+    "budgetPerCapita": "Gastos Orçamentários em Nutrição (USD por habitante)",
+    "policyScore": "Pontuação da Política de Nutrição (Índice)",
+    "coordinationScore": "Pontuação de Coordenação Multissetorial",
+    "implementationPct": "Implementação da Política de Nutrição (%)",
+    "donorFunding": "Financiamento de Doadores para Nutrição (USD Milhões)",
+    "trendsTitle": "Tendências de Política e Financiamento (2006–{{end}})",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "trendsChart": "Gráfico de Tendências de Política e Financiamento",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "cardLabel": "Cartão {{label}} para {{year}}",
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados: {{status}} {{text}}",
+      "invalidFormat": "Formato de conjunto de dados inválido: Nutrition_Data ausente ou não é array",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados: {{message}}",
+      "dashboardNotFound": "Conteúdo do painel não encontrado para geração de PDF",
+      "pdfError": "Erro na geração do PDF:"
+    }
+  },
+  "programCoverage": {
+    "title": "Cobertura de Programas & Vigilância",
+    "overview": "Visão Geral de Cobertura de Programas e Vigilância para {{country}}",
+    "loading": "Carregando dados de cobertura e vigilância...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Validar antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "selectYear": "Selecionar Ano para Métricas",
+    "selectMetric": "Selecionar Métrica para Comparação Anual",
+    "year": "Ano",
+    "yearLabel": "Ano",
+    "na": "N/D",
+    "programCoverage": "Cobertura de Programas de Nutrição (%)",
+    "surveillanceCoverage": "Cobertura de Vigilância Nutricional (%)",
+    "deworming": "Cobertura de Desparasitação (Crianças, %)",
+    "measlesImmunization": "Cobertura de Imunização contra Sarampo (%)",
+    "trendsTitle": "Tendências de Cobertura e Vigilância (2006–{{end}})",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "trendsChart": "Gráfico de Tendências de Cobertura e Vigilância",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "cardLabel": "Cartão {{label}} para {{year}}",
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados: {{status}} {{text}}",
+      "invalidFormat": "Formato inválido: Nutrition_Data ausente ou não é array",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados: {{message}}",
+      "dashboardNotFound": "Conteúdo do painel não encontrado para geração de PDF",
+      "pdfError": "Erro na geração do PDF:"
+    }
+  },
+  "dataQuality": {
+    "title": "Qualidade de Dados & Metodologia",
+    "overview": "Visão Geral de Qualidade de Dados e Metodologia para {{country}}",
+    "loading": "Carregando dados de qualidade e metodologia...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Validar antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "selectYear": "Selecionar Ano",
+    "selectMetric": "Selecionar Métrica",
+    "year": "Ano",
+    "na": "N/D",
+    "noNotes": "Nenhuma nota metodológica disponível.",
+    "dataQualityIndex": "Índice de Qualidade de Dados Nutricionais",
+    "methodologyNotes": "Notas Metodológicas",
+    "methodologyCard": "Cartão de Notas Metodológicas",
+    "trendsTitle": "Tendências de Qualidade de Dados (2006–{{end}})",
+    "comparisonTitle": "Comparação Anual ({{country}})",
+    "trendsChart": "Gráfico de Tendências de Qualidade",
+    "comparisonChart": "Gráfico de Comparação Anual",
+    "cardLabel": "Cartão {{label}} para {{year}}",
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados: {{status}} {{text}}",
+      "invalidFormat": "Formato inválido: Nutrition_Data ausente ou não é array",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados: {{message}}",
+      "dashboardNotFound": "Conteúdo do painel não encontrado para geração de PDF",
+      "pdfError": "Erro na geração do PDF:"
+    }
+  },
+  "rice": {
+    "yearTrend": {
+      "title": "Tendência Anual de Produção de Arroz",
+      "overview": "Tendência Anual de Produção de Arroz para {{country}}",
+      "loading": "Carregando dados de produção de arroz...",
+      "simulatedNote": "Dados simulados para fins de planejamento. Validar antes do uso operacional.",
+      "downloadCSV": "Baixar CSV",
+      "downloadPDF": "Baixar PDF",
+      "selectYear": "Selecionar Ano",
+      "year": "Ano",
+      "na": "N/D",
+      "production": "Produção de Arroz (Toneladas)",
+      "trendsTitle": "Tendências de Produção de Arroz (2005–{{end}})",
+      "trendsChart": "Gráfico de Tendências de Produção",
+      "cardLabel": "Cartão {{label}} para {{year}}",
+      "errors": {
+        "invalidCountry": "Parâmetro de país inválido",
+        "fetchFailed": "Falha ao carregar dados: {{status}} {{text}}",
+        "invalidFormat": "Formato inválido: Data ausente ou não é array",
+        "noData": "Nenhum dado disponível para {{country}}",
+        "loadingError": "Erro ao carregar dados: {{message}}",
+        "dashboardNotFound": "Conteúdo do painel não encontrado",
+        "pdfError": "Erro na geração do PDF:"
+      }
+    }
+  },
+  
+  "macro": {
+    "overview": {
+      "title": "Visão Geral dos Índices Macroeconômicos - {{countryName}}",
+      "loading": "Carregando dados macroeconômicos...",
+      "simulatedDataNote": "Dados simulados para fins de planejamento. Explore categorias para tendências detalhadas.",
+      "exploreCategories": "Explorar Categorias Macroeconômicas",
+      "navigateTo": "Ir para {{title}}",
+      "yearSelectLabel": "Selecionar Ano",
+      "downloadCSV": "Baixar CSV",
+      "downloadPNG": "Baixar PNG",
+      "downloadPDF": "Baixar PDF",
+      "na": "N/D",
+
+      "nav": {
+        "economicOutput": "Produção Econômica",
+        "economicOutputDesc": "PIB, PIB per capita e tendências de crescimento econômico.",
+        "fiscalMonetary": "Política Fiscal e Monetária",
+        "fiscalMonetaryDesc": "Inflação, dívida pública e métricas de política monetária.",
+        "laborPoverty": "Trabalho e Pobreza",
+        "laborPovertyDesc": "Desemprego, taxas de pobreza e participação na força de trabalho.",
+        "tradeInvestment": "Comércio e Investimento",
+        "tradeInvestmentDesc": "Exportações, importações, balança comercial, IED e remessas.",
+        "agriculture": "Agricultura",
+        "agricultureDesc": "Valor agregado agrícola e tendências de produção de arroz."
+      },
+
+      "csv": {
+        "country": "País",
+        "year": "Ano",
+        "population": "População"
+      },
+
+      "pdf": {
+        "title": "Relatório Macroeconômico - {{country}}",
+        "metrics": "Métricas: País, Ano, População",
+        "exported": "Exportado em: {{date}}"
+      },
+
+      "errors": {
+        "invalidCountry": "Parâmetro de país inválido",
+        "fetchFailed": "Falha ao carregar dados",
+        "invalidFormat": "Formato de dados inválido",
+        "noData": "Nenhum dado disponível para {{country}}",
+        "loadingError": "Erro ao carregar dados",
+        "pngFailed": "Falha ao baixar PNG",
+        "pdfFailed": "Falha ao baixar PDF",
+        "invalidImageData": "Falha ao gerar imagem"
+      }
+    }
+  },
+  "macroSidebar": {
+    "ariaLabel": "Navegação do Usuário",
+    "logoAlt": "LOGO ECOAGRIS",
+    "brand": "ECOAGRIS",
+    "overview": "Visão Geral",
+    "economicOutput": "Produção Econômica",
+    "fiscalMonetary": "Política Fiscal e Monetária",
+    "laborPoverty": "Trabalho e Pobreza",
+    "tradeInvestment": "Comércio e Investimento",
+    "agriculture": "Agricultura",
+    "logout": "Sair",
+    "expand": "Expandir Barra Lateral",
+    "collapse": "Recolher Barra Lateral"
+  },
+  "economicOutput": {
+    "title": "Produção Econômica de {{countryName}}",
+    "simulatedNote": "Observação: Estes são dados macroeconômicos simulados para fins de demonstração.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "yearSelectLabel": "Selecionar Ano",
+    "metricSelectLabel": "Selecionar Indicador",
+    "loading": "Carregando dados econômicos...",
+    "na": "N/D",
+    "gdpUsd": "PIB (USD)",
+    "gdpPerCapita": "PIB per capita (USD)",
+    "gdpGrowth": "Crescimento do PIB (%)",
+    "lineChartTitle": "Tendências Econômicas até {{year}}",
+    "barChartTitle": "Indicadores Econômicos de {{countryName}}",
+    "csv": {
+      "year": "Ano"
+    },
+    "pdf": {
+      "title": "Relatório de Produção Econômica de {{country}}",
+      "exported": "Exportado em {{date}}"
+    },
+    "errors": {
+      "invalidCountry": "País especificado inválido.",
+      "fetchFailed": "Falha ao buscar dados econômicos.",
+      "invalidFormat": "Formato de conjunto de dados inválido.",
+      "noData": "Nenhum dado disponível para {{country}}.",
+      "loadingError": "Ocorreu um erro ao carregar os dados.",
+      "pdfFailed": "Falha ao gerar relatório em PDF."
+    }
+  },
+  "fiscalMonetaryYearTrend": {
+    "title": "Tendência Anual de Políticas Fiscais e Monetárias – {{countryName}}",
+    "simulatedNote": "Dados simulados para fins de planejamento. Valide antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "yearSelectLabel": "Selecionar Ano para Indicadores",
+    "metricSelectLabel": "Selecionar Indicador para Comparação Anual",
+    "loading": "Carregando tendência anual de políticas fiscais e monetárias...",
+    "na": "N/D",
+    "cards": {
+      "cpiInflation": "Inflação IPC (%)",
+      "fiscalDeficit": "Déficit Fiscal (% do PIB)",
+      "publicDebt": "Dívida Pública (% do PIB)",
+      "exchangeRate": "Taxa de Câmbio (Local/USD)"
+    },
+    "lineChartTitle": "Tendências de Políticas Fiscais e Monetárias (2006–{{year}})",
+    "barChartTitle": "Comparação Anual ({{countryName}})",
+    "csv": {
+      "year": "Ano"
+    },
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido.",
+      "fetchFailed": "Falha ao buscar dados fiscais/monetários.",
+      "invalidFormat": "Formato de conjunto de dados inválido.",
+      "noData": "Nenhum dado disponível para {{country}}.",
+      "loadingError": "Ocorreu um erro ao carregar os dados.",
+      "pdfFailed": "Falha ao gerar relatório PDF."
+    }
+  },
+  "laborPovertyYearTrend": {
+    "title": "Tendências de Trabalho e Pobreza - {{countryName}}",
+    "loading": "Carregando Tendências de Trabalho e Pobreza...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Valide antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "yearSelectLabel": "Selecionar Ano",
+    "metricSelectLabel": "Selecionar Métrica",
+    "na": "N/D",
+    "lineChartTitle": "Tendências de Trabalho e Pobreza (2006–{{year}})",
+    "barChartTitle": "Comparação Anual ({{countryName}})",
+    "pdf": {
+      "title": "Relatório de Trabalho e Pobreza - {{country}}",
+      "exported": "Exportado em: {{date}}"
+    },
+    "csv": {
+      "year": "Ano"
+    },
+    "cards": {
+      "population": "População Total",
+      "unemployment": "Taxa de Desemprego (%)",
+      "poverty": "Taxa de Pobreza (%)"
+    },
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados",
+      "invalidFormat": "Formato de dados inválido",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados",
+      "pdfFailed": "Falha ao baixar PDF"
+    }
+  },
+  "tradeInvestment": {
+    "title": "Comércio e Investimento - {{countryName}}",
+    "loading": "Carregando Dados de Comércio e Investimento...",
+    "simulatedNote": "Dados simulados para fins de planejamento. Valide antes do uso operacional.",
+    "downloadCSV": "Baixar CSV",
+    "downloadPDF": "Baixar PDF",
+    "yearSelectLabel": "Selecionar Ano",
+    "metricSelectLabel": "Selecionar Métrica",
+    "na": "N/D",
+    "lineChartTitle": "Tendências de Comércio e Investimento (2006–{{year}})",
+    "barChartTitle": "Comparação Anual ({{countryName}})",
+    "pdf": {
+      "title": "Relatório de Comércio e Investimento - {{country}}",
+      "exported": "Exportado em: {{date}}"
+    },
+    "csv": { "year": "Ano" },
+    "cards": {
+      "exports": "Exportações (USD)",
+      "imports": "Importações (USD)",
+      "tradeBalance": "Balanço Comercial (USD)",
+      "fdi": "Entradas de IDE (USD M)",
+      "remittances": "Remessas (USD)",
+      "currentAccount": "Conta Corrente (USD)"
+    },
+    "errors": {
+      "invalidCountry": "Parâmetro de país inválido",
+      "fetchFailed": "Falha ao carregar dados",
+      "invalidFormat": "Formato de dados inválido",
+      "noData": "Nenhum dado disponível para {{country}}",
+      "loadingError": "Erro ao carregar dados",
+      "pdfFailed": "Falha ao baixar PDF"
+    }
+  },
+  "agricultureYearTrend": {
+  "title": "Tendências Agrícolas - {{countryName}}",
+  "loading": "Carregando Tendências Agrícolas...",
+  "simulatedNote": "Dados simulados para fins de planejamento. Valide antes do uso operacional.",
+  "downloadCSV": "Baixar CSV",
+  "downloadPDF": "Baixar PDF",
+  "yearSelectLabel": "Selecionar Ano",
+  "na": "N/D",
+  "lineChartTitle": "Tendências Agrícolas (2006–{{year}})",
+  "barChartTitle": "Comparação Anual ({{countryName}})",
+  "pdf": {
+    "title": "Relatório Agrícola - {{country}}",
+    "exported": "Exportado em: {{date}}"
+  },
+  "csv": { "year": "Ano" },
+  "cards": {
+    "agriValue": "Valor Agregado Agrícola (% do PIB)"
+  },
+  "errors": {
+    "invalidCountry": "Parâmetro de país inválido",
+    "fetchFailed": "Falha ao carregar dados",
+    "invalidFormat": "Formato de dados inválido",
+    "noData": "Nenhum dado disponível para {{country}}",
+    "loadingError": "Erro ao carregar dados",
+    "pdfFailed": "Falha ao baixar PDF"
+  }
+},
+  "adminSidebar": {
+    "ariaLabel": "Navegação Admin",
+    "logoAlt": "Logo ECOAGRIS",
+    "brand": "Admin ECOAGRIS",
+    "expand": "Expandir barra lateral",
+    "collapse": "Recolher barra lateral",
+    "logout": "Sair",
+    "nav": {
+      "dashboard": "Painel",
+      "users": "Gestão de Usuários",
+      "upload": "Upload de Dados",
+      "productsEditor": "Editor de Produtos",
+      "macro": "Dados Macro",
+      "agric": "Agricultura",
+      "help": "Ajuda & Suporte",
+      "notifications": "Notificações",
+      "livestock": "Pecuária",
+      "nutrition": "Nutrição",
+      "rice": "Arroz",
+      "logs": "Registros de Auditoria",
+      "settings": "Configurações",
+      "apiKeys": "Chaves API"
+    }
+  },
+  "dashboard": {
+    "title": "Painel Admin",
+    "subtitle": "Visão geral da atividade e dados",
+    "error": "Falha ao carregar dados",
+    "noData": "Nenhum dado disponível",
+    "noUploads": "Nenhum upload recente",
+    "lastUpload": "Último upload",
+    "activeAdmins": "Admins ativos",
+    "recentActivity": "Atividade recente",
+    "stats": {
+      "users": "Total de Usuários",
+      "uploads": "Uploads de Dados",
+      "products": "Produtos Editados",
+      "logs": "Logs Recentes"
+    }
+  },
+  "common": {
+    "retry": "Tentar novamente"
+  }
+}

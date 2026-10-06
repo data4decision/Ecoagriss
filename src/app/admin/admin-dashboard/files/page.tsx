@@ -1,0 +1,340 @@
+'use client';
+
+import React, { useEffect, useState } from 'react';
+import {
+  FaTrash,
+  FaDownload,
+  FaCheckCircle,
+  FaExclamationCircle,
+} from 'react-icons/fa';
+import Link from 'next/link';
+import { createClient } from '@/lib/supabase/client';
+
+interface CloudinaryFile {
+  id: string;
+  public_id: string;
+  secure_url: string;
+  format: string;
+  created_at: string;
+  bytes: number;
+}
+
+interface UploadRecord {
+  id: string;
+  public_id: string;
+  url: string;
+  title: string;
+  size: number;
+  uploaded_at: string;
+  created_at: string;
+}
+
+const FilesPage = () => {
+  const [files, setFiles] = useState<CloudinaryFile[]>([]);
+  const [error, setError] = useState<string | null>(null);
+  const [statusMessage, setStatusMessage] = useState<string>('');
+
+  // Modal
+  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+  const [fileToDelete, setFileToDelete] =
+    useState<CloudinaryFile | null>(null);
+
+  // Load uploaded files from Supabase
+  useEffect(() => {
+    const supabase = createClient();
+
+    const loadFiles = async () => {
+      try {
+        setError(null);
+
+        const { data, error: fetchError } = await supabase
+          .from('uploads')
+          .select(
+            'id, public_id, url, title, size, uploaded_at, created_at'
+          )
+          .order('uploaded_at', { ascending: false });
+
+        if (fetchError) {
+          console.error('Failed to load files:', fetchError);
+          setError('Failed to load files.');
+          return;
+        }
+
+        const records = (data ?? []) as UploadRecord[];
+
+        const mappedFiles: CloudinaryFile[] = records.map(
+          (record) => ({
+            id: record.id,
+            public_id: record.public_id || '',
+            secure_url: record.url || '',
+            format:
+              record.title
+                ?.split('.')
+                .pop()
+                ?.toLowerCase() || 'unknown',
+            created_at:
+              record.uploaded_at ||
+              record.created_at ||
+              new Date().toISOString(),
+            bytes: Number(record.size) || 0,
+          })
+        );
+
+        setFiles(mappedFiles);
+      } catch (err: unknown) {
+        console.error('Failed to load files:', err);
+        setError('Failed to load files.');
+      }
+    };
+
+    loadFiles();
+  }, []);
+
+  // DELETE FUNCTION — DELETES FROM BOTH CLOUDINARY AND SUPABASE
+  const deleteFile = async () => {
+    if (!fileToDelete) return;
+
+    setError(null);
+    setStatusMessage('');
+
+    try {
+      const res = await fetch('/api/deleteFile', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          public_id: fileToDelete.public_id,
+          doc_id: fileToDelete.id,
+        }),
+      });
+
+      const data: {
+        error?: string;
+        details?: string;
+      } = await res.json();
+
+      if (!res.ok) {
+        throw new Error(
+          data.error ||
+            data.details ||
+            'Delete failed'
+        );
+      }
+
+      // Remove from UI
+      setFiles((prev) =>
+        prev.filter((file) => file.id !== fileToDelete.id)
+      );
+
+      setStatusMessage('File deleted forever!');
+      setIsModalOpen(false);
+      setFileToDelete(null);
+    } catch (err: unknown) {
+      console.error('Delete file error:', err);
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : 'Failed to delete file.'
+      );
+    }
+  };
+
+  const formatBytes = (bytes: number): string => {
+    if (bytes === 0) return '0 B';
+
+    const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(
+      Math.log(bytes) / Math.log(1024)
+    );
+
+    return `${(bytes / Math.pow(1024, i)).toFixed(2)} ${
+      sizes[i]
+    }`;
+  };
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-[var(--dark-green)] via-[var(--yellow)] to-[var(--olive-green)] py-8 px-4">
+      <div className="max-w-5xl mx-auto">
+        <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-xl p-6 md:p-8 border border-white/20">
+          <div className="flex justify-between items-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-bold text-[var(--dark-green)]">
+              Uploaded Files
+            </h2>
+
+            <Link
+              href="/admin/admin-dashboard/data-upload"
+              className="bg-[var(--dark-green)] text-white px-6 py-2 rounded-lg font-medium hover:bg-[var(--dark-green)]/90 transition"
+            >
+              + Upload New
+            </Link>
+          </div>
+
+          {/* Delete Confirmation Modal */}
+          {isModalOpen && fileToDelete && (
+            <div className="fixed inset-0 flex justify-center items-center bg-[var(--yellow)] bg-opacity-50 z-50">
+              <div className="bg-white p-6 rounded-lg shadow-xl max-w-sm w-full">
+                <h3 className="text-lg font-bold text-[var(--dark-green)]">
+                  Confirm Deletion
+                </h3>
+
+                <p className="text-sm text-gray-600 mt-2">
+                  Are you sure you want to delete{' '}
+                  <strong>{fileToDelete.public_id}</strong>?
+                  <br />
+                  This will remove it from Cloudinary and
+                  your database.
+                </p>
+
+                <div className="mt-6 flex justify-end gap-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsModalOpen(false);
+                      setFileToDelete(null);
+                    }}
+                    className="px-4 py-2 bg-gray-200 text-[var(--dark-green)] rounded-md"
+                  >
+                    Cancel
+                  </button>
+
+                  <button
+                    type="button"
+                    onClick={deleteFile}
+                    className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700"
+                  >
+                    Delete Forever
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Status messages */}
+          {statusMessage && (
+            <div className="mb-4 p-3 bg-green-100 text-green-700 rounded-lg flex items-center gap-2">
+              <FaCheckCircle />
+              {statusMessage}
+            </div>
+          )}
+
+          {error && (
+            <div className="mb-4 p-3 bg-red-100 text-red-700 rounded-lg flex items-center gap-2">
+              <FaExclamationCircle />
+              {error}
+            </div>
+          )}
+
+          {/* Table */}
+          <div className="overflow-x-auto">
+            <table className="min-w-full divide-y divide-gray-200">
+              <thead>
+                <tr className="bg-gradient-to-r from-[var(--dark-green)]/10 to-[var(--olive-green)]/10">
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--dark-green)] uppercase tracking-wider">
+                    File ID
+                  </th>
+
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--dark-green)] uppercase tracking-wider hidden sm:table-cell">
+                    Format
+                  </th>
+
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--dark-green)] uppercase tracking-wider hidden md:table-cell">
+                    Size
+                  </th>
+
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-[var(--dark-green)] uppercase tracking-wider hidden lg:table-cell">
+                    Uploaded
+                  </th>
+
+                  <th className="px-4 py-3 text-center text-xs font-semibold text-[var(--dark-green)] uppercase tracking-wider">
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="bg-white divide-y divide-gray-200">
+                {files.length === 0 ? (
+                  <tr>
+                    <td
+                      colSpan={5}
+                      className="px-4 py-12 text-center text-gray-500"
+                    >
+                      No files uploaded yet.{' '}
+                      <Link
+                        href="/admin/admin-dashboard/data-upload"
+                        className="text-[var(--olive-green)] underline"
+                      >
+                        Upload one
+                      </Link>
+                    </td>
+                  </tr>
+                ) : (
+                  files.map((file) => (
+                    <tr
+                      key={file.id}
+                      className="hover:bg-gray-50 transition-colors"
+                    >
+                      <td className="px-4 py-3 text-sm text-gray-900 max-w-xs truncate">
+                        {file.public_id}
+                      </td>
+
+                      <td className="px-4 py-3 text-sm text-gray-600 hidden sm:table-cell">
+                        <span className="px-2 py-1 text-xs font-medium bg-gray-100 rounded-full">
+                          {file.format.toUpperCase()}
+                        </span>
+                      </td>
+
+                      <td className="px-4 py-3 text-sm text-gray-600 hidden md:table-cell">
+                        {formatBytes(file.bytes)}
+                      </td>
+
+                      <td className="px-4 py-3 text-sm text-gray-600 hidden lg:table-cell">
+                        {new Date(
+                          file.created_at
+                        ).toLocaleDateString()}
+                      </td>
+
+                      <td className="px-4 py-3 text-center">
+                        <div className="flex items-center justify-center gap-2 flex-wrap">
+                          <Link
+                            href={file.secure_url}
+                            download
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center gap-1 bg-[var(--dark-green)] text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-[var(--dark-green)]/90 transition"
+                          >
+                            <FaDownload />
+                            <span className="hidden sm:inline">
+                              Download
+                            </span>
+                          </Link>
+
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setFileToDelete(file);
+                              setIsModalOpen(true);
+                            }}
+                            className="inline-flex items-center gap-1 bg-red-600 text-white px-3 py-1.5 rounded-lg text-xs font-medium hover:bg-red-700 transition"
+                          >
+                            <FaTrash />
+                            <span className="hidden sm:inline">
+                              Delete
+                            </span>
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default FilesPage;
