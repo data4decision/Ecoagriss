@@ -11,6 +11,8 @@ import SectorComparisonTrend, {
   type SectorExplorerFilters,
 } from '@/components/AllSectorsWatch/SectorComparisonTrend';
 import IntelligenceHighlights from '@/components/AllSectorsWatch/IntelligenceHighlights';
+import Footer from '@/components/Footer';
+import SimpleNavbar from '@/components/SimpleNavbar';
 
 const DEFAULT_FILTERS: SectorExplorerFilters = {
   countryIds: [],
@@ -30,17 +32,18 @@ export default function AllSectorsWatchPage() {
     useState<SectorExplorerFilters>(DEFAULT_FILTERS);
 
   return (
-    <main className="space-y-6">
+    <main className="space-y-1">
+      <SimpleNavbar/>
       <AllSectorsWatchHero />
 
-      <CountryFilterAdmin
+      {/* <CountryFilterAdmin
         selectedCountryId={selectedCountryId}
         onCountryChange={setSelectedCountryId}
-      />
+      /> */}
 
-      <DataCoverageCards countryId={selectedCountryId} />
+      {/* <DataCoverageCards countryId={selectedCountryId} /> */}
 
-      <SectorCards countryId={selectedCountryId} />
+      {/* <SectorCards countryId={selectedCountryId} /> */}
 
       <CrossSectorSnapshot countryId={selectedCountryId} />
 
@@ -50,6 +53,7 @@ export default function AllSectorsWatchPage() {
       />
 
       <IntelligenceHighlights filters={filters} />
+      <Footer/>
     </main>
   );
 }

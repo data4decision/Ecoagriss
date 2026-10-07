@@ -1,6 +1,6 @@
+
 import { createClient as createSupabaseAdmin } from '@supabase/supabase-js';
 import { format } from 'date-fns';
-
 import DashboardClient from './DashboardClient';
 
 export const dynamic = 'force-dynamic';
@@ -22,24 +22,50 @@ interface DashboardStats {
   lastUpload: string;
 }
 
+interface DashboardNavigation {
+  allSectorsWatch: {
+    title: string;
+    description: string;
+    href: string;
+  };
+}
+
 export default async function DashboardHome() {
-  let stats: DashboardStats | null = null;   // ← fixed type
+  let stats: DashboardStats | null = null;
   let error: string | null = null;
 
+  const navigation: DashboardNavigation = {
+    allSectorsWatch: {
+      title: 'All Sectors Watch',
+      description:
+        'Monitor agricultural, livestock, nutrition, macroeconomic and other sector intelligence from one place.',
+      href: '/admin/dashboard/all-sectors-watch',
+    },
+  };
+
   try {
-    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
-    const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+    const supabaseUrl =
+      process.env.NEXT_PUBLIC_SUPABASE_URL;
+
+    const serviceRoleKey =
+      process.env.SUPABASE_SERVICE_ROLE_KEY;
 
     if (!supabaseUrl || !serviceRoleKey) {
-      throw new Error('Supabase server configuration is incomplete.');
+      throw new Error(
+        'Supabase server configuration is incomplete.'
+      );
     }
 
-    const supabase = createSupabaseAdmin(supabaseUrl, serviceRoleKey, {
-      auth: {
-        autoRefreshToken: false,
-        persistSession: false,
-      },
-    });
+    const supabase = createSupabaseAdmin(
+      supabaseUrl,
+      serviceRoleKey,
+      {
+        auth: {
+          autoRefreshToken: false,
+          persistSession: false,
+        },
+      }
+    );
 
     const [
       usersResult,
@@ -51,78 +77,142 @@ export default async function DashboardHome() {
     ] = await Promise.all([
       supabase
         .from('profiles')
-        .select('id', { count: 'exact', head: true }),
+        .select('id', {
+          count: 'exact',
+          head: true,
+        }),
 
       supabase
         .from('admin_profiles')
-        .select('id', { count: 'exact', head: true })
+        .select('id', {
+          count: 'exact',
+          head: true,
+        })
         .eq('status', 'active'),
 
       supabase
         .from('uploads')
-        .select('id, title, uploaded_at, created_at')
-        .order('uploaded_at', { ascending: false }),
+        .select(
+          'id, title, uploaded_at, created_at'
+        )
+        .order('uploaded_at', {
+          ascending: false,
+        }),
 
       supabase
         .from('datasets')
-        .select('id', { count: 'exact', head: true }),
+        .select('id', {
+          count: 'exact',
+          head: true,
+        }),
 
       supabase
         .from('agricultural_inputs')
-        .select('id', { count: 'exact', head: true }),
+        .select('id', {
+          count: 'exact',
+          head: true,
+        }),
 
       supabase
         .from('livestock_data')
-        .select('id', { count: 'exact', head: true }),
+        .select('id', {
+          count: 'exact',
+          head: true,
+        }),
     ]);
 
     if (usersResult.error) {
-      console.error('Dashboard profiles query failed:', usersResult.error);
+      console.error(
+        'Dashboard profiles query failed:',
+        usersResult.error
+      );
+
       throw new Error(
-        `Profiles query failed: ${usersResult.error.message || JSON.stringify(usersResult.error)}`
+        `Profiles query failed: ${
+          usersResult.error.message ||
+          JSON.stringify(usersResult.error)
+        }`
       );
     }
 
     if (adminsResult.error) {
-      console.error('Dashboard admin_profiles query failed:', adminsResult.error);
+      console.error(
+        'Dashboard admin_profiles query failed:',
+        adminsResult.error
+      );
+
       throw new Error(
-        `Admin profiles query failed: ${adminsResult.error.message || JSON.stringify(adminsResult.error)}`
+        `Admin profiles query failed: ${
+          adminsResult.error.message ||
+          JSON.stringify(adminsResult.error)
+        }`
       );
     }
 
     if (uploadsResult.error) {
-      console.error('Dashboard uploads query failed:', uploadsResult.error);
+      console.error(
+        'Dashboard uploads query failed:',
+        uploadsResult.error
+      );
+
       throw new Error(
-        `Uploads query failed: ${uploadsResult.error.message || JSON.stringify(uploadsResult.error)}`
+        `Uploads query failed: ${
+          uploadsResult.error.message ||
+          JSON.stringify(uploadsResult.error)
+        }`
       );
     }
 
     if (datasetsResult.error) {
-      console.error('Dashboard datasets query failed:', datasetsResult.error);
+      console.error(
+        'Dashboard datasets query failed:',
+        datasetsResult.error
+      );
+
       throw new Error(
-        `Datasets query failed: ${datasetsResult.error.message || JSON.stringify(datasetsResult.error)}`
+        `Datasets query failed: ${
+          datasetsResult.error.message ||
+          JSON.stringify(datasetsResult.error)
+        }`
       );
     }
 
     if (agriculturalResult.error) {
-      console.error('Dashboard agricultural_inputs query failed:', agriculturalResult.error);
+      console.error(
+        'Dashboard agricultural_inputs query failed:',
+        agriculturalResult.error
+      );
+
       throw new Error(
-        `Agricultural inputs query failed: ${agriculturalResult.error.message || JSON.stringify(agriculturalResult.error)}`
+        `Agricultural inputs query failed: ${
+          agriculturalResult.error.message ||
+          JSON.stringify(agriculturalResult.error)
+        }`
       );
     }
 
     if (livestockResult.error) {
-      console.error('Dashboard livestock_data query failed:', livestockResult.error);
+      console.error(
+        'Dashboard livestock_data query failed:',
+        livestockResult.error
+      );
+
       throw new Error(
-        `Livestock data query failed: ${livestockResult.error.message || JSON.stringify(livestockResult.error)}`
+        `Livestock data query failed: ${
+          livestockResult.error.message ||
+          JSON.stringify(livestockResult.error)
+        }`
       );
     }
 
-    const uploads = (uploadsResult.data ?? []) as UploadRecord[];
+    const uploads =
+      (uploadsResult.data ?? []) as UploadRecord[];
+
     const latestUpload = uploads[0];
 
     const totalProducts =
-      (agriculturalResult.count ?? 0) + (livestockResult.count ?? 0);
+      (agriculturalResult.count ?? 0) +
+      (livestockResult.count ?? 0);
 
     stats = {
       totalUsers: usersResult.count ?? 0,
@@ -134,33 +224,54 @@ export default async function DashboardHome() {
       recentLogs: 0,
       lastUpload: latestUpload
         ? format(
-            new Date(latestUpload.uploaded_at || latestUpload.created_at),
+            new Date(
+              latestUpload.uploaded_at ||
+                latestUpload.created_at
+            ),
             'PPP p'
           )
         : 'No uploads yet',
     };
   } catch (err: unknown) {
-  console.error(
-    '========== DASHBOARD ERROR =========='
-  );
-
-  if (err instanceof Error) {
-    console.error('Message:', err.message);
-    console.error('Stack:', err.stack);
-  } else {
     console.error(
-      'Unknown error:',
-      JSON.stringify(err, null, 2)
+      '========== DASHBOARD ERROR =========='
     );
+
+    if (err instanceof Error) {
+      console.error(
+        'Message:',
+        err.message
+      );
+
+      console.error(
+        'Stack:',
+        err.stack
+      );
+    } else {
+      console.error(
+        'Unknown error:',
+        JSON.stringify(
+          err,
+          null,
+          2
+        )
+      );
+    }
+
+    console.error(
+      '====================================='
+    );
+
+    error =
+      'Failed to load dashboard data. Please try again later.';
   }
 
-  console.error(
-    '====================================='
+  return (
+    <DashboardClient
+      stats={stats}
+      error={error}
+      navigation={navigation}
+    />
   );
-
-  error =
-    'Failed to load dashboard data. Please try again later.';
 }
 
-  return <DashboardClient stats={stats} error={error} />;
-}

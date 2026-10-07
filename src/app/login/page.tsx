@@ -98,7 +98,7 @@ router.push(`/${profile.country.toLowerCase()}/dashboard`);
 
   return (
     <div className="bg-[var(--yellow)] min-h-screen">
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="grid grid-cols-1 sm:grid-cols-2 w-full sm:w-[80%] mx-auto">
         {/* LEFT PANEL */}
@@ -190,7 +190,7 @@ router.push(`/${profile.country.toLowerCase()}/dashboard`);
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };

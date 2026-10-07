@@ -1,56 +1,48 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-
-
-import {
-  FaChartBar,
-  FaUsers,
-  FaUpload,
-  FaCog,
-  FaChevronCircleRight,
-  FaChevronCircleLeft,
-  FaQuestionCircle,
-  FaBell,
-  FaFile,
-} from 'react-icons/fa';
-
 import { useTranslation } from 'react-i18next';
+import {
+  FaBell,
+  FaChartBar,
+  FaChevronCircleLeft,
+  FaChevronCircleRight,
+  FaCog,
+  FaFile,
+  FaQuestionCircle,
+  FaUpload,
+  FaUsers,
+} from 'react-icons/fa';
+import { FiGlobe } from 'react-icons/fi';
+
 import { createClient } from '@/lib/supabase/client';
 
 interface AdminSidebarProps {
   onCollapseChange: (collapsed: boolean) => void;
 }
 
-interface NotificationRecord {
-  id: string;
-  read: boolean;
-}
-
 const AdminSidebar = ({
   onCollapseChange,
 }: AdminSidebarProps) => {
   const { t } = useTranslation('common');
-
-  const [isCollapsed, setIsCollapsed] =
-    useState<boolean>(false);
-
-  const [isMobile, setIsMobile] =
-    useState<boolean>(false);
-
-  const [unreadCount, setUnreadCount] =
-    useState<number>(0);
-
   const pathname = usePathname();
+
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
 
   const topNav = [
     {
       label: t('adminSidebar.nav.dashboard'),
       href: '/admin/admin-dashboard',
       icon: FaChartBar,
+    },
+    {
+      label: t('adminSidebar.nav.allSectorsWatch'),
+      href: '/admin/dashboard/all-sectors-watch',
+      icon: FiGlobe,
     },
     {
       label: t('adminSidebar.nav.users'),
@@ -84,50 +76,40 @@ const AdminSidebar = ({
       label: t('adminSidebar.nav.notifications'),
       href: '/admin/admin-dashboard/notifications',
       icon: FaBell,
-      badge:
-        unreadCount > 0 ? unreadCount : null,
+      badge: unreadCount > 0 ? unreadCount : null,
     },
   ];
 
-  const isActive = (href: string) =>
-    pathname === href;
+  const isActive = (href: string) => {
+    if (href === '/admin/admin-dashboard') {
+      return pathname === href;
+    }
 
-  // Supabase unread notification count
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   useEffect(() => {
     const supabase = createClient();
 
     const fetchUnreadCount = async () => {
       try {
-        const {
-          count,
-          error,
-        } = await supabase
+        const { count, error } = await supabase
           .from('admin_notifications')
-          .select('id', {
-            count: 'exact',
-            head: true,
-          })
+          .select('id', { count: 'exact', head: true })
           .eq('read', false);
 
         if (error) {
-          console.error(
-            'Failed to fetch unread count:',
-            error
-          );
-
+          console.error('Failed to fetch unread count:', error);
           return;
         }
 
         setUnreadCount(count ?? 0);
       } catch (error: unknown) {
-        console.error(
-          'Failed to fetch unread count:',
-          error
-        );
+        console.error('Failed to fetch unread count:', error);
       }
     };
 
-    fetchUnreadCount();
+    void fetchUnreadCount();
 
     const channel = supabase
       .channel('admin-notifications-count')
@@ -139,164 +121,123 @@ const AdminSidebar = ({
           table: 'admin_notifications',
         },
         () => {
-          fetchUnreadCount();
+          void fetchUnreadCount();
         }
       )
       .subscribe();
 
     return () => {
-      supabase.removeChannel(channel);
+      void supabase.removeChannel(channel);
     };
   }, []);
 
-  // Mobile & collapse logic
   useEffect(() => {
     const handleResize = () => {
-      const mobile =
-        window.innerWidth < 1024;
-
-      setIsMobile(mobile);
-
-      const collapsed = mobile
-        ? true
-        : false;
+      const mobile = window.innerWidth < 1024;
+      const collapsed = mobile;
 
       setIsCollapsed(collapsed);
       onCollapseChange(collapsed);
     };
 
     handleResize();
+    window.addEventListener('resize', handleResize);
 
-    window.addEventListener(
-      'resize',
-      handleResize
-    );
-
-    return () =>
-      window.removeEventListener(
-        'resize',
-        handleResize
-      );
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
   }, [onCollapseChange]);
 
   const toggleCollapse = () => {
     setIsCollapsed((prev) => {
-      const newState = !prev;
-
-      onCollapseChange(newState);
-
-      return newState;
+      const next = !prev;
+      onCollapseChange(next);
+      return next;
     });
   };
 
   return (
     <aside
-      className={`fixed top-0 left-0 h-screen bg-[var(--dark-green)] text-[var(--white)] flex flex-col z-40 transition-all duration-300 ${
-        isCollapsed
-          ? 'w-13'
-          : 'w-44'
+      className={`fixed left-0 top-0 z-40 flex h-screen flex-col bg-[var(--dark-green)] text-[var(--white)] transition-all duration-300 ${
+        isCollapsed ? 'w-13' : 'w-44'
       }`}
-      aria-label={t(
-        'adminSidebar.ariaLabel'
-      )}
+      aria-label={t('adminSidebar.ariaLabel')}
     >
       {/* Brand */}
-      <div className="px-4 h-16 flex items-center gap-2 font-semibold border-b border-[var(--wine)]">
-        <div className="h-9 w-9 grid place-items-center rounded-full font-bold bg-[var(--white)]">
+      <div className="flex h-16 items-center gap-2 border-b border-[var(--wine)] px-4 font-semibold">
+        <div className="grid h-9 w-9 place-items-center rounded-full bg-[var(--white)] font-bold">
           <Image
             src="/logo.png"
             width={30}
             height={30}
-            alt={t(
-              'adminSidebar.logoAlt'
-            )}
+            alt={t('adminSidebar.logoAlt')}
           />
         </div>
 
-        {!isCollapsed && (
-          <span>
-            {t('adminSidebar.brand')}
-          </span>
-        )}
+        {!isCollapsed && <span>{t('adminSidebar.brand')}</span>}
       </div>
 
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto">
         <ul className="py-2">
-          {/* Top Items */}
-          {topNav.map(
-            ({
-              href,
-              icon: Icon,
-              label,
-            }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className={`flex items-center gap-3 px-4 py-3 transition-colors text-sm sm:text-[15px] relative ${
-                    isActive(href)
-                      ? 'bg-[var(--dark-green)] text-[var(--white)] font-semibold shadow'
-                      : 'hover:bg-[var(--yellow)]/90'
-                  }`}
-                >
-                  <Icon className="shrink-0 text-[var(--white)]" />
+          {topNav.map(({ href, icon: Icon, label }) => (
+            <li key={href}>
+              <Link
+                href={href}
+                className={`relative flex items-center gap-3 px-4 py-3 text-sm transition-colors sm:text-[15px] ${
+                  isActive(href)
+                    ? 'bg-[var(--dark-green)] font-semibold text-[var(--white)] shadow'
+                    : 'hover:bg-[var(--yellow)]/90'
+                }`}
+              >
+                <Icon className="shrink-0 text-[var(--white)]" />
 
-                  {!isCollapsed && (
-                    <span className="text-sm sm:text-[12px]">
-                      {label}
+                {!isCollapsed && (
+                  <span className="text-sm sm:text-[12px]">
+                    {label}
+                  </span>
+                )}
+              </Link>
+            </li>
+          ))}
+
+          {bottomNav.map(({ href, icon: Icon, label, badge }) => (
+            <li key={href}>
+              <Link
+                href={href}
+                className={`relative flex items-center gap-3 px-4 py-3 text-sm transition-colors sm:text-[15px] ${
+                  isActive(href)
+                    ? 'bg-[var(--dark-green)] font-semibold text-[var(--white)] shadow'
+                    : 'hover:bg-[var(--yellow)]/90'
+                }`}
+              >
+                <div className="relative">
+                  <Icon className="shrink-0 text-white" />
+
+                  {badge !== null && (
+                    <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[var(--red)] text-[10px] font-bold text-white shadow">
+                      {badge}
                     </span>
                   )}
-                </Link>
-              </li>
-            )
-          )}
+                </div>
 
-          {/* Bottom Items */}
-          {bottomNav.map(
-            ({
-              href,
-              icon: Icon,
-              label,
-              badge,
-            }) => (
-              <li key={href}>
-                <Link
-                  href={href}
-                  className={`flex items-center gap-3 px-4 py-3 transition-colors text-sm sm:text-[15px] relative ${
-                    isActive(href)
-                      ? 'bg-[var(--dark-green)] text-[var(--white)] font-semibold shadow'
-                      : 'hover:bg-[var(--yellow)]/90'
-                  }`}
-                >
-                  <div className="relative">
-                    <Icon className="shrink-0 text-white" />
-
-                    {badge !== null && (
-                      <span className="absolute -top-1 -right-1 bg-[var(--red)] text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center shadow">
-                        {badge}
-                      </span>
-                    )}
-                  </div>
-
-                  {!isCollapsed && (
-                    <span className="text-sm sm:text-[12px]">
-                      {label}
-                    </span>
-                  )}
-                </Link>
-              </li>
-            )
-          )}
+                {!isCollapsed && (
+                  <span className="text-sm sm:text-[12px]">
+                    {label}
+                  </span>
+                )}
+              </Link>
+            </li>
+          ))}
         </ul>
       </nav>
 
-      {/* Collapse Toggle */}
+      {/* Collapse toggle */}
       <button
+        type="button"
         className={`absolute top-21 ${
-          isCollapsed
-            ? 'left-17'
-            : 'left-47'
-        } transform -translate-x-full text-[var(--white)] bg-[var(--wine)] p-2 rounded-full`}
+          isCollapsed ? 'left-17' : 'left-47'
+        } -translate-x-full rounded-full bg-[var(--wine)] p-2 text-[var(--white)]`}
         onClick={toggleCollapse}
         aria-label={
           isCollapsed

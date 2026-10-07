@@ -130,7 +130,7 @@ const handleEmailSignup = async (e: React.FormEvent) => {
   if (verificationSent) {
   return (
     <div className="bg-[var(--yellow)] min-h-screen flex flex-col">
-      <Navbar />
+      {/* <Navbar /> */}
 
       <div className="flex-grow flex items-center justify-center px-5 py-10">
         <div className="bg-[var(--medium-green)] w-full max-w-lg rounded-lg p-8 text-center shadow-lg">
@@ -169,14 +169,14 @@ const handleEmailSignup = async (e: React.FormEvent) => {
         </div>
       </div>
 
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 }
 
 return (
   <div className="bg-[var(--yellow)] min-h-screen flex flex-col">
-      <Navbar />
+      {/* <Navbar /> */}
       <div className="flex-grow">
         <div className="bg-[var(--medium-green)] grid grid-cols-1 sm:grid-cols-2 w-[90%] max-w-5xl mx-auto mt-10 mb-10 px-5 py-4 rounded-lg">
           
@@ -382,7 +382,7 @@ return (
           </div>
         </div>
       </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
