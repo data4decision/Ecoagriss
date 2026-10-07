@@ -43,7 +43,7 @@ const Navbar: React.FC = () => {
               height={32}
               className="inline-block w-8 mr-2"
             />
-            {t('navbar.ecoagris')}
+            {t('navbar.ECOAGRIS e-WATCH')}
           </div>
         </Link>
 
@@ -84,7 +84,7 @@ const Navbar: React.FC = () => {
       >
         <li>
           <Link
-            href="https://www.data4decision.org/about"
+            href="/about"
             className="hover:text-[var(--yellow)] block"
           >
             {t('navbar.about')}
