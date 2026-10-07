@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
@@ -48,6 +49,46 @@ interface VariableDefinition {
   label: string;
   unit: string;
   performance: PerformanceDirection;
+}
+
+interface TimeSeriesPoint {
+  year: number;
+  value: number;
+}
+
+interface YearOverYearChange {
+  fromYear: number;
+  toYear: number;
+  fromValue: number;
+  toValue: number;
+  changePercent: number | null;
+}
+
+type TrendDirection =
+  | 'increasing'
+  | 'decreasing'
+  | 'stable'
+  | 'mixed';
+
+interface CountryIndicatorSeries {
+  countryId: number;
+  countryName: string;
+  variable: VariableDefinition;
+  series: TimeSeriesPoint[];
+  yearOverYearChanges: YearOverYearChange[];
+  startYear: number;
+  endYear: number;
+  startValue: number;
+  endValue: number;
+  changePercent: number | null;
+  averageAnnualChangePercent: number | null;
+  highestYear: number;
+  highestValue: number;
+  lowestYear: number;
+  lowestValue: number;
+  trend: TrendDirection;
+  volatilityPercent: number | null;
+  acceleration: 'accelerating' | 'decelerating' | 'steady' | 'insufficient_data';
 }
 
 interface CountryMetricResult {
@@ -269,9 +310,7 @@ const LIVESTOCK_VARIABLES: VariableDefinition[] = [
   },
 ];
 
-function getVariablesForSector(
-  sector: SectorKey
-): VariableDefinition[] {
+function getVariablesForSector(sector: SectorKey): VariableDefinition[] {
   return sector === 'agricultural_inputs'
     ? AGRICULTURAL_INPUT_VARIABLES
     : LIVESTOCK_VARIABLES;
@@ -333,6 +372,206 @@ function getPerformanceValue(
   }
 
   return performance === 'higher_is_better' ? change : -change;
+}
+
+function calculateAverageAnnualChange(
+  yearOverYearChanges: YearOverYearChange[]
+): number | null {
+  const validChanges = yearOverYearChanges
+    .map((item) => item.changePercent)
+    .filter((value): value is number => value !== null);
+
+  if (validChanges.length === 0) {
+    return null;
+  }
+
+  return (
+    validChanges.reduce((total, value) => total + value, 0) /
+    validChanges.length
+  );
+}
+
+function calculateVolatility(
+  yearOverYearChanges: YearOverYearChange[]
+): number | null {
+  const validChanges = yearOverYearChanges
+    .map((item) => item.changePercent)
+    .filter((value): value is number => value !== null);
+
+  if (validChanges.length < 2) {
+    return null;
+  }
+
+  const mean =
+    validChanges.reduce((total, value) => total + value, 0) /
+    validChanges.length;
+
+  const variance =
+    validChanges.reduce(
+      (total, value) => total + Math.pow(value - mean, 2),
+      0
+    ) / validChanges.length;
+
+  return Math.sqrt(variance);
+}
+
+function getTrendDirection(
+  yearOverYearChanges: YearOverYearChange[]
+): TrendDirection {
+  const validChanges = yearOverYearChanges
+    .map((item) => item.changePercent)
+    .filter((value): value is number => value !== null);
+
+  if (validChanges.length === 0) {
+    return 'stable';
+  }
+
+  const positive = validChanges.filter((value) => value > 2).length;
+  const negative = validChanges.filter((value) => value < -2).length;
+
+  if (positive > 0 && negative === 0) {
+    return 'increasing';
+  }
+
+  if (negative > 0 && positive === 0) {
+    return 'decreasing';
+  }
+
+  if (positive === 0 && negative === 0) {
+    return 'stable';
+  }
+
+  return 'mixed';
+}
+
+function getAcceleration(
+  yearOverYearChanges: YearOverYearChange[]
+): CountryIndicatorSeries['acceleration'] {
+  const validChanges = yearOverYearChanges
+    .map((item) => item.changePercent)
+    .filter((value): value is number => value !== null);
+
+  if (validChanges.length < 2) {
+    return 'insufficient_data';
+  }
+
+  const recentChange = validChanges[validChanges.length - 1];
+  const previousChange = validChanges[validChanges.length - 2];
+
+  const difference = recentChange - previousChange;
+
+  if (difference > 2) {
+    return 'accelerating';
+  }
+
+  if (difference < -2) {
+    return 'decelerating';
+  }
+
+  return 'steady';
+}
+
+function buildCountryIndicatorSeries(
+  records: DataRecord[],
+  variable: VariableDefinition,
+  countryNameMap: Map<number, string>
+): CountryIndicatorSeries[] {
+  const groupedByCountry = new Map<number, TimeSeriesPoint[]>();
+
+  records
+    .filter((record) => isNumericValue(record[variable.key]))
+    .sort((a, b) => {
+      if (a.country_id !== b.country_id) {
+        return a.country_id - b.country_id;
+      }
+
+      return a.year - b.year;
+    })
+    .forEach((record) => {
+      const value = record[variable.key];
+
+      if (!isNumericValue(value)) {
+        return;
+      }
+
+      const existing = groupedByCountry.get(record.country_id) ?? [];
+
+      existing.push({
+        year: record.year,
+        value,
+      });
+
+      groupedByCountry.set(record.country_id, existing);
+    });
+
+  const results: CountryIndicatorSeries[] = [];
+
+  groupedByCountry.forEach((series, countryId) => {
+    if (series.length === 0) {
+      return;
+    }
+
+    const sortedSeries = [...series].sort(
+      (a, b) => a.year - b.year
+    );
+
+    const yearOverYearChanges: YearOverYearChange[] = [];
+
+    for (let index = 1; index < sortedSeries.length; index += 1) {
+      const previous = sortedSeries[index - 1];
+      const current = sortedSeries[index];
+
+      yearOverYearChanges.push({
+        fromYear: previous.year,
+        toYear: current.year,
+        fromValue: previous.value,
+        toValue: current.value,
+        changePercent: calculatePercentageChange(
+          previous.value,
+          current.value
+        ),
+      });
+    }
+
+    const firstPoint = sortedSeries[0];
+    const lastPoint = sortedSeries[sortedSeries.length - 1];
+
+    const highestPoint = sortedSeries.reduce((highest, point) =>
+      point.value > highest.value ? point : highest
+    );
+
+    const lowestPoint = sortedSeries.reduce((lowest, point) =>
+      point.value < lowest.value ? point : lowest
+    );
+
+    results.push({
+      countryId,
+      countryName:
+        countryNameMap.get(countryId) ?? `Country ${countryId}`,
+      variable,
+      series: sortedSeries,
+      yearOverYearChanges,
+      startYear: firstPoint.year,
+      endYear: lastPoint.year,
+      startValue: firstPoint.value,
+      endValue: lastPoint.value,
+      changePercent: calculatePercentageChange(
+        firstPoint.value,
+        lastPoint.value
+      ),
+      averageAnnualChangePercent:
+        calculateAverageAnnualChange(yearOverYearChanges),
+      highestYear: highestPoint.year,
+      highestValue: highestPoint.value,
+      lowestYear: lowestPoint.year,
+      lowestValue: lowestPoint.value,
+      trend: getTrendDirection(yearOverYearChanges),
+      volatilityPercent: calculateVolatility(yearOverYearChanges),
+      acceleration: getAcceleration(yearOverYearChanges),
+    });
+  });
+
+  return results;
 }
 
 export default function IntelligenceHighlights({
@@ -400,13 +639,14 @@ export default function IntelligenceHighlights({
         return;
       }
 
-      const { data: adminProfile, error: adminError } = await supabase
-        .from('admin_profiles')
-        .select('id, role, status')
-        .eq('id', user.id)
-        .eq('status', 'active')
-        .in('role', ['admin', 'super_admin'])
-        .maybeSingle();
+      const { data: adminProfile, error: adminError } =
+        await supabase
+          .from('admin_profiles')
+          .select('id, role, status')
+          .eq('id', user.id)
+          .eq('status', 'active')
+          .in('role', ['admin', 'super_admin'])
+          .maybeSingle();
 
       if (adminError) {
         throw adminError;
@@ -414,10 +654,11 @@ export default function IntelligenceHighlights({
 
       setIsAdmin(Boolean(adminProfile));
 
-      const { data: countryData, error: countryError } = await supabase
-        .from('countries')
-        .select('id, name')
-        .order('name', { ascending: true });
+      const { data: countryData, error: countryError } =
+        await supabase
+          .from('countries')
+          .select('id, name')
+          .order('name', { ascending: true });
 
       if (countryError) {
         throw countryError;
@@ -436,13 +677,26 @@ export default function IntelligenceHighlights({
         ...filters.variables,
       ].join(', ');
 
-      const { data: filteredData, error: queryError } = await supabase
-        .from(tableName)
-        .select(selectedColumns)
-        .in('country_id', filters.countryIds)
-        .gte('year', filters.startYear)
-        .lte('year', filters.endYear)
-        .order('year', { ascending: true });
+      /*
+       * IMPORTANT:
+       *
+       * This retrieves every available year inside the selected range.
+       *
+       * Example:
+       * startYear = 2020
+       * endYear   = 2025
+       *
+       * Returned years:
+       * 2020, 2021, 2022, 2023, 2024, 2025
+       */
+      const { data: filteredData, error: queryError } =
+        await supabase
+          .from(tableName)
+          .select(selectedColumns)
+          .in('country_id', filters.countryIds)
+          .gte('year', filters.startYear)
+          .lte('year', filters.endYear)
+          .order('year', { ascending: true });
 
       if (queryError) {
         throw queryError;
@@ -483,69 +737,72 @@ export default function IntelligenceHighlights({
     return map;
   }, [countries]);
 
-  const countryMetricResults = useMemo<CountryMetricResult[]>(() => {
-    const results: CountryMetricResult[] = [];
+  /*
+   * FULL YEAR-BY-YEAR SERIES
+   *
+   * This is the important addition.
+   *
+   * The original component only retained:
+   * firstYear → lastYear
+   *
+   * This structure retains:
+   * 2020 → 2021 → 2022 → 2023 → 2024 → 2025
+   *
+   * for every selected country and variable.
+   */
+  const countryIndicatorSeries = useMemo(
+    () =>
+      selectedVariableDefinitions.flatMap((variable) =>
+        buildCountryIndicatorSeries(
+          data,
+          variable,
+          countryNameMap
+        )
+      ),
+    [countryNameMap, data, selectedVariableDefinitions]
+  );
 
-    selectedVariableDefinitions.forEach((variable) => {
-      const metricRecords = data
-        .filter((record) => isNumericValue(record[variable.key]))
-        .sort((a, b) => {
-          if (a.country_id !== b.country_id) {
-            return a.country_id - b.country_id;
-          }
+  /*
+   * Existing first-to-last metrics are preserved.
+   *
+   * These are still used for:
+   * - country performance
+   * - indicator comparison
+   * - computed signals
+   */
+  const countryMetricResults = useMemo<CountryMetricResult[]>(
+    () => {
+      const results: CountryMetricResult[] = [];
 
-          return a.year - b.year;
-        });
-
-      const groupedByCountry = new Map<number, DataRecord[]>();
-
-      metricRecords.forEach((record) => {
-        const existing =
-          groupedByCountry.get(record.country_id) ?? [];
-
-        existing.push(record);
-        groupedByCountry.set(record.country_id, existing);
-      });
-
-      groupedByCountry.forEach((records, countryId) => {
-        if (records.length < 2) {
+      countryIndicatorSeries.forEach((series) => {
+        if (series.series.length < 2) {
           return;
         }
-
-        const firstRecord = records[0];
-        const lastRecord = records[records.length - 1];
-
-        const firstValue = firstRecord[variable.key];
-        const lastValue = lastRecord[variable.key];
-
-        if (!isNumericValue(firstValue) || !isNumericValue(lastValue)) {
-          return;
-        }
-
-        const change = calculatePercentageChange(firstValue, lastValue);
 
         results.push({
-          countryId,
-          countryName:
-            countryNameMap.get(countryId) ?? `Country ${countryId}`,
-          variable,
-          firstYear: firstRecord.year,
-          lastYear: lastRecord.year,
-          firstValue,
-          lastValue,
-          change,
+          countryId: series.countryId,
+          countryName: series.countryName,
+          variable: series.variable,
+          firstYear: series.startYear,
+          lastYear: series.endYear,
+          firstValue: series.startValue,
+          lastValue: series.endValue,
+          change: series.changePercent,
           performanceValue: getPerformanceValue(
-            change,
-            variable.performance
+            series.changePercent,
+            series.variable.performance
           ),
         });
       });
-    });
 
-    return results;
-  }, [countryNameMap, data, selectedVariableDefinitions]);
+      return results;
+    },
+    [countryIndicatorSeries]
+  );
 
-  const countryPerformance = useMemo<CountryPerformanceResult[]>(() => {
+  const countryPerformance = useMemo<
+    CountryPerformanceResult[]
+  >(() => {
     if (!isAdmin || filters.countryIds.length < 2) {
       return [];
     }
@@ -575,7 +832,8 @@ export default function IntelligenceHighlights({
 
       const ranked = [...resultsForVariable].sort(
         (a, b) =>
-          (b.performanceValue ?? 0) - (a.performanceValue ?? 0)
+          (b.performanceValue ?? 0) -
+          (a.performanceValue ?? 0)
       );
 
       const denominator = ranked.length - 1;
@@ -602,8 +860,10 @@ export default function IntelligenceHighlights({
         countryName: result.countryName,
         score:
           result.scores.length > 0
-            ? result.scores.reduce((total, score) => total + score, 0) /
-              result.scores.length
+            ? result.scores.reduce(
+                (total, score) => total + score,
+                0
+              ) / result.scores.length
             : 0,
         indicatorsConsidered: result.scores.length,
       }))
@@ -621,7 +881,9 @@ export default function IntelligenceHighlights({
     }
 
     return selectedVariableDefinitions
-      .filter((variable) => variable.performance !== 'neutral')
+      .filter(
+        (variable) => variable.performance !== 'neutral'
+      )
       .map((variable) => {
         const results = countryMetricResults
           .filter(
@@ -631,7 +893,8 @@ export default function IntelligenceHighlights({
           )
           .sort(
             (a, b) =>
-              (b.performanceValue ?? 0) - (a.performanceValue ?? 0)
+              (b.performanceValue ?? 0) -
+              (a.performanceValue ?? 0)
           );
 
         if (results.length < 2) {
@@ -664,29 +927,47 @@ export default function IntelligenceHighlights({
     const ranked = [...countryMetricResults]
       .filter((result) => result.change !== null)
       .sort(
-        (a, b) => Math.abs(b.change ?? 0) - Math.abs(a.change ?? 0)
+        (a, b) =>
+          Math.abs(b.change ?? 0) -
+          Math.abs(a.change ?? 0)
       );
 
     return ranked.slice(0, 5).map((result) => {
       const direction = getDirection(result.change);
-      let text = `${result.variable.label}: ${result.countryName} moved from ${formatNumber(result.firstValue)} to ${formatNumber(result.lastValue)} ${result.variable.unit}.`;
+
+      let text = `${result.variable.label}: ${result.countryName} moved from ${formatNumber(
+        result.firstValue
+      )} to ${formatNumber(result.lastValue)} ${
+        result.variable.unit
+      }.`;
 
       if (
         result.variable.performance === 'lower_is_better' &&
         result.change !== null &&
         result.change < -2
       ) {
-        text = `${result.countryName} reduced ${result.variable.label.toLowerCase()} by ${formatPercentage(result.change)}, indicating improvement.`;
+        text = `${result.countryName} reduced ${result.variable.label.toLowerCase()} by ${formatPercentage(
+          result.change
+        )}, indicating improvement.`;
       } else if (
         result.variable.performance === 'lower_is_better' &&
         result.change !== null &&
         result.change > 2
       ) {
-        text = `${result.countryName} saw ${result.variable.label.toLowerCase()} rise by ${formatPercentage(result.change)}, a potential risk signal.`;
-      } else if (result.change !== null && Math.abs(result.change) > 2) {
-        text = `${result.variable.label}: ${result.countryName} ${
+        text = `${result.countryName} saw ${result.variable.label.toLowerCase()} rise by ${formatPercentage(
+          result.change
+        )}, a potential risk signal.`;
+      } else if (
+        result.change !== null &&
+        Math.abs(result.change) > 2
+      ) {
+        text = `${result.variable.label}: ${
+          result.countryName
+        } ${
           result.change > 0 ? 'improved' : 'declined'
-        } by ${formatPercentage(result.change)} over the selected period.`;
+        } by ${formatPercentage(
+          result.change
+        )} over the selected period.`;
       } else if (result.change !== null) {
         text = `${result.variable.label}: ${result.countryName} remained broadly stable over the selected period.`;
       }
@@ -704,7 +985,9 @@ export default function IntelligenceHighlights({
     () =>
       filters.countryIds
         .map((id) => countryNameMap.get(id))
-        .filter((name): name is string => Boolean(name)),
+        .filter(
+          (name): name is string => Boolean(name)
+        ),
     [countryNameMap, filters.countryIds]
   );
 
@@ -736,42 +1019,129 @@ export default function IntelligenceHighlights({
     hasAdminComparison ||
     keySignals.length > 0;
 
+  /*
+   * AI PAYLOAD
+   *
+   * The AI now receives the complete time series.
+   *
+   * It does NOT have to guess what happened between the
+   * start and end years.
+   */
   const intelligencePayload = useMemo(() => {
-    if (countryMetricResults.length === 0) {
+    if (countryIndicatorSeries.length === 0) {
       return null;
     }
 
     return {
       sector: sectorLabel,
+
       period: `${filters.startYear}–${filters.endYear}`,
+
       countries: selectedCountryNames,
-      variables: selectedVariableDefinitions.map((item) => item.label),
+
+      variables: selectedVariableDefinitions.map(
+        (item) => item.label
+      ),
+
+      /*
+       * Complete country × indicator × year data.
+       */
+      timeSeries: countryIndicatorSeries.map((item) => ({
+        country: item.countryName,
+
+        indicator: item.variable.label,
+
+        unit: item.variable.unit,
+
+        performance: item.variable.performance,
+
+        series: item.series.map((point) => ({
+          year: point.year,
+          value: point.value,
+        })),
+
+        yearOverYearChanges: item.yearOverYearChanges.map(
+          (change) => ({
+            fromYear: change.fromYear,
+            toYear: change.toYear,
+            changePercent: change.changePercent,
+          })
+        ),
+
+        analysis: {
+          startYear: item.startYear,
+          endYear: item.endYear,
+
+          startValue: item.startValue,
+          endValue: item.endValue,
+
+          changePercent: item.changePercent,
+
+          averageAnnualChangePercent:
+            item.averageAnnualChangePercent,
+
+          highestYear: item.highestYear,
+          highestValue: item.highestValue,
+
+          lowestYear: item.lowestYear,
+          lowestValue: item.lowestValue,
+
+          trend: item.trend,
+
+          volatilityPercent: item.volatilityPercent,
+
+          acceleration: item.acceleration,
+        },
+      })),
+
+      /*
+       * Existing overall country comparison.
+       */
       overall:
-        hasAdminComparison && strongestCountry && weakestCountry
+        hasAdminComparison &&
+        strongestCountry &&
+        weakestCountry
           ? {
               strongest: {
                 country: strongestCountry.countryName,
-                score: Number(strongestCountry.score.toFixed(0)),
+                score: Number(
+                  strongestCountry.score.toFixed(0)
+                ),
               },
+
               weakest: {
                 country: weakestCountry.countryName,
-                score: Number(weakestCountry.score.toFixed(0)),
+                score: Number(
+                  weakestCountry.score.toFixed(0)
+                ),
               },
             }
           : null,
+
+      /*
+       * Existing indicator-level comparison.
+       */
       indicators: indicatorComparisons.map(
         ({ variable, strongest, weakest }) => ({
           name: variable.label,
+
           strongest: strongest.countryName,
+
           strongestChange: strongest.change,
+
           weakest: weakest.countryName,
+
           weakestChange: weakest.change,
         })
       ),
+
+      /*
+       * Existing deterministic signals.
+       */
       signals: keySignals.map((signal) => signal.text),
     };
   }, [
-    countryMetricResults.length,
+    countryIndicatorSeries,
     filters.endYear,
     filters.startYear,
     hasAdminComparison,
@@ -784,6 +1154,9 @@ export default function IntelligenceHighlights({
     weakestCountry,
   ]);
 
+  /*
+   * Send the complete deterministic analysis to the AI.
+   */
   useEffect(() => {
     if (!intelligencePayload || loading || error) {
       setAiBriefing(null);
@@ -808,21 +1181,58 @@ export default function IntelligenceHighlights({
           signal: controller.signal,
         });
 
-        const result = await response.json();
+        const result: unknown = await response.json();
 
         if (!response.ok) {
-          throw new Error(
-            result?.error ?? 'Unable to generate AI briefing.'
-          );
+          const errorMessage =
+            typeof result === 'object' &&
+            result !== null &&
+            'error' in result &&
+            typeof result.error === 'string'
+              ? result.error
+              : 'Unable to generate AI briefing.';
+
+          throw new Error(errorMessage);
         }
 
+        const briefing =
+          typeof result === 'object' &&
+          result !== null
+            ? result
+            : {};
+
+        const summary =
+          'summary' in briefing &&
+          typeof briefing.summary === 'string'
+            ? briefing.summary
+            : '';
+
+        const keySignalsFromAi =
+          'keySignals' in briefing &&
+          Array.isArray(briefing.keySignals)
+            ? briefing.keySignals.filter(
+                (signal): signal is string =>
+                  typeof signal === 'string'
+              )
+            : [];
+
+        const attention =
+          'attention' in briefing &&
+          typeof briefing.attention === 'string'
+            ? briefing.attention
+            : '';
+
+        const outlook =
+          'outlook' in briefing &&
+          typeof briefing.outlook === 'string'
+            ? briefing.outlook
+            : '';
+
         setAiBriefing({
-          summary: result.summary ?? '',
-          keySignals: Array.isArray(result.keySignals)
-            ? result.keySignals
-            : [],
-          attention: result.attention ?? '',
-          outlook: result.outlook ?? '',
+          summary,
+          keySignals: keySignalsFromAi,
+          attention,
+          outlook,
         });
       } catch (caughtError) {
         if (controller.signal.aborted) {
@@ -869,6 +1279,7 @@ export default function IntelligenceHighlights({
           <div>
             <div className="mb-2 flex items-center gap-2">
               <Lightbulb className="h-5 w-5 text-yellow-300" />
+
               <span className="text-sm font-semibold uppercase tracking-wider text-green-100">
                 Intelligence Highlights
               </span>
@@ -879,15 +1290,20 @@ export default function IntelligenceHighlights({
             </h2>
 
             <p className="mt-1 max-w-3xl text-sm leading-6 text-green-50">
-              Unified interpretation of the data currently selected in
-              the Sector Data Explorer, with AI-assisted briefing.
+              Unified interpretation of the data currently
+              selected in the Sector Data Explorer, with
+              AI-assisted briefing.
             </p>
           </div>
 
           <div className="flex items-center gap-2 rounded-xl border border-white/15 bg-white/10 px-4 py-3 backdrop-blur-sm">
             <CheckCircle2 className="h-5 w-5 text-green-300" />
+
             <div>
-              <p className="text-xs text-green-100">Data-driven</p>
+              <p className="text-xs text-green-100">
+                Data-driven
+              </p>
+
               <p className="text-sm font-semibold">
                 {isAdmin
                   ? hasAdminComparison
@@ -903,14 +1319,17 @@ export default function IntelligenceHighlights({
           <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 font-semibold text-green-50">
             {sectorLabel}
           </span>
+
           <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 font-semibold text-green-50">
             {filters.startYear}–{filters.endYear}
           </span>
+
           <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 font-semibold text-green-50">
             {selectedCountryNames.length === 1
               ? selectedCountryNames[0]
               : `${selectedCountryNames.length} countries`}
           </span>
+
           <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 font-semibold text-green-50">
             {selectedVariableLabel}
           </span>
@@ -928,12 +1347,15 @@ export default function IntelligenceHighlights({
           <div className="flex min-h-[260px] items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 text-center">
             <div>
               <BarChart3 className="mx-auto h-8 w-8 text-gray-400" />
+
               <p className="mt-3 font-semibold text-gray-700">
                 No intelligence signals available
               </p>
+
               <p className="mt-1 max-w-md text-sm text-gray-500">
-                There is not enough data within the current filters to
-                generate a meaningful interpretation.
+                There is not enough data within the current
+                filters to generate a meaningful
+                interpretation.
               </p>
             </div>
           </div>
@@ -942,207 +1364,252 @@ export default function IntelligenceHighlights({
         !error && (
           <div className="divide-y divide-gray-100">
             {/* Overall Country Performance */}
-            {hasAdminComparison && strongestCountry && weakestCountry && (
-              <div className="p-5 sm:p-7">
-                <div className="mb-4 flex items-center gap-2">
-                  <Award className="h-4 w-4 text-emerald-700" />
-                  <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
-                    Overall Country Performance
-                  </h3>
-                </div>
+            {hasAdminComparison &&
+              strongestCountry &&
+              weakestCountry && (
+                <div className="p-5 sm:p-7">
+                  <div className="mb-4 flex items-center gap-2">
+                    <Award className="h-4 w-4 text-emerald-700" />
 
-                <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to- to-white p-5">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
-                      Strongest performance
-                    </p>
-                    <p className="mt-2 text-2xl font-bold text-gray-900">
-                      {strongestCountry.countryName}
-                    </p>
-                    <p className="mt-1 text-lg font-semibold text-emerald-800">
-                      {strongestCountry.score.toFixed(0)} / 100
-                    </p>
-                    <p className="mt-2 text-xs text-gray-500">
-                      Across {strongestCountry.indicatorsConsidered}{' '}
-                      comparable indicator
-                      {strongestCountry.indicatorsConsidered === 1
-                        ? ''
-                        : 's'}
-                    </p>
+                    <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
+                      Overall Country Performance
+                    </h3>
                   </div>
 
-                  <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50/80 to-white p-5">
-                    <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
-                      Needs attention
-                    </p>
-                    <p className="mt-2 text-2xl font-bold text-gray-900">
-                      {weakestCountry.countryName}
-                    </p>
-                    <p className="mt-1 text-lg font-semibold text-amber-800">
-                      {weakestCountry.score.toFixed(0)} / 100
-                    </p>
-                    <p className="mt-2 text-xs text-gray-500">
-                      Across {weakestCountry.indicatorsConsidered}{' '}
-                      comparable indicator
-                      {weakestCountry.indicatorsConsidered === 1
-                        ? ''
-                        : 's'}
-                    </p>
+                  <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                    <div className="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
+                        Strongest performance
+                      </p>
+
+                      <p className="mt-2 text-2xl font-bold text-gray-900">
+                        {strongestCountry.countryName}
+                      </p>
+
+                      <p className="mt-1 text-lg font-semibold text-emerald-800">
+                        {strongestCountry.score.toFixed(0)} / 100
+                      </p>
+
+                      <p className="mt-2 text-xs text-gray-500">
+                        Across{' '}
+                        {strongestCountry.indicatorsConsidered}{' '}
+                        comparable indicator
+                        {strongestCountry.indicatorsConsidered ===
+                        1
+                          ? ''
+                          : 's'}
+                      </p>
+                    </div>
+
+                    <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50/80 to-white p-5">
+                      <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
+                        Needs attention
+                      </p>
+
+                      <p className="mt-2 text-2xl font-bold text-gray-900">
+                        {weakestCountry.countryName}
+                      </p>
+
+                      <p className="mt-1 text-lg font-semibold text-amber-800">
+                        {weakestCountry.score.toFixed(0)} / 100
+                      </p>
+
+                      <p className="mt-2 text-xs text-gray-500">
+                        Across{' '}
+                        {weakestCountry.indicatorsConsidered}{' '}
+                        comparable indicator
+                        {weakestCountry.indicatorsConsidered ===
+                        1
+                          ? ''
+                          : 's'}
+                      </p>
+                    </div>
                   </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* Indicator Performance table */}
-            {hasAdminComparison && indicatorComparisons.length > 0 && (
-              <div className="p-5 sm:p-7">
-                <div className="mb-4 flex items-center gap-2">
-                  <Target className="h-4 w-4 text-blue-700" />
-                  <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
-                    Indicator Performance
-                  </h3>
-                </div>
+            {hasAdminComparison &&
+              indicatorComparisons.length > 0 && (
+                <div className="p-5 sm:p-7">
+                  <div className="mb-4 flex items-center gap-2">
+                    <Target className="h-4 w-4 text-blue-700" />
 
-                <div className="overflow-x-auto rounded-xl border border-gray-200">
-                  <table className="min-w-full text-left text-sm">
-                    <thead className="bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
-                      <tr>
-                        <th className="px-4 py-3">Indicator</th>
-                        <th className="px-4 py-3">Strongest</th>
-                        <th className="px-4 py-3">Needs Attention</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-gray-100 bg-white">
-                      {indicatorComparisons.map(
-                        ({ variable, strongest, weakest }) => (
-                          <tr
-                            key={variable.key}
-                            className="hover:bg-gray-50/80"
-                          >
-                            <td className="px-4 py-3 font-medium text-gray-800">
-                              {variable.label}
-                              <span className="mt-0.5 block text-xs font-normal text-gray-400">
-                                {variable.unit}
-                              </span>
-                            </td>
-                            <td className="px-4 py-3 text-emerald-800">
-                              <span className="font-semibold">
-                                {strongest.countryName}
-                              </span>
-                              {strongest.change !== null && (
-                                <span className="ml-2 text-xs text-gray-500">
-                                  {formatSignedPercentage(
-                                    strongest.change
-                                  )}
+                    <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
+                      Indicator Performance
+                    </h3>
+                  </div>
+
+                  <div className="overflow-x-auto rounded-xl border border-gray-200">
+                    <table className="min-w-full text-left text-sm">
+                      <thead className="bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
+                        <tr>
+                          <th className="px-4 py-3">
+                            Indicator
+                          </th>
+
+                          <th className="px-4 py-3">
+                            Strongest
+                          </th>
+
+                          <th className="px-4 py-3">
+                            Needs Attention
+                          </th>
+                        </tr>
+                      </thead>
+
+                      <tbody className="divide-y divide-gray-100 bg-white">
+                        {indicatorComparisons.map(
+                          ({
+                            variable,
+                            strongest,
+                            weakest,
+                          }) => (
+                            <tr
+                              key={variable.key}
+                              className="hover:bg-gray-50/80"
+                            >
+                              <td className="px-4 py-3 font-medium text-gray-800">
+                                {variable.label}
+
+                                <span className="mt-0.5 block text-xs font-normal text-gray-400">
+                                  {variable.unit}
                                 </span>
-                              )}
-                            </td>
-                            <td className="px-4 py-3 text-amber-800">
-                              <span className="font-semibold">
-                                {weakest.countryName}
-                              </span>
-                              {weakest.change !== null && (
-                                <span className="ml-2 text-xs text-gray-500">
-                                  {formatSignedPercentage(
-                                    weakest.change
-                                  )}
+                              </td>
+
+                              <td className="px-4 py-3 text-emerald-800">
+                                <span className="font-semibold">
+                                  {strongest.countryName}
                                 </span>
-                              )}
-                            </td>
-                          </tr>
-                        )
-                      )}
-                    </tbody>
-                  </table>
+
+                                {strongest.change !== null && (
+                                  <span className="ml-2 text-xs text-gray-500">
+                                    {formatSignedPercentage(
+                                      strongest.change
+                                    )}
+                                  </span>
+                                )}
+                              </td>
+
+                              <td className="px-4 py-3 text-amber-800">
+                                <span className="font-semibold">
+                                  {weakest.countryName}
+                                </span>
+
+                                {weakest.change !== null && (
+                                  <span className="ml-2 text-xs text-gray-500">
+                                    {formatSignedPercentage(
+                                      weakest.change
+                                    )}
+                                  </span>
+                                )}
+                              </td>
+                            </tr>
+                          )
+                        )}
+                      </tbody>
+                    </table>
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
 
             {/* AI Briefing */}
-            {/* AI interpretation layer */}
-<div className="p-5 sm:p-7">
-  <div className="mb-2 flex items-center gap-2">
-    <Lightbulb className="h-4 w-4 text-yellow-600" />
-    <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
-      AI Intelligence Briefing
-    </h3>
-  </div>
+            <div className="p-5 sm:p-7">
+              <div className="mb-2 flex items-center gap-2">
+                <Lightbulb className="h-4 w-4 text-yellow-600" />
 
-  <p className="mb-4 text-xs leading-5 text-gray-500">
-    AI-generated interpretation based on the selected countries, period,
-    sector and variables. Scores and percentages above are calculated by
-    the application; the model only interprets those facts.
-  </p>
+                <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
+                  AI Intelligence Briefing
+                </h3>
+              </div>
 
-  {aiLoading && (
-    <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-6 text-sm text-gray-500">
-      <Loader2 className="h-4 w-4 animate-spin" />
-      Generating interpretation from measured results...
-    </div>
-  )}
+              <p className="mb-4 text-xs leading-5 text-gray-500">
+                AI-generated interpretation based on the
+                complete selected time series, countries,
+                period, sector and variables. Scores,
+                percentages, trends and statistical summaries
+                are calculated by the application; the model
+                interprets those measured facts.
+              </p>
 
-  {!aiLoading && aiError && (
-    <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-      AI briefing unavailable: {aiError}
-    </div>
-  )}
+              {aiLoading && (
+                <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-6 text-sm text-gray-500">
+                  <Loader2 className="h-4 w-4 animate-spin" />
+                  Generating interpretation from measured
+                  results...
+                </div>
+              )}
 
-  {!aiLoading && !aiError && aiBriefing && (
-    <div className="space-y-4 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50/80 to-white p-5">
-      <div>
-        <p className="mb-1 text-xs font-bold uppercase tracking-wide text-gray-500">
-          Overall assessment
-        </p>
-        <p className="text-sm leading-6 text-gray-800">
-          {aiBriefing.summary}
-        </p>
-      </div>
+              {!aiLoading && aiError && (
+                <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                  AI briefing unavailable: {aiError}
+                </div>
+              )}
 
-      {aiBriefing.keySignals.length > 0 && (
-        <div>
-          <p className="mb-2 text-xs font-bold uppercase tracking-wide text-gray-500">
-            Key signals
-          </p>
-          <ul className="space-y-2">
-            {aiBriefing.keySignals.map((signal, index) => (
-              <li
-                key={`${signal}-${index}`}
-                className="flex items-start gap-2 text-sm text-gray-700"
-              >
-                <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-600" />
-                <span>{signal}</span>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+              {!aiLoading && !aiError && aiBriefing && (
+                <div className="space-y-4 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50/80 to-white p-5">
+                  <div>
+                    <p className="mb-1 text-xs font-bold uppercase tracking-wide text-gray-500">
+                      Overall assessment
+                    </p>
 
-      <div className="rounded-xl border border-amber-200 bg-amber-50/80 px-4 py-3">
-        <p className="text-xs font-bold uppercase tracking-wide text-amber-800">
-          Needs attention
-        </p>
-        <p className="mt-1 text-sm leading-6 text-amber-900">
-          {aiBriefing.attention}
-        </p>
-      </div>
+                    <p className="text-sm leading-6 text-gray-800">
+                      {aiBriefing.summary}
+                    </p>
+                  </div>
 
-      <div>
-        <p className="mb-1 text-xs font-bold uppercase tracking-wide text-gray-500">
-          Outlook
-        </p>
-        <p className="text-sm leading-6 text-gray-700">
-          {aiBriefing.outlook}
-        </p>
-      </div>
-    </div>
-  )}
-</div>
+                  {aiBriefing.keySignals.length > 0 && (
+                    <div>
+                      <p className="mb-2 text-xs font-bold uppercase tracking-wide text-gray-500">
+                        Key signals
+                      </p>
+
+                      <ul className="space-y-2">
+                        {aiBriefing.keySignals.map(
+                          (signal, index) => (
+                            <li
+                              key={`${signal}-${index}`}
+                              className="flex items-start gap-2 text-sm text-gray-700"
+                            >
+                              <span className="mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full bg-emerald-600" />
+
+                              <span>{signal}</span>
+                            </li>
+                          )
+                        )}
+                      </ul>
+                    </div>
+                  )}
+
+                  <div className="rounded-xl border border-amber-200 bg-amber-50/80 px-4 py-3">
+                    <p className="text-xs font-bold uppercase tracking-wide text-amber-800">
+                      Needs attention
+                    </p>
+
+                    <p className="mt-1 text-sm leading-6 text-amber-900">
+                      {aiBriefing.attention}
+                    </p>
+                  </div>
+
+                  <div>
+                    <p className="mb-1 text-xs font-bold uppercase tracking-wide text-gray-500">
+                      Outlook
+                    </p>
+
+                    <p className="text-sm leading-6 text-gray-700">
+                      {aiBriefing.outlook}
+                    </p>
+                  </div>
+                </div>
+              )}
+            </div>
 
             {/* Deterministic key signals fallback list */}
             {keySignals.length > 0 && (
               <div className="p-5 sm:p-7">
                 <div className="mb-4 flex items-center gap-2">
                   <BarChart3 className="h-4 w-4 text-orange-600" />
+
                   <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
                     Computed Signals
                   </h3>
@@ -1178,6 +1645,7 @@ export default function IntelligenceHighlights({
                           <p className="text-sm font-semibold text-gray-800">
                             {signal.metric}
                           </p>
+
                           <p className="mt-0.5 text-sm leading-6 text-gray-600">
                             {signal.text}
                           </p>
@@ -1193,28 +1661,46 @@ export default function IntelligenceHighlights({
             <div className="bg-gray-50 px-5 py-5 sm:px-7">
               <div className="flex items-start gap-3">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" />
+
                 <div className="space-y-2 text-xs leading-5 text-gray-500">
-                  <p className="text-xs leading-5 text-gray-500">
-  <strong className="text-gray-700">How this works: </strong>
-  the application calculates percentage changes, rankings and performance
-  scores from the selected dataset. The AI briefing only interprets those
-  computed facts. It does not recalculate metrics or invent data.
-</p>
+                  <p>
+                    <strong className="text-gray-700">
+                      How this works:{' '}
+                    </strong>
+                    the application retrieves every available
+                    year within the selected period and
+                    calculates percentage changes, year-on-year
+                    changes, rankings, trends, volatility and
+                    performance scores from the selected
+                    dataset. The AI briefing interprets these
+                    computed facts. It does not recalculate
+                    metrics or invent data.
+                  </p>
+
+                  <p>
+                    The intelligence layer preserves the full
+                    selected time series. For example, a
+                    2020–2025 selection includes 2020, 2021,
+                    2022, 2023, 2024 and 2025 rather than only
+                    the endpoint years.
+                  </p>
 
                   {hasAdminComparison && (
                     <p>
                       For multi-country comparisons, each
-                      performance-relevant indicator is ranked separately.
-                      Indicator scores are averaged into an overall country
-                      performance score. Higher-is-better and
-                      lower-is-better metrics are handled accordingly;
-                      neutral indicators are excluded from the score.
+                      performance-relevant indicator is ranked
+                      separately. Indicator scores are averaged
+                      into an overall country performance score.
+                      Higher-is-better and lower-is-better
+                      metrics are handled accordingly; neutral
+                      indicators are excluded from the score.
                     </p>
                   )}
 
                   <p>
-                    This is a relative assessment within the current
-                    selection only — not an absolute national ranking.
+                    This is a relative assessment within the
+                    current selection only — not an absolute
+                    national ranking.
                   </p>
                 </div>
               </div>
