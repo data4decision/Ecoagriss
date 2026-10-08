@@ -1,13 +1,7 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
-import { createClient } from '@/lib/supabase/client';
-import {
-  Wheat,
-  Beef,
-  CalendarDays,
-} from 'lucide-react';
+import { Wheat, Beef, CalendarDays } from 'lucide-react';
 
 /* -------------------------------------------------------------------------- */
 /* Types                                                                      */
@@ -15,12 +9,6 @@ import {
 
 interface CrossSectorSnapshotProps {
   countryId?: number | null;
-}
-
-interface DatasetRecord {
-  id: string | number;
-  country_id: number | null;
-  year: number | string | null;
 }
 
 interface SnapshotSector {
@@ -36,87 +24,60 @@ interface SnapshotSector {
 type LoadState = 'loading' | 'success' | 'empty' | 'error';
 
 /* -------------------------------------------------------------------------- */
-/* Helpers                                                                    */
+/* Dummy Data                                                                 */
 /* -------------------------------------------------------------------------- */
 
-function extractYear(value: unknown): number | null {
-  if (value == null) return null;
+/**
+ * Dummy dataset used while the real Supabase integration is being wired up.
+ *
+ * - When countryId is null (admin / regional view), we show ECOWAS-wide totals.
+ * - When countryId is set, we show a smaller per-country slice.
+ *
+ * Numbers are deterministic so the UI doesn't flicker between renders.
+ */
+const DUMMY_SECTORS_REGIONAL: SnapshotSector[] = [
+  {
+    name: 'Agricultural Inputs',
+    description:
+      'Fertilizers, seeds, pesticides and related agricultural input indicators.',
+    icon: <Wheat className="h-4 w-4" strokeWidth={1.75} />,
+    recordCount: 4872,
+    countryCount: 15,
+    period: '2006–2025',
+    available: true,
+  },
+  {
+    name: 'Livestock',
+    description: 'Herd sizes, production and livestock sector indicators.',
+    icon: <Beef className="h-4 w-4" strokeWidth={1.75} />,
+    recordCount: 3641,
+    countryCount: 15,
+    period: '2006–2025',
+    available: true,
+  },
+];
 
-  if (typeof value === 'number' && Number.isFinite(value)) {
-    return value;
-  }
-
-  if (typeof value === 'string') {
-    const parsed = parseInt(value, 10);
-
-    if (!Number.isNaN(parsed)) {
-      return parsed;
-    }
-  }
-
-  return null;
-}
-
-function computeStats(
-  records: DatasetRecord[],
-  name: string,
-  description: string,
-  icon: React.ReactNode
-): SnapshotSector {
-  const recordCount = records.length;
-
-  /*
-   * Dataset tables use country_id.
-   *
-   * RLS controls which records are returned:
-   * - Normal users receive only their country's records.
-   * - Admins receive all authorised ECOWAS records.
-   *
-   * Counting unique country_id values therefore reflects
-   * the user's authorised data coverage.
-   */
-  const countrySet = new Set<number>();
-
-  records.forEach((record) => {
-    if (
-      typeof record.country_id === 'number' &&
-      Number.isFinite(record.country_id)
-    ) {
-      countrySet.add(record.country_id);
-    }
-  });
-
-  const countryCount = countrySet.size;
-
-  const years: number[] = [];
-
-  records.forEach((record) => {
-    const year = extractYear(record.year);
-
-    if (year !== null) {
-      years.push(year);
-    }
-  });
-
-  let period = '—';
-
-  if (years.length > 0) {
-    const min = Math.min(...years);
-    const max = Math.max(...years);
-
-    period = min === max ? `${min}` : `${min}–${max}`;
-  }
-
-  return {
-    name,
-    description,
-    icon,
-    recordCount,
-    countryCount,
-    period,
-    available: recordCount > 0,
-  };
-}
+const DUMMY_SECTORS_SINGLE_COUNTRY: SnapshotSector[] = [
+  {
+    name: 'Agricultural Inputs',
+    description:
+      'Fertilizers, seeds, pesticides and related agricultural input indicators.',
+    icon: <Wheat className="h-4 w-4" strokeWidth={1.75} />,
+    recordCount: 325,
+    countryCount: 1,
+    period: '2006–2025',
+    available: true,
+  },
+  {
+    name: 'Livestock',
+    description: 'Herd sizes, production and livestock sector indicators.',
+    icon: <Beef className="h-4 w-4" strokeWidth={1.75} />,
+    recordCount: 243,
+    countryCount: 1,
+    period: '2006–2025',
+    available: true,
+  },
+];
 
 /* -------------------------------------------------------------------------- */
 /* Skeleton                                                                   */
@@ -128,9 +89,7 @@ function SnapshotSkeleton() {
       className="overflow-hidden rounded-2xl border border-[var(--green)]/20 bg-[var(--white)] shadow-sm"
       aria-hidden="true"
     >
-      <div
-        className="h-0.5 bg-gradient-to-r from-[var(--dark-green)] via-[var(--yellow)] to-[var(--dark-green)] opacity-50"
-      />
+      <div className="h-0.5 bg-gradient-to-r from-[var(--dark-green)] via-[var(--yellow)] to-[var(--dark-green)] opacity-50" />
 
       <div className="p-4 sm:p-5 lg:p-6">
         <div className="mb-4 hidden grid-cols-4 gap-4 border-b border-[var(--green)]/10 pb-3 sm:grid">
@@ -272,104 +231,33 @@ export default function CrossSectorSnapshot({
     let mounted = true;
 
     async function loadSnapshot() {
+      setState('loading');
+
+      // Simulate a network delay so the skeleton is briefly visible
+      await new Promise((resolve) => setTimeout(resolve, 400));
+
+      if (!mounted) return;
+
       try {
-        const supabase = createClient();
+        // Choose the appropriate dummy dataset based on countryId
+        const dummyData =
+          countryId === null
+            ? DUMMY_SECTORS_REGIONAL
+            : DUMMY_SECTORS_SINGLE_COUNTRY;
 
-        /*
-         * Build separate query builders so the optional country filter
-         * can be applied without changing the RLS behaviour.
-         */
-        const inputsQuery = supabase
-          .from('agricultural_inputs')
-          .select('id, country_id, year');
-
-        const livestockQuery = supabase
-          .from('livestock_data')
-          .select('id, country_id, year');
-
-        /*
-         * Admins can select a specific country from the CountryFilterAdmin.
-         *
-         * When countryId is null:
-         * - Normal users receive only their authorised country through RLS.
-         * - Admins receive all authorised countries through RLS.
-         *
-         * When countryId has a value:
-         * - The query is additionally restricted to that country.
-         *
-         * RLS remains the security boundary.
-         */
-        if (countryId !== null) {
-          inputsQuery.eq('country_id', countryId);
-          livestockQuery.eq('country_id', countryId);
-        }
-
-        const [inputsResult, livestockResult] = await Promise.all([
-          inputsQuery,
-          livestockQuery,
-        ]);
-
-        if (inputsResult.error) {
-          console.error(
-            'agricultural_inputs fetch error:',
-            inputsResult.error
-          );
-
-          throw inputsResult.error;
-        }
-
-        if (livestockResult.error) {
-          console.error(
-            'livestock_data fetch error:',
-            livestockResult.error
-          );
-
-          throw livestockResult.error;
-        }
-
-        const inputs = (inputsResult.data ?? []) as DatasetRecord[];
-        const livestock = (livestockResult.data ?? []) as DatasetRecord[];
-
-        const stats: SnapshotSector[] = [
-          computeStats(
-            inputs,
-            'Agricultural Inputs',
-            'Fertilizers, seeds, pesticides and related agricultural input indicators.',
-            <Wheat
-              className="h-4 w-4"
-              strokeWidth={1.75}
-            />
-          ),
-
-          computeStats(
-            livestock,
-            'Livestock',
-            'Herd sizes, production and livestock sector indicators.',
-            <Beef
-              className="h-4 w-4"
-              strokeWidth={1.75}
-            />
-          ),
-        ];
-
-        if (!mounted) return;
-
-        const hasAnyData = stats.some(
-          (sector) => sector.recordCount > 0
+        setSectors(dummyData);
+        setState(
+          dummyData.some((sector) => sector.recordCount > 0)
+            ? 'success'
+            : 'empty'
         );
-
-        setSectors(stats);
-        setState(hasAnyData ? 'success' : 'empty');
       } catch (err: unknown) {
         console.error('CrossSectorSnapshot load error:', err);
-
-        if (mounted) {
-          setState('error');
-        }
+        if (mounted) setState('error');
       }
     }
 
-    loadSnapshot();
+    void loadSnapshot();
 
     return () => {
       mounted = false;
@@ -414,7 +302,7 @@ export default function CrossSectorSnapshot({
         {/* Section header */}
         <div className="mb-8 max-w-2xl sm:mb-10">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--dark-green)] sm:text-xs">
-            Real Data Cross-Sector Snapshot
+            Cross-Sector Snapshot
           </p>
 
           <h2
@@ -432,10 +320,7 @@ export default function CrossSectorSnapshot({
 
         {/* Content states */}
         {state === 'loading' && (
-          <div
-            aria-busy="true"
-            aria-label="Loading cross-sector snapshot"
-          >
+          <div aria-busy="true" aria-label="Loading cross-sector snapshot">
             <SnapshotSkeleton />
           </div>
         )}
@@ -516,4 +401,3 @@ export default function CrossSectorSnapshot({
     </section>
   );
 }
-

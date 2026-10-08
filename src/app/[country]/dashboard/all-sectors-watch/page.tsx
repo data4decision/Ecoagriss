@@ -14,22 +14,10 @@ import IntelligenceHighlights from '@/components/AllSectorsWatch/IntelligenceHig
 import Footer from '@/components/Footer';
 import SimpleNavbar from '@/components/SimpleNavbar';
 
-const DEFAULT_FILTERS: SectorExplorerFilters = {
-  countryIds: [],
-  startYear: 2006,
-  endYear: 2025,
-  sector: 'agricultural_inputs',
-  variables: ['cereal_seeds_tons'],
-};
+
 
 export default function AllSectorsWatchPage() {
-  const [selectedCountryId, setSelectedCountryId] = useState<number | null>(
-    null
-  );
-
-  // Shared by SectorComparisonTrend + IntelligenceHighlights
-  const [filters, setFilters] =
-    useState<SectorExplorerFilters>(DEFAULT_FILTERS);
+ 
 
   return (
     <main className="space-y-1">
@@ -44,16 +32,10 @@ export default function AllSectorsWatchPage() {
       {/* <DataCoverageCards countryId={selectedCountryId} /> */}
 
       {/* <SectorCards countryId={selectedCountryId} /> */}
+       <Footer/>
+      
 
-      <CrossSectorSnapshot countryId={selectedCountryId} />
-
-      <SectorComparisonTrend
-        filters={filters}
-        onFiltersChange={setFilters}
-      />
-
-      <IntelligenceHighlights filters={filters} />
-      <Footer/>
+      
     </main>
   );
 }

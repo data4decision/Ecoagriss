@@ -8,6 +8,7 @@ import DataToIntelligence from '@/components/about/DataToIntelligence'
 import ChallengeSection from '@/components/about/ChallengeSection'
 import VisionMissionSection from '@/components/about/VisionMissionSection'
 import PurposeSection from '@/components/about/PurposeSection'
+import FinalCTASection from '@/components/about/FinalCTASection'
 
 const page = () => {
   return (
@@ -19,6 +20,7 @@ const page = () => {
          <VisionMissionSection/>
         <ChallengeSection/>
         <PurposeSection/>
+        <FinalCTASection/>
         <Footer/>
         </div>
   )

@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTranslation } from "react-i18next";
 import Link from "next/link";
 
@@ -13,12 +13,26 @@ interface Insight {
 }
 
 const KeyDataInsight = () => {
-  const { t } = useTranslation("common"); // ✅ Use correct namespace
+  const { t } = useTranslation("common");
+  const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
-    const timer = setTimeout(() => setIsVisible(true), 300);
-    return () => clearTimeout(timer);
+    const el = sectionRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.15 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
   }, []);
 
   const insights: Insight[] = [
@@ -31,44 +45,50 @@ const KeyDataInsight = () => {
   ];
 
   return (
-    <section className="py-20 bg-green-200 relative overflow-hidden">
-      <div className="text-center max-w-3xl mx-auto mb-12 px-4">
-        <h2 className="text-3xl md:text-4xl font-bold text-[var(--medium-green)] mb-3">
+    <section
+      ref={sectionRef}
+      className="relative overflow-hidden bg-green-200 px-4 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16"
+    >
+      {/* Top yellow accent bar */}
+      <div className="absolute left-0 top-0 h-1.5 w-full bg-[var(--yellow)] sm:h-2"></div>
+
+      <div className="mx-auto max-w-3xl px-2 text-center sm:px-4">
+        <h2 className="mb-2 text-2xl font-bold text-[var(--medium-green)] sm:mb-3 sm:text-3xl md:text-4xl">
           {t("keyData.title")}
         </h2>
-        <p className="text-gray-700 text-lg">{t("keyData.subtitle")}</p>
+        <p className="text-sm text-gray-700 sm:text-base lg:text-lg">
+          {t("keyData.subtitle")}
+        </p>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 w-[90%] mx-auto">
+      <div className="mx-auto mt-8 grid w-[90%] max-w-6xl grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 lg:gap-6">
         {insights.map((insight, index) => (
           <motion.div
             key={insight.id}
             initial={{ opacity: 0, y: 30 }}
             animate={isVisible ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.6, delay: index * 0.2 }}
-            className={`p-6 rounded-2xl shadow-lg text-center transform transition-all duration-500 hover:scale-105 ${
+            transition={{ duration: 0.6, delay: index * 0.15 }}
+            className={`rounded-2xl p-5 text-center shadow-lg transition-all duration-500 hover:scale-105 sm:p-6 ${
               index % 2 === 0
                 ? "bg-[var(--medium-green)] text-white"
                 : "bg-[var(--yellow)] text-[var(--dark-green)]"
             }`}
           >
-            <div className="text-4xl mb-3">{insight.icon}</div>
-            <h3 className="text-3xl font-extrabold">{insight.value}</h3>
-            <p className="mt-1 text-md font-medium">{insight.label}</p>
+            <div className="mb-2 text-3xl sm:mb-3 sm:text-4xl">{insight.icon}</div>
+            <h3 className="text-2xl font-extrabold sm:text-3xl">{insight.value}</h3>
+            <p className="mt-1 text-sm font-medium sm:text-base">{insight.label}</p>
           </motion.div>
         ))}
       </div>
 
-      <div className="text-center mt-14">
+      <div className="mt-8 text-center sm:mt-10">
         <Link
           href="/country-data"
-          className="inline-block px-8 py-3 font-semibold text-white bg-[var(--medium-green)] rounded-full shadow-md hover:bg-[var(--olive-green)] hover:scale-105 transform transition-all duration-300"
+          className="inline-block rounded-full bg-[var(--medium-green)] px-6 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:scale-105 hover:bg-[var(--olive-green)] sm:px-8 sm:py-3 sm:text-base"
         >
           {t("keyData.cta")}
         </Link>
       </div>
-
-      <div className="absolute top-0 left-0 w-full h-2 bg-[var(--yellow)]"></div>
     </section>
   );
 };

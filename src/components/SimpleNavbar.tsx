@@ -14,7 +14,7 @@ export default function SimpleNavbar() {
     <nav className="flex items-center justify-between bg-[var(--medium-green)] px-6 py-6 text-white shadow-md">
       {/* Logo + name */}
       <Link
-        href="https://www.data4decision.org/"
+        href="/"
         className="flex items-center text-xl font-bold"
       >
         <Image
@@ -24,7 +24,7 @@ export default function SimpleNavbar() {
           height={32}
           className="mr-2 inline-block h-8 w-8"
         />
-        <span>{t('navbar.ecoagris')}</span>
+        <span>{t('navbar.ECOAGRIS e-WATCH')}</span>
       </Link>
 
       {/* Actions */}

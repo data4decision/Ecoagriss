@@ -54,7 +54,7 @@ const INTELLIGENCE_METRICS: IntelligenceMetric[] = [
 export default function AboutHero() {
   return (
     <section
-      className="relative isolate flex min-h-[480px] w-full items-center overflow-hidden sm:min-h-[560px] lg:min-h-[620px]"
+      className="relative isolate flex min-h-[250px] w-full items-center overflow-hidden sm:min-h-[560px] lg:min-h-[620px]"
       aria-labelledby="about-hero-heading"
     >
       {/* ------------------------------------------------------------------ */}
@@ -156,54 +156,47 @@ export default function AboutHero() {
       {/* ------------------------------------------------------------------ */}
       {/* Content                                                             */}
       {/* ------------------------------------------------------------------ */}
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-16 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
-        <div className="grid grid-cols-1 items-center gap-10 lg:grid-cols-12 lg:gap-12 xl:gap-16">
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-10 lg:px-8 lg:py-14">
+        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-12 xl:gap-16">
           {/* LEFT — Text content */}
           <div className="flex flex-col lg:col-span-6 xl:col-span-7 motion-safe:animate-[fade-up_0.7s_ease-out_both]">
             {/* Eyebrow */}
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--dark-green)] sm:text-xs">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-[var(--dark-green)] sm:text-xs">
               ECOAGRIS e-WATCH
             </p>
 
             {/* Small descriptor */}
-            <p className="mt-2 text-sm font-medium text-white/75 sm:text-base">
+            <p className="mt-1.5 text-xs font-medium text-white/75 sm:mt-2 sm:text-base">
               West Africa Agricultural Tracking and Convergence Hub
             </p>
 
             {/* Main headline — single h1 */}
             <h1
               id="about-hero-heading"
-              className="mt-4 max-w-xl text-3xl font-bold leading-[1.15] tracking-tight text-white sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl"
+              className="mt-3 max-w-xl text-xl font-bold leading-[1.2] tracking-tight text-white sm:mt-4 sm:text-4xl md:text-5xl lg:text-5xl xl:text-6xl"
             >
               Connecting West Africa Through Agricultural Data Intelligence
             </h1>
 
             {/* Description */}
-            <p className="mt-5 max-w-lg text-sm leading-relaxed text-white/80 sm:text-base">
+            <p className="mt-3 max-w-lg text-xs leading-relaxed text-white/80 sm:mt-5 sm:text-sm md:text-base">
               Discover, explore and understand credible agricultural data from
               across West Africa through one accessible regional intelligence
               platform.
             </p>
 
             {/* CTAs */}
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
+            <div className="mt-5 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:items-center sm:gap-4">
               <Link
                 href="/login"
-                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--yellow)] px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-[var(--green)]/20 transition-all duration-300 hover:bg-[var(--dark-green)] hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--yellow)] active:scale-[0.98] motion-reduce:transition-none sm:text-base"
+                className="inline-flex items-center justify-center gap-2 rounded-lg bg-[var(--yellow)] px-5 py-2.5 text-xs font-semibold text-white shadow-lg shadow-[var(--green)]/20 transition-all duration-300 hover:bg-[var(--dark-green)] hover:shadow-xl focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--yellow)] active:scale-[0.98] motion-reduce:transition-none sm:px-6 sm:py-3 sm:text-base"
               >
                 Explore Agricultural Data
                 <ArrowRight
-                  className="h-4 w-4 transition-transform duration-300 group-hover:translate-x-0.5"
+                  className="h-3.5 w-3.5 transition-transform duration-300 group-hover:translate-x-0.5 sm:h-4 sm:w-4"
                   aria-hidden="true"
                 />
               </Link>
-
-              {/* <Link
-                href="/about"
-                className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/25 bg-white/5 px-6 py-3 text-sm font-semibold text-white backdrop-blur-sm transition-all duration-300 hover:border-white/40 hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--yellow)] active:scale-[0.98] motion-reduce:transition-none sm:text-base"
-              >
-                Discover ECOAGRIS e-WATCH
-              </Link> */}
             </div>
           </div>
 

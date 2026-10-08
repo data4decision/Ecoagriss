@@ -16,7 +16,7 @@ const Footer: React.FC = () => {
         
         {/* About Section */}
         <div>
-          <h2 className="text-2xl font-bold mb-3 text-[var(--yellow)]">ECOAGRIS</h2>
+          <h2 className="text-2xl font-bold mb-3 text-[var(--yellow)]">ECOAGRIS e-WATCH</h2>
           <p className="text-sm leading-relaxed">
             {t('footer.about')}
           </p>

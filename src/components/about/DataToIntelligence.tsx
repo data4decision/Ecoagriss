@@ -57,7 +57,7 @@ const FLOW_STAGES: FlowStage[] = [
 export default function DataToIntelligence() {
   return (
     <section
-      className="relative isolate overflow-hidden bg-[var(--olive-green)]/70 py-10 sm:py-12 lg:py-14"
+      className="relative isolate overflow-hidden bg-[var(--olive-green)]/70 py-4 sm:py-6 md:py-10 lg:py-14"
       aria-labelledby="data-to-intelligence-heading"
     >
       {/* Subtle green grid */}
@@ -76,12 +76,12 @@ export default function DataToIntelligence() {
       <div className="relative mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
         <p
           id="data-to-intelligence-heading"
-          className="mb-4 text-center text-[11px] font-semibold uppercase tracking-[0.16em] text-[var(--white)] sm:mb-5 sm:text-xs"
+          className="mb-2 text-center text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--white)] sm:text-xs md:mb-4 lg:mb-5"
         >
           How data becomes intelligence
         </p>
 
-        {/* Desktop horizontal */}
+        {/* Desktop horizontal (unchanged) */}
         <ol className="hidden items-stretch justify-between gap-2 md:flex lg:gap-3">
           {FLOW_STAGES.map((stage, index) => (
             <li
@@ -109,22 +109,25 @@ export default function DataToIntelligence() {
           ))}
         </ol>
 
-        {/* Mobile vertical */}
+        {/* Mobile vertical (compact - under 150px) */}
         <ol className="flex flex-col gap-0 md:hidden">
           {FLOW_STAGES.map((stage, index) => (
             <li key={stage.id} className="flex flex-col items-center">
-              <div className="flex w-full max-w-xs items-center gap-3 rounded-xl border border-[var(--green)]/15 bg-[var(--white)]/80 px-4 py-2.5 shadow-sm">
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-[var(--green)]/10 text-[var(--dark-green)]">
-                  {stage.icon}
+              <div className="flex w-full max-w-xs items-center gap-2 rounded-lg border border-[var(--green)]/15 bg-[var(--white)]/80 px-3 py-1.5 shadow-sm">
+                <span className="flex h-6 w-6 shrink-0 items-center justify-center rounded bg-[var(--green)]/10 text-[var(--dark-green)]">
+                  {/* Clone icon with smaller size on mobile */}
+                  <span className="scale-75">
+                    {stage.icon}
+                  </span>
                 </span>
-                <span className="text-sm font-semibold text-[var(--dark-green)]">
+                <span className="text-[11px] font-semibold text-[var(--dark-green)] leading-tight">
                   {stage.label}
                 </span>
               </div>
 
               {index < FLOW_STAGES.length - 1 && (
                 <span
-                  className="py-1 text-sm text-[var(--green)]/40"
+                  className="py-0 text-[10px] leading-none text-[var(--green)]/40"
                   aria-hidden="true"
                 >
                   ↓

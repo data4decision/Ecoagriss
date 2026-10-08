@@ -78,7 +78,7 @@ const SOURCE_NODES: SourceNode[] = [
 export default function WhatIsEcoagris() {
   return (
     <section
-      className="relative isolate flex h-dvh flex-col justify-center overflow-hidden bg-[var(--green)]/8 py-4 sm:py-8 lg:py-10"
+      className="relative isolate flex min-h-[300px] flex-col justify-center overflow-hidden bg-[var(--green)]/8 py-6 sm:h-dvh sm:py-8 lg:py-10"
       aria-labelledby="what-is-ecoagris-heading"
     >
       {/* Subtle green grid */}
@@ -105,7 +105,7 @@ export default function WhatIsEcoagris() {
       />
 
       <div className="relative mx-auto flex h-full w-full max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">
-        {/* Section header — compact on mobile */}
+        {/* Section header — compact on mobile, original on desktop */}
         <div className="mb-3 max-w-2xl shrink-0 sm:mb-8">
           <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--green)] sm:text-xs">
             About ECOAGRIS e-WATCH
@@ -118,7 +118,7 @@ export default function WhatIsEcoagris() {
             What Is ECOAGRIS e-WATCH?
           </h2>
 
-          <p className="mt-1 max-w-xl text-[13px] leading-snug text-[var(--olive-green)]/85 sm:mt-1.5 sm:text-[0.9375rem] sm:leading-relaxed">
+          <p className="mt-1 max-w-xl text-[12px] leading-snug text-[var(--olive-green)]/85 sm:mt-1.5 sm:text-[0.9375rem] sm:leading-relaxed">
             A regional agricultural data convergence hub connecting credible
             agricultural information from across West Africa.
           </p>
@@ -256,7 +256,7 @@ export default function WhatIsEcoagris() {
             </p>
           </div>
 
-          {/* RIGHT — Explanation — compact on mobile */}
+          {/* RIGHT — Explanation */}
           <div className="flex flex-col">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--green)] sm:text-xs">
               A Regional Data Convergence Hub
@@ -271,7 +271,7 @@ export default function WhatIsEcoagris() {
               </p>
               <p>
                 It provides a convergence layer so users can discover, explore
-                and work with information from credible existing sources —
+                and work with information from credible existing sources,
                 supporting both data access and data intelligence.
               </p>
             </div>
