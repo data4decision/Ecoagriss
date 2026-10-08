@@ -54,7 +54,7 @@ const INTELLIGENCE_METRICS: IntelligenceMetric[] = [
 export default function AboutHero() {
   return (
     <section
-      className="relative isolate flex min-h-[560px] w-full items-center overflow-hidden sm:min-h-[620px] lg:min-h-[680px]"
+      className="relative isolate flex min-h-[480px] w-full items-center overflow-hidden sm:min-h-[560px] lg:min-h-[620px]"
       aria-labelledby="about-hero-heading"
     >
       {/* ------------------------------------------------------------------ */}
@@ -161,7 +161,7 @@ export default function AboutHero() {
           {/* LEFT — Text content */}
           <div className="flex flex-col lg:col-span-6 xl:col-span-7 motion-safe:animate-[fade-up_0.7s_ease-out_both]">
             {/* Eyebrow */}
-            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--yellow)] sm:text-xs">
+            <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-[var(--dark-green)] sm:text-xs">
               ECOAGRIS e-WATCH
             </p>
 
