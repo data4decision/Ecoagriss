@@ -3,10 +3,8 @@
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react';
 import { FaSeedling, FaLeaf } from 'react-icons/fa';
-import { useTranslation } from 'react-i18next';
 
 const AboutECOAGRIS: React.FC = () => {
-  const { t } = useTranslation('common');
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -40,83 +38,188 @@ const AboutECOAGRIS: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="relative w-full overflow-hidden bg-white px-4 py-10 text-green-800 sm:px-8 sm:py-12 lg:px-12 lg:py-16"
+      className="relative w-full overflow-hidden bg-[#fcfcfb] py-8 sm:py-10 md:py-12 lg:py-14"
+      aria-labelledby="about-ecoagris-heading"
     >
-      <div className="container mx-auto flex flex-col items-center space-y-8 md:flex-row md:space-x-10 md:space-y-0 lg:space-x-12">
-        
-        {/* Left side (Image and Experience) */}
-        <div className={`flex w-full justify-center md:w-1/2 ${reveal(0).className}`} style={reveal(0).style}>
-          <div className="relative w-full max-w-md">
-            <Image
-              src="/about.jpg"
-              alt="Team"
-              className="h-auto w-full rounded-lg shadow-xl"
-              width={500}
-              height={400}
+      {/* Faint dot pattern background */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.04]"
+        aria-hidden="true"
+        style={{
+          backgroundImage: `
+            radial-gradient(circle at 15% 20%, var(--dark-green) 1px, transparent 1px),
+            radial-gradient(circle at 85% 80%, var(--dark-green) 1px, transparent 1px)
+          `,
+          backgroundSize: '60px 60px',
+        }}
+      />
+
+      {/* Soft accent glows */}
+      <div
+        className="pointer-events-none absolute -right-20 top-1/4 h-64 w-64 rounded-full bg-[var(--yellow)]/10 blur-3xl"
+        aria-hidden="true"
+      />
+      <div
+        className="pointer-events-none absolute -left-16 bottom-1/4 h-56 w-56 rounded-full bg-[var(--green)]/10 blur-3xl"
+        aria-hidden="true"
+      />
+
+      <div className="relative mx-auto w-full max-w-7xl px-5 sm:px-6 lg:px-8">
+        <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-12 lg:gap-10 xl:gap-12">
+          {/* =========================================================== */}
+          {/* LEFT — Image                                                 */}
+          {/* =========================================================== */}
+          <div
+            className={`relative lg:col-span-5 ${reveal(0).className}`}
+            style={reveal(0).style}
+          >
+            {/* Yellow offset accent behind image */}
+            <div
+              className="absolute -bottom-2 -left-2 -z-10 h-full w-full rounded-2xl bg-[var(--yellow)] opacity-80 sm:-bottom-3 sm:-left-3"
+              aria-hidden="true"
             />
-            <div className="absolute bottom-4 left-4 rounded-full bg-green-600 px-4 py-2 text-sm font-semibold text-white shadow-lg sm:bottom-5 sm:left-5 sm:px-5 sm:text-base">
-              {t('about.experience')}
-            </div>
-          </div>
-        </div>
 
-        {/* Right side (Text Content) */}
-        <div className="w-full space-y-5 md:w-1/2 md:space-y-6">
-          <h2 className={`text-center text-2xl font-bold leading-tight text-green-800 sm:text-3xl md:text-left lg:text-4xl ${reveal(100).className}`} style={reveal(100).style}>
-            {t('about.title')}
-          </h2>
-          
-          <p className={`text-center text-sm leading-relaxed text-gray-700 sm:text-base md:text-left lg:text-lg ${reveal(200).className}`} style={reveal(200).style}>
-            {t('about.description')}
-          </p>
-          
-          {/* Mission and Vision */}
-          <div className="space-y-5 sm:space-y-6">
-            {/* Mission */}
-            <div className={`flex items-start gap-3 sm:gap-4 ${reveal(300).className}`} style={reveal(300).style}>
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-600 text-white shadow-md sm:h-12 sm:w-12">
-                <FaSeedling className="h-5 w-5 sm:h-6 sm:w-6" />
-              </div>
-              <div>
-                <h3 className="text-base font-semibold text-green-700 sm:text-lg">
-                  {t('about.missionTitle')}
-                </h3>
-                <p className="text-xs leading-relaxed text-gray-600 sm:text-sm lg:text-base">
-                  {t('about.mission')}
-                </p>
-              </div>
-            </div>
-
-            {/* Vision */}
-            <div className={`flex items-start gap-3 sm:gap-4 ${reveal(450).className}`} style={reveal(450).style}>
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-yellow-400 text-white shadow-md sm:h-12 sm:w-12">
-                <FaLeaf className="h-5 w-5 sm:h-6 sm:w-6" />
-              </div>
-              <div>
-                <h3 className="text-base font-semibold text-green-700 sm:text-lg">
-                  {t('about.visionTitle')}
-                </h3>
-                <p className="text-xs leading-relaxed text-gray-600 sm:text-sm lg:text-base">
-                  {t('about.vision')}
-                </p>
-              </div>
+            <div className="relative aspect-[4/3] w-full overflow-hidden rounded-2xl shadow-[0_15px_35px_rgba(0,0,0,0.1)]">
+              <Image
+                src="/about.jpg"
+                alt="ECOWAS agricultural researchers collaborating on regional data"
+                fill
+                sizes="(max-width: 1024px) 100vw, 45vw"
+                className="object-cover object-center"
+                priority
+              />
+              {/* Subtle dark-green gradient for depth */}
+              <div
+                className="absolute inset-0 bg-gradient-to-t from-[var(--dark-green)]/25 via-transparent to-transparent mix-blend-multiply"
+                aria-hidden="true"
+              />
             </div>
           </div>
 
-          {/* Contact Info */}
-          <div className={`flex flex-wrap gap-3 pt-2 sm:gap-4 ${reveal(600).className}`} style={reveal(600).style}>
-            <a
-              href="tel:+2347040009930"
-              className="inline-flex items-center justify-center rounded-lg bg-green-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-green-700 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600 sm:px-6 sm:py-3 sm:text-base"
+          {/* =========================================================== */}
+          {/* RIGHT — Content                                              */}
+          {/* =========================================================== */}
+          <div className="flex flex-col justify-center lg:col-span-7">
+            {/* Eyebrow */}
+            <div
+              className={`flex items-center gap-3 ${reveal(100).className}`}
+              style={reveal(100).style}
             >
-              {t('about.callUs')}
-            </a>
-            <a
-              href="#"
-              className="inline-flex items-center justify-center rounded-lg bg-yellow-500 px-5 py-2.5 text-sm font-semibold text-green-800 shadow-md transition-all duration-300 hover:-translate-y-0.5 hover:bg-yellow-600 hover:shadow-lg focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-yellow-500 sm:px-6 sm:py-3 sm:text-base"
+              <span className="text-sm font-bold tracking-widest text-[var(--wine)]">
+                01
+              </span>
+              <span
+                className="h-px w-6 bg-[var(--yellow)]"
+                aria-hidden="true"
+              />
+              <span className="text-sm font-bold uppercase tracking-widest text-[var(--green)]">
+                About ECOAGRIS e-WATCH
+              </span>
+            </div>
+
+            {/* Main Heading */}
+            <h2
+              id="about-ecoagris-heading"
+              className={`mt-3 max-w-2xl text-[clamp(1.4rem,2.5vw+0.5rem,2.25rem)] font-bold leading-[1.15] text-[var(--dark-green)] ${reveal(150).className}`}
+              style={reveal(150).style}
             >
-              {t('about.readMore')}
-            </a>
+              A regional hub for agricultural data and intelligence across West Africa
+            </h2>
+
+            {/* Description */}
+            <p
+              className={`mt-3 max-w-xl text-[clamp(0.875rem,0.5vw+0.7rem,1rem)] leading-[1.65] text-gray-700 ${reveal(250).className}`}
+              style={reveal(250).style}
+            >
+              ECOAGRIS e-WATCH brings together credible agricultural information
+              from across the ECOWAS region into one accessible environment,
+              helping researchers, policymakers and investors move from data
+              discovery to evidence-based action.
+            </p>
+
+            {/* ── Vision & Mission Cards ───────────────────────────── */}
+            <div className="mt-5 grid grid-cols-1 gap-3 sm:mt-6 sm:gap-4">
+              {/* VISION */}
+              <article
+                className={`group relative overflow-hidden rounded-xl border border-[var(--green)]/15 bg-white p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition-all duration-300 hover:border-[var(--green)]/30 hover:shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:p-5 ${reveal(350).className}`}
+                style={reveal(350).style}
+              >
+                {/* Left accent bar */}
+                <div
+                  className="absolute inset-y-0 left-0 w-1 bg-[var(--yellow)]"
+                  aria-hidden="true"
+                />
+
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--yellow)]/20 text-[var(--dark-green)] transition-transform duration-300 group-hover:scale-105 sm:h-10 sm:w-10">
+                    <FaLeaf className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-1.5 flex items-center gap-2">
+                      <span className="text-[10px] font-bold tracking-widest text-[var(--wine)] sm:text-xs">
+                        01
+                      </span>
+                      <span
+                        className="h-px w-3 bg-[var(--yellow)]"
+                        aria-hidden="true"
+                      />
+                      <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--green)] sm:text-base">
+                        Our Vision
+                      </h3>
+                    </div>
+
+                    <p className="text-[clamp(0.8125rem,0.4vw+0.65rem,0.9375rem)] leading-[1.65] text-gray-700">
+                      Our vision is to become a trusted regional gateway for
+                      West African agricultural data and intelligence, enabling
+                      stakeholders to move seamlessly from data discovery to
+                      analysis, evidence and informed action.
+                    </p>
+                  </div>
+                </div>
+              </article>
+
+              {/* MISSION */}
+              <article
+                className={`group relative overflow-hidden rounded-xl border border-[var(--green)]/15 bg-white p-4 shadow-[0_4px_16px_rgba(0,0,0,0.04)] transition-all duration-300 hover:border-[var(--green)]/30 hover:shadow-[0_6px_24px_rgba(0,0,0,0.08)] sm:p-5 ${reveal(500).className}`}
+                style={reveal(500).style}
+              >
+                {/* Left accent bar */}
+                <div
+                  className="absolute inset-y-0 left-0 w-1 bg-[var(--green)]"
+                  aria-hidden="true"
+                />
+
+                <div className="flex items-start gap-3">
+                  <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--green)]/15 text-[var(--dark-green)] transition-transform duration-300 group-hover:scale-105 sm:h-10 sm:w-10">
+                    <FaSeedling className="h-4 w-4 sm:h-5 sm:w-5" />
+                  </div>
+
+                  <div className="min-w-0 flex-1">
+                    <div className="mb-1.5 flex items-center gap-2">
+                      <span className="text-[10px] font-bold tracking-widest text-[var(--wine)] sm:text-xs">
+                        02
+                      </span>
+                      <span
+                        className="h-px w-3 bg-[var(--green)]"
+                        aria-hidden="true"
+                      />
+                      <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--green)] sm:text-base">
+                        Our Mission
+                      </h3>
+                    </div>
+
+                    <p className="text-[clamp(0.8125rem,0.4vw+0.65rem,0.9375rem)] leading-[1.65] text-gray-700">
+                      Our mission is to converge credible agricultural data,
+                      make it accessible in usable formats, and transform it
+                      into meaningful intelligence that supports research,
+                      policy, investment and sustainable agricultural
+                      development across West Africa.
+                    </p>
+                  </div>
+                </div>
+              </article>
+            </div>
           </div>
         </div>
       </div>
