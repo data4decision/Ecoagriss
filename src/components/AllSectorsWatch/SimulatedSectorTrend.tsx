@@ -113,11 +113,13 @@ export default function SimulatedSectorTrend({ filters }: SimulatedSectorTrendPr
         </ResponsiveContainer>
       </div>
 
-      <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
-        <p className="text-xs leading-5 text-amber-800">
-          <strong>Simulation note:</strong> This view shows synthetic (simulated) data for demonstration purposes only. It does not represent real observations. Use the "Real Data" toggle to view the actual dataset.
-        </p>
-      </div>
+      
+<div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
+  <p className="text-xs leading-5 text-amber-800">
+    <strong>Simulation note:</strong> This view shows synthetic (simulated) data for demonstration purposes only. It does not represent real observations. Use the &quot;Real Data&quot; toggle to view the actual dataset.
+  </p>
+</div>
+
     </div>
   );
 }
