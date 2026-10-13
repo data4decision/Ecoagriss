@@ -102,7 +102,7 @@ const HeroSection: React.FC = () => {
               id="home-hero-heading"
               className="mt-4 max-w-2xl text-[clamp(1.75rem,4.5vw+0.5rem,3.75rem)] font-bold leading-[1.12] tracking-tight text-white sm:leading-[1.08]"
             >
-              ECOWAS West African Agricultural Tracking and Convergence Hub
+              ECOAGRIS West African Agricultural Tracking and Convergence Hub
             </h1>
 
             {/* Subheadline */}

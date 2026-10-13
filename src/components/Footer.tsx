@@ -110,7 +110,7 @@ const Footer: React.FC = () => {
       <div className="mt-6 text-center text-sm opacity-80">
         <p>
           © {currentYear} ECOAGRIS. {t('footer.rights')} | {t('footer.poweredBy')}{' '}
-          <span className="text-[var(--yellow)] font-semibold">Data4Decision International</span>
+          <span className="text-[var(--yellow)] font-semibold">ECOWAS Commission</span>
         </p>
       </div>
     </footer>
