@@ -257,12 +257,12 @@ export default function AdminLogin() {
     <div className="min-h-screen bg-gradient-to-br from-[var(--yellow)] to-[var(--dark-green)] flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
         <div className="flex justify-center">
-                  <Image src="/ECOWAS Commission.png" alt='Ecowas logo' width={40} height={40} className="mb-4"/>
-                  <Image src="/logo.png" alt='Ecowas logo' width={40} height={40} className="mb-4"/>
-                 </div>
+            <Image src="/ECOWAS Commission.png" alt='Ecowas logo' width={40} height={40} className="mb-4"/>
+            <Image src="/logo.png" alt='Ecowas logo' width={40} height={40} className="mb-4"/>
+          </div>
         <div className="flex justify-center mb-6">
           <div className="relative bg-gradient-to-br from-[var(--yellow)] to-amber-500 p-[3px] rounded-full shadow-lg shadow-amber-500/30">
-            <div className="bg-white rounded-full px-8 py-4 flex flex-col items-center justify-center">
+            <div className="bg-white rounded-full px-8 py-2 flex flex-col items-center justify-center">
               <p className="text-xl font-extrabold tracking-widest text-[var(--dark-green)] leading-none">
                 ECOAGRIS
               </p>

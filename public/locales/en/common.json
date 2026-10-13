@@ -131,7 +131,7 @@
   },
   "collaborators": {
   "title": "Our Partners and Collaborators",
-  "description": "ECOAGRIS thrives on collaboration. Our partners — from ECOWAS institutions to international organizations — work together to strengthen food systems, enhance data reliability, and promote sustainable agricultural development across West Africa.",
+  "description": "ECOAGRIS e-WATCH thrives on collaboration. Our partners — from ECOWAS institutions to international organizations — work together to strengthen food systems, enhance data reliability, and promote sustainable agricultural development across West Africa.",
   "roles": {
     "ecowas": "Regional Coordination",
     "fao": "Food Security & Data Systems",
@@ -143,7 +143,7 @@
   "ctaButton": "Become a Partner"
 },
 "contact": {
-  "title": "Get Involved with ECOAGRIS",
+  "title": "Get Involved with ECOAGRIS e-WATCH",
   "subtitle": "Join our growing network of agricultural innovators, policymakers, and researchers working to strengthen food security across ECOWAS.",
   "form": {
     "name": "Your Name",
@@ -153,16 +153,16 @@
   },
   "success": "Message sent successfully! We’ll get back to you soon.",
   "joinTitle": "Join the Movement",
-  "joinDesc": "Stay connected with ECOAGRIS for insights, updates, and opportunities across ECOWAS.",
+  "joinDesc": "Stay connected with ECOAGRIS e-WATCH for insights, updates, and opportunities across ECOWAS.",
   "info": {
-    "address": "Data4Decision International, Ilorin, Nigeria",
+    "address": "ECOAGRIS e-WATCH, Ilorin, Nigeria",
     "email": "info@data4decision.org",
     "phone": "+234 704 000 9930"
   }
 },
 
   "footer": {
-    "about": "Empowering Agricultural Intelligence Across ECOWAS. ECOAGRIS connects ECOWAS countries through smart agricultural data systems that drive evidence-based decision-making and regional food security.",
+    "about": "Empowering Agricultural Intelligence Across WEST AFRICA. ECOAGRIS connects ECOWAS countries through smart agricultural data systems that drive evidence-based decision-making and regional food security.",
     "quickLinks": {
       "title": "Quick Links",
       "home": "Home",

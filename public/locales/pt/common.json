@@ -143,7 +143,7 @@
   "ctaButton": "Torne-se um Parceiro"
 },
 "contact": {
-  "title": "Envolva-se com o ECOAGRIS",
+  "title": "Envolva-se com o ECOAGRIS e-WATCH",
   "subtitle": "Junte-se à nossa rede crescente de inovadores agrícolas, formuladores de políticas e pesquisadores que trabalham para fortalecer a segurança alimentar em toda a CEDEAO.",
   "form": {
     "name": "Seu nome",
@@ -153,16 +153,16 @@
   },
   "success": "Mensagem enviada com sucesso! Entraremos em contato em breve.",
   "joinTitle": "Junte-se ao movimento",
-  "joinDesc": "Mantenha-se conectado com o ECOAGRIS para obter informações, atualizações e oportunidades em toda a CEDEAO.",
+  "joinDesc": "Mantenha-se conectado com o ECOAGRIS e-WATCH para obter informações, atualizações e oportunidades em toda a CEDEAO.",
   "info": {
-    "address": "Data4Decision International, Ilorin, Nigéria",
+    "address": "ECOAGRIS e-WATCH, Ilorin, Nigéria",
     "email": "info@data4decision.org",
     "phone": "+234 704 000 9930"
   }
 },
 
   "footer": {
-    "about": "Fortalecendo a inteligência agrícola em toda a CEDEAO. O ECOAGRIS conecta os países da CEDEAO por meio de sistemas inteligentes de dados agrícolas que promovem a tomada de decisões baseadas em evidências e a segurança alimentar regional.",
+    "about": "Fortalecendo a inteligência agrícola em toda a ÁFRICA OCIDENTAL. O ECOAGRIS conecta os países da CEDEAO por meio de sistemas inteligentes de dados agrícolas que promovem a tomada de decisões baseadas em evidências e a segurança alimentar regional.",
     "quickLinks": {
       "title": "Links rápidos",
       "home": "Início",
