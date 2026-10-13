@@ -105,13 +105,13 @@ const AboutECOAGRIS: React.FC = () => {
               className={`flex items-center gap-3 ${reveal(100).className}`}
               style={reveal(100).style}
             >
-              <span className="text-sm font-bold tracking-widest text-[var(--wine)]">
+              {/* <span className="text-sm font-bold tracking-widest text-[var(--wine)]">
                 01
               </span>
               <span
                 className="h-px w-6 bg-[var(--yellow)]"
                 aria-hidden="true"
-              />
+              /> */}
               <span className="text-sm font-bold uppercase tracking-widest text-[var(--green)]">
                 About ECOAGRIS e-WATCH
               </span>

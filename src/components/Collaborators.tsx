@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { useTranslation } from 'react-i18next';
 
 const partners = [
-  { name: 'ECOWAS Commission', logo: '/ECOWAS Commission.png', roleKey: 'ecowas' },
+  // { name: 'ECOWAS Commission', logo: '/ECOWAS Commission.png', roleKey: 'ecowas' },
   { name: 'FAO', logo: '/fao.png', roleKey: 'fao' },
   { name: 'IFAD', logo: '/ifad.png', roleKey: 'ifad' },
   { name: 'World Bank', logo: '/world.png', roleKey: 'worldBank' },
@@ -33,7 +33,7 @@ const Collaborators: React.FC = () => {
         </p>
 
         {/* Partner Logos Grid */}
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-8 mt-12 items-center justify-center">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-8 mt-12 items-center justify-center">
           {partners.map((partner, index) => (
             <div
               key={index}
