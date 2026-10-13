@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image'
 import {
   FaSpinner,
   FaEye,
@@ -103,16 +104,26 @@ export default function AdminSignup() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[var(--yellow)] to-[var(--dark-green)] flex items-center justify-center p-4">
       <div className="bg-white rounded-xl shadow-2xl p-8 w-full max-w-md">
-
+         <div className="flex justify-center">
+          <Image src="/ECOWAS Commission.png" alt='Ecowas logo' width={40} height={40} className="mb-4"/>
+          <Image src="/logo.png" alt='Ecowas logo' width={40} height={40} className="mb-4"/>
+         </div>
         <div className="flex justify-center mb-6">
-          <div className="bg-[var(--yellow)] p-3 rounded-full">
-            <div className="bg-white p-2 rounded-full">
-              <span className="text-2xl font-bold text-[var(--dark-green)]">
-                ECOAGRIS
-              </span>
-            </div>
-          </div>
-        </div>
+  <div className="relative bg-gradient-to-br from-[var(--yellow)] to-amber-500 p-[3px] rounded-full shadow-lg shadow-amber-500/30">
+    <div className="bg-white rounded-full px-8 py-2 flex flex-col items-center justify-center">
+      <p className="text-xl font-extrabold tracking-widest text-[var(--dark-green)] leading-none">
+        ECOAGRIS
+      </p>
+      <div className="flex items-center gap-2 mt-1">
+        <span className="h-[1px] w-4 bg-[var(--dark-green)]/40" />
+        <span className="text-sm font-semibold tracking-[0.2em] text-[var(--dark-green)]/80 italic">
+          e-WATCH PLATFORM
+        </span>
+        <span className="h-[1px] w-4 bg-[var(--dark-green)]/40" />
+      </div>
+    </div>
+  </div>
+</div>
 
         <h1 className="text-2xl font-bold text-center text-[var(--dark-green)] mb-2">
           Admin Sign Up
