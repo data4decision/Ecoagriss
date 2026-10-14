@@ -78,7 +78,7 @@ console.log(
   `/${profile.country.toLowerCase()}/dashboard`
 );
 
-router.push(`/${profile.country.toLowerCase()}/dashboard`);
+router.push(`/${profile.country.toLowerCase()}/dashboard/all-sectors-watch`);
   } catch {
     setError(t('login.errors.invalid_credentials'));
   } finally {
