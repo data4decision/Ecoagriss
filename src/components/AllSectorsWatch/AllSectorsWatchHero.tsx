@@ -32,45 +32,9 @@ export default function AllSectorsWatchHero() {
           return;
         }
 
-        const { data: adminProfile, error: adminError } = await supabase
-          .from('admin_profiles')
-          .select('role, status')
-          .eq('id', user.id)
-          .maybeSingle();
-
-        if (adminError) {
-          console.error('Failed to check admin profile:', adminError);
-        }
-
-        const isAdmin =
-          adminProfile?.status === 'active' &&
-          (adminProfile.role === 'admin' ||
-            adminProfile.role === 'super_admin');
-
-        if (isAdmin) {
-          if (mounted) {
-            setCoverageLabel('ECOWAS Regional View');
-            setIsLoading(false);
-          }
-          return;
-        }
-
-        const { data: profile, error: profileError } = await supabase
-          .from('profiles')
-          .select('country')
-          .eq('id', user.id)
-          .maybeSingle();
-
-        if (profileError || !profile) {
-          if (mounted) {
-            setCoverageLabel('—');
-            setIsLoading(false);
-          }
-          return;
-        }
-
+        // All authenticated users now have full regional access
         if (mounted) {
-          setCoverageLabel(profile.country?.trim() || '—');
+          setCoverageLabel('ECOWAS Regional View');
           setIsLoading(false);
         }
       } catch (err: unknown) {
@@ -224,7 +188,7 @@ export default function AllSectorsWatchHero() {
                       : 'text-white/80 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  Real Data
+                  Validated Raw Data
                 </button>
                 <button
                   type="button"

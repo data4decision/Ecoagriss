@@ -240,7 +240,7 @@ Do not use Markdown.
 Use exactly this structure:
 
 {
-  "summary": "4-5 sentence overall assessment",
+  "summary": "6-7 sentence overall assessment",
   "keySignals": [
     "signal 1",
     "signal 2",

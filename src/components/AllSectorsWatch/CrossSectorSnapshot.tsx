@@ -2,12 +2,9 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import type { ReactNode } from 'react';
 import { createClient } from '@/lib/supabase/client';
-import {
-  Wheat,
-  Beef,
-  CalendarDays,
-} from 'lucide-react';
+import { Wheat, Beef, CalendarDays } from 'lucide-react';
 
 /* -------------------------------------------------------------------------- */
 /* Types                                                                      */
@@ -26,7 +23,7 @@ interface DatasetRecord {
 interface SnapshotSector {
   name: string;
   description: string;
-  icon: React.ReactNode;
+  icon: ReactNode;
   recordCount: number;
   countryCount: number;
   period: string;
@@ -34,6 +31,10 @@ interface SnapshotSector {
 }
 
 type LoadState = 'loading' | 'success' | 'empty' | 'error';
+
+type SectorTable = 'agricultural_inputs' | 'livestock_data';
+
+const PAGE_SIZE = 1000;
 
 /* -------------------------------------------------------------------------- */
 /* Helpers                                                                    */
@@ -46,10 +47,10 @@ function extractYear(value: unknown): number | null {
     return value;
   }
 
-  if (typeof value === 'string') {
-    const parsed = parseInt(value, 10);
+  if (typeof value === 'string' && value.trim() !== '') {
+    const parsed = Number(value);
 
-    if (!Number.isNaN(parsed)) {
+    if (Number.isInteger(parsed)) {
       return parsed;
     }
   }
@@ -57,64 +58,92 @@ function extractYear(value: unknown): number | null {
   return null;
 }
 
+/**
+ * Fetch every accessible record in batches.
+ *
+ * RLS remains the database security boundary.
+ * An empty countryId means all countries accessible to the
+ * authenticated user. A specified countryId filters the results.
+ */
+async function fetchSectorRecords(
+  table: SectorTable,
+  countryId: number | null
+): Promise<DatasetRecord[]> {
+  const supabase = createClient();
+  const records: DatasetRecord[] = [];
+
+  for (let offset = 0; ; offset += PAGE_SIZE) {
+    let query = supabase
+      .from(table)
+      .select('id, country_id, year')
+      .order('id')
+      .range(offset, offset + PAGE_SIZE - 1);
+
+    if (countryId !== null) {
+      query = query.eq('country_id', countryId);
+    }
+
+    const { data, error } = await query;
+
+    if (error) {
+      console.error(`${table} fetch error:`, error);
+      throw error;
+    }
+
+    const batch = (data ?? []) as DatasetRecord[];
+
+    records.push(...batch);
+
+    if (batch.length < PAGE_SIZE) {
+      break;
+    }
+  }
+
+  return records;
+}
+
 function computeStats(
   records: DatasetRecord[],
   name: string,
   description: string,
-  icon: React.ReactNode
+  icon: ReactNode
 ): SnapshotSector {
-  const recordCount = records.length;
-
-  /*
-   * Dataset tables use country_id.
-   *
-   * RLS controls which records are returned:
-   * - Normal users receive only their country's records.
-   * - Admins receive all authorised ECOWAS records.
-   *
-   * Counting unique country_id values therefore reflects
-   * the user's authorised data coverage.
-   */
   const countrySet = new Set<number>();
+  const years: number[] = [];
 
-  records.forEach((record) => {
+  for (const record of records) {
     if (
       typeof record.country_id === 'number' &&
       Number.isFinite(record.country_id)
     ) {
       countrySet.add(record.country_id);
     }
-  });
 
-  const countryCount = countrySet.size;
-
-  const years: number[] = [];
-
-  records.forEach((record) => {
     const year = extractYear(record.year);
 
     if (year !== null) {
       years.push(year);
     }
-  });
+  }
+
+  const minYear = years.length ? Math.min(...years) : null;
+  const maxYear = years.length ? Math.max(...years) : null;
 
   let period = '—';
 
-  if (years.length > 0) {
-    const min = Math.min(...years);
-    const max = Math.max(...years);
-
-    period = min === max ? `${min}` : `${min}–${max}`;
+  if (minYear !== null && maxYear !== null) {
+    period =
+      minYear === maxYear ? `${minYear}` : `${minYear}–${maxYear}`;
   }
 
   return {
     name,
     description,
     icon,
-    recordCount,
-    countryCount,
+    recordCount: records.length,
+    countryCount: countrySet.size,
     period,
-    available: recordCount > 0,
+    available: records.length > 0,
   };
 }
 
@@ -128,21 +157,22 @@ function SnapshotSkeleton() {
       className="overflow-hidden rounded-2xl border border-[var(--green)]/20 bg-[var(--white)] shadow-sm"
       aria-hidden="true"
     >
-      <div
-        className="h-0.5 bg-gradient-to-r from-[var(--dark-green)] via-[var(--yellow)] to-[var(--dark-green)] opacity-50"
-      />
+      <div className="h-0.5 bg-gradient-to-r from-[var(--dark-green)] via-[var(--yellow)] to-[var(--dark-green)] opacity-50" />
 
       <div className="p-4 sm:p-5 lg:p-6">
         <div className="mb-4 hidden grid-cols-4 gap-4 border-b border-[var(--green)]/10 pb-3 sm:grid">
-          <div className="h-3 w-16 animate-pulse rounded bg-[var(--green)]/10 motion-reduce:animate-none" />
-          <div className="h-3 w-14 animate-pulse rounded bg-[var(--green)]/10 motion-reduce:animate-none" />
-          <div className="h-3 w-18 animate-pulse rounded bg-[var(--green)]/10 motion-reduce:animate-none" />
-          <div className="h-3 w-24 animate-pulse rounded bg-[var(--green)]/10 motion-reduce:animate-none" />
+          {[16, 14, 18, 24].map((width, index) => (
+            <div
+              key={index}
+              className="h-3 animate-pulse rounded bg-[var(--green)]/10 motion-reduce:animate-none"
+              style={{ width: `${width * 4}px` }}
+            />
+          ))}
         </div>
 
-        {[0, 1].map((i) => (
+        {[0, 1].map((item) => (
           <div
-            key={i}
+            key={item}
             className="border-b border-[var(--green)]/8 py-4 last:border-b-0 sm:grid sm:grid-cols-4 sm:items-center sm:gap-4"
           >
             <div className="flex items-center gap-3">
@@ -152,7 +182,7 @@ function SnapshotSkeleton() {
 
             <div className="mt-3 space-y-2 sm:mt-0">
               <div className="h-4 w-12 animate-pulse rounded bg-[var(--green)]/10 motion-reduce:animate-none" />
-              <div className="h-1.5 w-full max-w-[6rem] animate-pulse rounded-full bg-[var(--green)]/8 motion-reduce:animate-none" />
+              <div className="h-1.5 w-full max-w-[6rem] animate-pulse rounded-full bg-[var(--green)]/10 motion-reduce:animate-none" />
             </div>
 
             <div className="mt-2 h-4 w-20 animate-pulse rounded bg-[var(--green)]/10 motion-reduce:animate-none sm:mt-0" />
@@ -186,8 +216,10 @@ function SectorRow({
       : 0;
 
   return (
-    <div className="border-b border-[var(--green)]/8 py-4 last:border-b-0 sm:grid sm:grid-cols-4 sm:items-center sm:gap-4">
-      {/* Sector */}
+    <div
+      role="listitem"
+      className="border-b border-[var(--green)]/8 py-4 last:border-b-0 sm:grid sm:grid-cols-4 sm:items-center sm:gap-4"
+    >
       <div className="flex items-center gap-3">
         <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-[var(--green)]/10 text-[var(--dark-green)]">
           <span aria-hidden="true">{sector.icon}</span>
@@ -204,7 +236,6 @@ function SectorRow({
         </div>
       </div>
 
-      {/* Records + relative volume bar */}
       <div className="mt-3 sm:mt-0">
         <div className="flex items-baseline justify-between gap-2 sm:block">
           <span className="text-xs text-[var(--olive-green)]/70 sm:hidden">
@@ -218,7 +249,6 @@ function SectorRow({
 
         <div
           className="mt-1.5 h-1.5 w-full max-w-[8rem] overflow-hidden rounded-full bg-[var(--green)]/10"
-          role="presentation"
           aria-hidden="true"
         >
           <div
@@ -228,7 +258,6 @@ function SectorRow({
         </div>
       </div>
 
-      {/* Countries */}
       <div className="mt-2 flex items-baseline justify-between gap-2 sm:mt-0 sm:block">
         <span className="text-xs text-[var(--olive-green)]/70 sm:hidden">
           Countries
@@ -239,7 +268,6 @@ function SectorRow({
         </span>
       </div>
 
-      {/* Period */}
       <div className="mt-2 flex items-baseline justify-between gap-2 sm:mt-0 sm:block">
         <span className="text-xs text-[var(--olive-green)]/70 sm:hidden">
           Period
@@ -250,7 +278,6 @@ function SectorRow({
             className="hidden h-3.5 w-3.5 shrink-0 opacity-70 sm:inline"
             aria-hidden="true"
           />
-
           {sector.period}
         </span>
       </div>
@@ -272,104 +299,48 @@ export default function CrossSectorSnapshot({
     let mounted = true;
 
     async function loadSnapshot() {
+      setState('loading');
+
       try {
-        const supabase = createClient();
-
-        /*
-         * Build separate query builders so the optional country filter
-         * can be applied without changing the RLS behaviour.
-         */
-        const inputsQuery = supabase
-          .from('agricultural_inputs')
-          .select('id, country_id, year');
-
-        const livestockQuery = supabase
-          .from('livestock_data')
-          .select('id, country_id, year');
-
-        /*
-         * Admins can select a specific country from the CountryFilterAdmin.
-         *
-         * When countryId is null:
-         * - Normal users receive only their authorised country through RLS.
-         * - Admins receive all authorised countries through RLS.
-         *
-         * When countryId has a value:
-         * - The query is additionally restricted to that country.
-         *
-         * RLS remains the security boundary.
-         */
-        if (countryId !== null) {
-          inputsQuery.eq('country_id', countryId);
-          livestockQuery.eq('country_id', countryId);
-        }
-
-        const [inputsResult, livestockResult] = await Promise.all([
-          inputsQuery,
-          livestockQuery,
+        const [inputs, livestock] = await Promise.all([
+          fetchSectorRecords('agricultural_inputs', countryId),
+          fetchSectorRecords('livestock_data', countryId),
         ]);
-
-        if (inputsResult.error) {
-          console.error(
-            'agricultural_inputs fetch error:',
-            inputsResult.error
-          );
-
-          throw inputsResult.error;
-        }
-
-        if (livestockResult.error) {
-          console.error(
-            'livestock_data fetch error:',
-            livestockResult.error
-          );
-
-          throw livestockResult.error;
-        }
-
-        const inputs = (inputsResult.data ?? []) as DatasetRecord[];
-        const livestock = (livestockResult.data ?? []) as DatasetRecord[];
 
         const stats: SnapshotSector[] = [
           computeStats(
             inputs,
             'Agricultural Inputs',
             'Fertilizers, seeds, pesticides and related agricultural input indicators.',
-            <Wheat
-              className="h-4 w-4"
-              strokeWidth={1.75}
-            />
+            <Wheat className="h-4 w-4" strokeWidth={1.75} />
           ),
-
           computeStats(
             livestock,
             'Livestock',
             'Herd sizes, production and livestock sector indicators.',
-            <Beef
-              className="h-4 w-4"
-              strokeWidth={1.75}
-            />
+            <Beef className="h-4 w-4" strokeWidth={1.75} />
           ),
         ];
 
         if (!mounted) return;
 
-        const hasAnyData = stats.some(
-          (sector) => sector.recordCount > 0
-        );
-
         setSectors(stats);
-        setState(hasAnyData ? 'success' : 'empty');
-      } catch (err: unknown) {
-        console.error('CrossSectorSnapshot load error:', err);
+        setState(
+          stats.some((sector) => sector.recordCount > 0)
+            ? 'success'
+            : 'empty'
+        );
+      } catch (error: unknown) {
+        console.error('CrossSectorSnapshot load error:', error);
 
         if (mounted) {
+          setSectors([]);
           setState('error');
         }
       }
     }
 
-    loadSnapshot();
+    void loadSnapshot();
 
     return () => {
       mounted = false;
@@ -378,7 +349,7 @@ export default function CrossSectorSnapshot({
 
   const maxRecords =
     sectors.length > 0
-      ? Math.max(...sectors.map((s) => s.recordCount), 0)
+      ? Math.max(...sectors.map((sector) => sector.recordCount), 0)
       : 0;
 
   return (
@@ -386,7 +357,6 @@ export default function CrossSectorSnapshot({
       className="relative isolate overflow-hidden bg-gradient-to-br from-[#c5dbc5] via-[#b8d4b8] to-[#a8c9a8] py-12 sm:py-14 lg:py-16"
       aria-labelledby="cross-sector-snapshot-heading"
     >
-      {/* Subtle grid pattern */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.06]"
         aria-hidden="true"
@@ -399,7 +369,6 @@ export default function CrossSectorSnapshot({
         }}
       />
 
-      {/* Soft glows */}
       <div
         className="pointer-events-none absolute -right-20 top-8 h-64 w-64 rounded-full bg-[var(--yellow)]/15 blur-3xl"
         aria-hidden="true"
@@ -411,7 +380,6 @@ export default function CrossSectorSnapshot({
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
         <div className="mb-8 max-w-2xl sm:mb-10">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--dark-green)] sm:text-xs">
             Real Data Cross-Sector Snapshot
@@ -421,21 +389,23 @@ export default function CrossSectorSnapshot({
             id="cross-sector-snapshot-heading"
             className="mt-2 text-[clamp(1.5rem,3vw+0.5rem,2.25rem)] font-bold leading-tight tracking-tight text-[var(--dark-green)]"
           >
-            A quick view across Ecoagris sectors
+            A quick view across ECOAGRIS sectors
           </h2>
 
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--olive-green)] sm:text-base">
-            Compare the available sector data at a glance and understand the
-            breadth of Ecoagris coverage.
+            Explore agricultural inputs and livestock data across all
+            countries represented in the available dataset.
+          </p>
+
+          <p className="mt-2 text-xs text-[var(--olive-green)]/80">
+            {countryId === null
+              ? 'Showing all accessible countries'
+              : 'Showing the selected country'}
           </p>
         </div>
 
-        {/* Content states */}
         {state === 'loading' && (
-          <div
-            aria-busy="true"
-            aria-label="Loading cross-sector snapshot"
-          >
+          <div aria-busy="true" aria-label="Loading cross-sector snapshot">
             <SnapshotSkeleton />
           </div>
         )}
@@ -448,7 +418,6 @@ export default function CrossSectorSnapshot({
             <p className="text-base font-medium text-[var(--dark-green)]">
               We couldn&apos;t load the cross-sector snapshot right now.
             </p>
-
             <p className="mt-1 text-sm text-[var(--olive-green)]/70">
               Please try again later.
             </p>
@@ -460,46 +429,34 @@ export default function CrossSectorSnapshot({
             <p className="text-base font-medium text-[var(--dark-green)]">
               No sector snapshot data is currently available.
             </p>
-
             <p className="mt-1 text-sm text-[var(--olive-green)]/70">
-              Sector coverage information will appear here when data becomes
-              available.
+              Data coverage information will appear here when records are
+              available for the selected scope.
             </p>
           </div>
         )}
 
         {state === 'success' && (
           <div className="overflow-hidden rounded-2xl border border-[var(--green)]/20 bg-[var(--white)] shadow-sm">
-            {/* Top accent */}
             <div
               className="h-0.5 bg-gradient-to-r from-[var(--dark-green)] via-[var(--yellow)] to-[var(--dark-green)] opacity-70"
               aria-hidden="true"
             />
 
             <div className="p-4 sm:p-5 lg:p-6">
-              {/* Desktop column headers */}
-              <div
-                className="mb-1 hidden grid-cols-4 gap-4 border-b border-[var(--green)]/10 pb-3 sm:grid"
-                role="row"
-              >
-                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--olive-green)]/70">
-                  Sector
-                </span>
-
-                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--olive-green)]/70">
-                  Records
-                </span>
-
-                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--olive-green)]/70">
-                  Countries
-                </span>
-
-                <span className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--olive-green)]/70">
-                  Coverage period
-                </span>
+              <div className="mb-1 hidden grid-cols-4 gap-4 border-b border-[var(--green)]/10 pb-3 sm:grid">
+                {['Sector', 'Records', 'Countries', 'Coverage period'].map(
+                  (heading) => (
+                    <span
+                      key={heading}
+                      className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--olive-green)]/70"
+                    >
+                      {heading}
+                    </span>
+                  )
+                )}
               </div>
 
-              {/* Sector rows */}
               <div role="list">
                 {sectors.map((sector) => (
                   <SectorRow
@@ -516,4 +473,3 @@ export default function CrossSectorSnapshot({
     </section>
   );
 }
-

@@ -1,4 +1,3 @@
-
 'use client';
 
 import {
@@ -44,16 +43,6 @@ interface SectorComparisonTrendProps {
 interface Country {
   id: number;
   name: string;
-}
-
-interface Profile {
-  country: string | null;
-}
-
-interface AdminProfile {
-  id: string;
-  role: string;
-  status: string;
 }
 
 interface DataRecord {
@@ -278,11 +267,6 @@ export default function SectorComparisonTrend({
 }: SectorComparisonTrendProps) {
   const supabase = useMemo(() => createClient(), []);
 
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [userCountryId, setUserCountryId] = useState<number | null>(
-    null
-  );
-
   const [countries, setCountries] = useState<Country[]>([]);
   const [chartData, setChartData] = useState<ChartRow[]>([]);
 
@@ -380,25 +364,7 @@ export default function SectorComparisonTrend({
         return;
       }
 
-      const {
-        data: adminProfile,
-        error: adminError,
-      } = await supabase
-        .from('admin_profiles')
-        .select('id, role, status')
-        .eq('id', user.id)
-        .eq('status', 'active')
-        .in('role', ['admin', 'super_admin'])
-        .maybeSingle<AdminProfile>();
-
-      if (adminError) {
-        throw adminError;
-      }
-
-      const userIsAdmin = Boolean(adminProfile);
-
-      setIsAdmin(userIsAdmin);
-
+      // Load ALL countries for every logged-in user (same as previous admin access)
       const {
         data: countryData,
         error: countryError,
@@ -416,64 +382,14 @@ export default function SectorComparisonTrend({
       const loadedCountries =
         (countryData ?? []) as Country[];
 
-      if (userIsAdmin) {
-        setCountries(loadedCountries);
+      setCountries(loadedCountries);
 
-        if (filters.countryIds.length === 0) {
-          if (loadedCountries.length > 0) {
-            onFiltersChange({
-              ...filters,
-              countryIds: [loadedCountries[0].id],
-            });
-          }
-        }
-      } else {
-        const {
-          data: profile,
-          error: profileError,
-        } = await supabase
-          .from('profiles')
-          .select('country')
-          .eq('id', user.id)
-          .maybeSingle<Profile>();
-
-        if (profileError) {
-          throw profileError;
-        }
-
-        const profileCountry =
-          profile?.country ?? null;
-
-        const matchedCountry =
-          loadedCountries.find(
-            (country) =>
-              country.name.toLowerCase() ===
-              profileCountry?.toLowerCase()
-          );
-
-        if (!matchedCountry) {
-          setCountries([]);
-          setUserCountryId(null);
-
-          setError(
-            'Your profile country could not be matched to the available dataset.'
-          );
-
-          return;
-        }
-
-        setCountries([matchedCountry]);
-        setUserCountryId(matchedCountry.id);
-
-        if (
-          filters.countryIds.length !== 1 ||
-          filters.countryIds[0] !== matchedCountry.id
-        ) {
-          onFiltersChange({
-            ...filters,
-            countryIds: [matchedCountry.id],
-          });
-        }
+      // Default to first country if none selected
+      if (filters.countryIds.length === 0 && loadedCountries.length > 0) {
+        onFiltersChange({
+          ...filters,
+          countryIds: [loadedCountries[0].id],
+        });
       }
     } catch (caughtError) {
       const message =
@@ -527,31 +443,11 @@ export default function SectorComparisonTrend({
     updateFilters,
   ]);
 
-  useEffect(() => {
-    if (
-      !isAdmin &&
-      userCountryId !== null &&
-      (filters.countryIds.length !== 1 ||
-        filters.countryIds[0] !== userCountryId)
-    ) {
-      updateFilters({
-        countryIds: [userCountryId],
-      });
-    }
-  }, [
-    filters.countryIds,
-    isAdmin,
-    updateFilters,
-    userCountryId,
-  ]);
+  // No longer restricting non-admins to a single country
 
   const toggleCountry = (
     countryIdToToggle: number
   ) => {
-    if (!isAdmin) {
-      return;
-    }
-
     const currentCountryIds = filters.countryIds;
 
     if (currentCountryIds.includes(countryIdToToggle)) {
@@ -604,10 +500,6 @@ export default function SectorComparisonTrend({
   };
 
   const selectAllCountries = () => {
-    if (!isAdmin) {
-      return;
-    }
-
     updateFilters({
       countryIds: countries.map(
         (country) => country.id
@@ -616,7 +508,7 @@ export default function SectorComparisonTrend({
   };
 
   const clearAdditionalCountries = () => {
-    if (!isAdmin || countries.length === 0) {
+    if (countries.length === 0) {
       return;
     }
 
@@ -900,111 +792,104 @@ export default function SectorComparisonTrend({
       {/* Filters */}
       <div className="border-b border-gray-200 bg-gray-50/80 p-4 sm:p-6">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-          {/* Country */}
+          {/* Country – now available to ALL users */}
           <div className="lg:col-span-2">
             <label className="mb-2 block text-sm font-semibold text-gray-700">
               Country
             </label>
 
-            {isAdmin ? (
-              <div className="relative">
-                <button
-                  type="button"
-                  onClick={() =>
-                    setCountryDropdownOpen(
-                      (current) => !current
-                    )
-                  }
-                  className="flex min-h-[46px] w-full items-center justify-between rounded-xl border border-gray-300 bg-white px-4 py-2 text-left text-sm shadow-sm transition hover:border-[var(--dark-green)]"
-                >
-                  <span className="truncate text-gray-700">
-                    {selectedCountries.length === 0
-                      ? 'Select countries'
-                      : selectedCountries.length ===
-                        1
-                        ? selectedCountries[0].name
-                        : `${selectedCountries.length} countries selected`}
-                  </span>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() =>
+                  setCountryDropdownOpen(
+                    (current) => !current
+                  )
+                }
+                className="flex min-h-[46px] w-full items-center justify-between rounded-xl border border-gray-300 bg-white px-4 py-2 text-left text-sm shadow-sm transition hover:border-[var(--dark-green)]"
+              >
+                <span className="truncate text-gray-700">
+                  {selectedCountries.length === 0
+                    ? 'Select countries'
+                    : selectedCountries.length ===
+                      1
+                      ? selectedCountries[0].name
+                      : `${selectedCountries.length} countries selected`}
+                </span>
 
-                  <ChevronDown
-                    className={`h-4 w-4 shrink-0 transition-transform ${
-                      countryDropdownOpen
-                        ? 'rotate-180'
-                        : ''
-                    }`}
-                  />
-                </button>
+                <ChevronDown
+                  className={`h-4 w-4 shrink-0 transition-transform ${
+                    countryDropdownOpen
+                      ? 'rotate-180'
+                      : ''
+                  }`}
+                />
+              </button>
 
-                {countryDropdownOpen && (
-                  <div className="absolute z-30 mt-2 max-h-80 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-xl">
-                    <div className="mb-2 flex items-center justify-between border-b border-gray-100 px-2 pb-2">
-                      <button
-                        type="button"
-                        onClick={
-                          selectAllCountries
-                        }
-                        className="text-xs font-semibold text-[var(--dark-green)] hover:underline"
-                      >
-                        Select all
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={
-                          clearAdditionalCountries
-                        }
-                        className="text-xs font-semibold text-gray-500 hover:text-gray-700"
-                      >
-                        Reset
-                      </button>
-                    </div>
-
-                    {countries.map(
-                      (country) => {
-                        const selected =
-                          filters.countryIds.includes(
-                            country.id
-                          );
-
-                        return (
-                          <button
-                            key={country.id}
-                            type="button"
-                            onClick={() =>
-                              toggleCountry(
-                                country.id
-                              )
-                            }
-                            className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm hover:bg-gray-50"
-                          >
-                            <span
-                              className={`flex h-5 w-5 items-center justify-center rounded border ${
-                                selected
-                                  ? 'border-[var(--dark-green)] bg-[var(--dark-green)] text-white'
-                                  : 'border-gray-300 bg-white'
-                              }`}
-                            >
-                              {selected && (
-                                <Check className="h-3.5 w-3.5" />
-                              )}
-                            </span>
-
-                            <span className="text-gray-700">
-                              {country.name}
-                            </span>
-                          </button>
-                        );
+              {countryDropdownOpen && (
+                <div className="absolute z-30 mt-2 max-h-80 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-xl">
+                  <div className="mb-2 flex items-center justify-between border-b border-gray-100 px-2 pb-2">
+                    <button
+                      type="button"
+                      onClick={
+                        selectAllCountries
                       }
-                    )}
+                      className="text-xs font-semibold text-[var(--dark-green)] hover:underline"
+                    >
+                      Select all
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={
+                        clearAdditionalCountries
+                      }
+                      className="text-xs font-semibold text-gray-500 hover:text-gray-700"
+                    >
+                      Reset
+                    </button>
                   </div>
-                )}
-              </div>
-            ) : (
-              <div className="flex min-h-[46px] items-center rounded-xl border border-gray-200 bg-gray-100 px-4 text-sm font-medium text-gray-700">
-                {selectedCountries[0]?.name ??
-                  'Your country'}
-              </div>
-            )}
+
+                  {countries.map(
+                    (country) => {
+                      const selected =
+                        filters.countryIds.includes(
+                          country.id
+                        );
+
+                      return (
+                        <button
+                          key={country.id}
+                          type="button"
+                          onClick={() =>
+                            toggleCountry(
+                              country.id
+                            )
+                          }
+                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm hover:bg-gray-50"
+                        >
+                          <span
+                            className={`flex h-5 w-5 items-center justify-center rounded border ${
+                              selected
+                                ? 'border-[var(--dark-green)] bg-[var(--dark-green)] text-white'
+                                : 'border-gray-300 bg-white'
+                            }`}
+                          >
+                            {selected && (
+                              <Check className="h-3.5 w-3.5" />
+                            )}
+                          </span>
+
+                          <span className="text-gray-700">
+                            {country.name}
+                          </span>
+                        </button>
+                      );
+                    }
+                  )}
+                </div>
+              )}
+            </div>
           </div>
 
           {/* Start Year */}
@@ -1284,10 +1169,10 @@ export default function SectorComparisonTrend({
                 <LineChart
                   data={chartData}
                   margin={{
-                    top: 10,
-                    right: 20,
-                    left: 5,
-                    bottom: 10,
+                    top: 20,
+                    right: 30,
+                    left: 10,
+                    bottom: 20,
                   }}
                 >
                   <CartesianGrid
