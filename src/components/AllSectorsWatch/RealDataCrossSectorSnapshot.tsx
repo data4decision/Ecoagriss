@@ -8,7 +8,6 @@ import SectorComparisonTrend, {
   type SectorExplorerFilters,
 } from './SectorComparisonTrend';
 import IntelligenceHighlights from './IntelligenceHighlights';
-import PredictiveAnalysis from './PredictiveAnalysis';
 
 const DEFAULT_FILTERS: SectorExplorerFilters = {
   countryIds: [],
@@ -19,9 +18,7 @@ const DEFAULT_FILTERS: SectorExplorerFilters = {
 };
 
 const RealDataCrossSectorSnapshot = () => {
-  const [selectedCountryId, setSelectedCountryId] = useState<number | null>(
-    null
-  );
+  const [selectedCountryId] = useState<number | null>(null);
 
   const [filters, setFilters] =
     useState<SectorExplorerFilters>(DEFAULT_FILTERS);
@@ -98,9 +95,7 @@ const RealDataCrossSectorSnapshot = () => {
     pdf.setTextColor(20, 20, 20);
     pdf.text(title, margin, margin + 5);
 
-    let y = margin + 12;
-    let remainingHeight = scaledHeight;
-    let sourceY = 0; // for slicing (simple approach: scale down if too tall)
+    const y = margin + 12;
 
     // If the image fits on one page
     const availableHeight = pageHeight - y - margin;
@@ -255,7 +250,6 @@ const RealDataCrossSectorSnapshot = () => {
       <div ref={intelligenceRef} className="overflow-visible bg-white">
         <IntelligenceHighlights filters={filters} />
       </div>
-      {/* <PredictiveAnalysis filters={filters} /> */}
     </div>
   );
 };
