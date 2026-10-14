@@ -4,6 +4,7 @@
     "countries": "Countries",
     "adminLogin": "Admin Login",
     "getStarted": "Get Started",
+    "login": "Login",
     "ECOAGRIS e-WATCH":  "ECOAGRIS e-WATCH"
     },
   "hero": {
@@ -246,7 +247,8 @@
       "aquaculture": "Aquaculture",
       "agric_research_results": "Agric Research Results",
       "macroeconomics_indices": "Macroeconomics Indices",
-      "rice_production": "Rice Production"
+      "rice_production": "Rice Production",
+      "all_sectors_watch": "All Sectors Watch"
     }
   },
   

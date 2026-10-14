@@ -142,6 +142,14 @@ const Navbar: React.FC = () => {
             {t('navbar.getStarted')}
           </Link>
         </li>
+        <li>
+          <Link
+            href="/login"
+            className="bg-[var(--yellow)] text-[var(--medium-green)] px-4 py-2 rounded hover:bg-opacity-90 transition block text-center"
+          >
+            {t('navbar.login')}
+          </Link>
+        </li>
       </ul>
 
       <LanguageSwitcher />

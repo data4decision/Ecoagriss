@@ -4,6 +4,7 @@
     "countries": "Pays",
     "adminLogin": "Connexion administrateur",
     "getStarted": "Commencer",
+    "login": "Connexion",
     "ECOAGRIS e-WATCH": "ECOAGRIS e-WATCH"
   },
   "hero": {
@@ -246,7 +247,8 @@
       "aquaculture": "Aquaculture",
       "agric_research_results": "Résultats de la recherche agricole",
       "macroeconomics_indices": "Indices macroéconomiques",
-      "rice_production": "Production de riz"
+      "rice_production": "Production de riz",
+       "all_sectors_watch": "Veille de tous les secteurs"
     }
   },
   "agricDashboard": {
