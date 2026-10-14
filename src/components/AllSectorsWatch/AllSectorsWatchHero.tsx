@@ -168,7 +168,7 @@ export default function AllSectorsWatchHero() {
                       <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--yellow)] opacity-50 motion-reduce:animate-none" />
                       <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--yellow)]" />
                     </span>
-                    Live Data
+                    Raw Data
                   </p>
                 </div>
               </div>
