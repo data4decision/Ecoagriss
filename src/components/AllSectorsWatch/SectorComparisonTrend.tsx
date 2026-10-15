@@ -261,6 +261,34 @@ function formatChartValue(value: unknown): string {
   }).format(value);
 }
 
+/** Build Y-axis ticks every 10K (0, 10K, 20K, …) with headroom above the data max */
+function buildYTicks(data: ChartRow[], seriesKeys: string[]): number[] {
+  let max = 0;
+
+  data.forEach((row) => {
+    seriesKeys.forEach((key) => {
+      const value = row[key];
+      if (typeof value === 'number' && Number.isFinite(value) && value > max) {
+        max = value;
+      }
+    });
+  });
+
+  const step = 10_000;
+
+  // Add ~10% headroom so the line is not stuck at the top edge
+  // e.g. max 88K → 96.8K → rounds up to 100K
+  const paddedMax = max * 1.1;
+  const top = Math.max(step, Math.ceil(paddedMax / step) * step);
+
+  const ticks: number[] = [];
+  for (let t = 0; t <= top; t += step) {
+    ticks.push(t);
+  }
+
+  return ticks;
+}
+
 export default function SectorComparisonTrend({
   filters,
   onFiltersChange,
@@ -442,8 +470,6 @@ export default function SectorComparisonTrend({
     filters.variables,
     updateFilters,
   ]);
-
-  // No longer restricting non-admins to a single country
 
   const toggleCountry = (
     countryIdToToggle: number
@@ -738,6 +764,15 @@ export default function SectorComparisonTrend({
     filters.variables,
   ]);
 
+  const yTicks = useMemo(
+    () =>
+      buildYTicks(
+        chartData,
+        chartSeries.map((s) => s.dataKey)
+      ),
+    [chartData, chartSeries]
+  );
+
   if (loadingMetadata) {
     return (
       <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
@@ -792,7 +827,7 @@ export default function SectorComparisonTrend({
       {/* Filters */}
       <div className="border-b border-gray-200 bg-gray-50/80 p-4 sm:p-6">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-          {/* Country – now available to ALL users */}
+          {/* Country – available to ALL users */}
           <div className="lg:col-span-2">
             <label className="mb-2 block text-sm font-semibold text-gray-700">
               Country
@@ -1171,7 +1206,7 @@ export default function SectorComparisonTrend({
                   margin={{
                     top: 20,
                     right: 30,
-                    left: 10,
+                    left: 40,
                     bottom: 20,
                   }}
                 >
@@ -1190,11 +1225,17 @@ export default function SectorComparisonTrend({
                   />
 
                   <YAxis
+                    ticks={yTicks}
+                    domain={[
+                      0,
+                      yTicks[yTicks.length - 1] ?? 'auto',
+                    ]}
                     tick={{ fontSize: 12 }}
                     tickLine={false}
                     axisLine={{
                       stroke: '#D1D5DB',
                     }}
+                    width={55}
                     tickFormatter={(value: number) =>
                       new Intl.NumberFormat(
                         'en-US',

@@ -158,6 +158,34 @@ function formatValue(value: unknown): string {
   }).format(value);
 }
 
+/** Y-axis ticks every 10K (0, 10K, 20K, …) with ~10% headroom */
+function buildYTicks(
+  data: ChartRow[],
+  seriesKeys: string[]
+): number[] {
+  let max = 0;
+
+  data.forEach((row) => {
+    seriesKeys.forEach((key) => {
+      const value = row[key];
+      if (typeof value === 'number' && Number.isFinite(value) && value > max) {
+        max = value;
+      }
+    });
+  });
+
+  const step = 10_000;
+  const paddedMax = max * 1.1;
+  const top = Math.max(step, Math.ceil(paddedMax / step) * step);
+
+  const ticks: number[] = [];
+  for (let t = 0; t <= top; t += step) {
+    ticks.push(t);
+  }
+
+  return ticks;
+}
+
 function average(nums: number[]): number {
   if (nums.length === 0) return 0;
   return nums.reduce((a, b) => a + b, 0) / nums.length;
@@ -662,7 +690,14 @@ export default function PredictiveAnalysis({
     countryNameMap,
     availableVariables,
   ]);
-
+  const yTicks = useMemo(
+    () =>
+      buildYTicks(
+        chartData,
+        chartSeries.map((s) => s.dataKey)
+      ),
+    [chartData, chartSeries]
+  );
   const lastHistoricalYear = useMemo(() => {
     const historical = chartData.filter((r) => !r.isForecast);
     if (historical.length === 0) return null;
@@ -812,16 +847,19 @@ export default function PredictiveAnalysis({
                       axisLine={{ stroke: '#D1D5DB' }}
                     />
                     <YAxis
-                      tick={{ fontSize: 12 }}
-                      tickLine={false}
-                      axisLine={{ stroke: '#D1D5DB' }}
-                      tickFormatter={(v: number) =>
-                        new Intl.NumberFormat('en-US', {
-                          notation: 'compact',
-                          maximumFractionDigits: 1,
-                        }).format(v)
-                      }
-                    />
+  ticks={yTicks}
+  domain={[0, yTicks[yTicks.length - 1] ?? 'auto']}
+  tick={{ fontSize: 12 }}
+  tickLine={false}
+  axisLine={{ stroke: '#D1D5DB' }}
+  width={55}
+  tickFormatter={(v: number) =>
+    new Intl.NumberFormat('en-US', {
+      notation: 'compact',
+      maximumFractionDigits: 1,
+    }).format(v)
+  }
+/>
                     <Tooltip
                       contentStyle={{
                         borderRadius: '12px',
@@ -876,16 +914,19 @@ export default function PredictiveAnalysis({
                       axisLine={{ stroke: '#D1D5DB' }}
                     />
                     <YAxis
-                      tick={{ fontSize: 12 }}
-                      tickLine={false}
-                      axisLine={{ stroke: '#D1D5DB' }}
-                      tickFormatter={(v: number) =>
-                        new Intl.NumberFormat('en-US', {
-                          notation: 'compact',
-                          maximumFractionDigits: 1,
-                        }).format(v)
-                      }
-                    />
+  ticks={yTicks}
+  domain={[0, yTicks[yTicks.length - 1] ?? 'auto']}
+  tick={{ fontSize: 12 }}
+  tickLine={false}
+  axisLine={{ stroke: '#D1D5DB' }}
+  width={55}
+  tickFormatter={(v: number) =>
+    new Intl.NumberFormat('en-US', {
+      notation: 'compact',
+      maximumFractionDigits: 1,
+    }).format(v)
+  }
+/>
                     <Tooltip
                       contentStyle={{
                         borderRadius: '12px',
