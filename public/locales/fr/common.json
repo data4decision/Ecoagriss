@@ -214,7 +214,7 @@
   "login": {
     "hello": "Bonjour,",
     "welcome": "Bienvenue !",
-    "welcome_text": "Veuillez vous connecter pour accéder à votre tableau de bord personnalisé. Une fois connecté avec vos identifiants, vous serez automatiquement dirigé vers le tableau de bord de votre pays, où vous pourrez consulter les données, ressources et informations agricoles pertinentes pour votre région de la CEDEAO.",
+    "welcome_text": "Veuillez vous connecter avec vos identifiants enregistrés pour accéder à tous les jeux de données secondaires disponibles pour chaque pays, collectés et harmonisés à partir de bases de données fiables d'organisations reconnues.",
     "email_placeholder": "Entrez votre adresse e-mail",
     "password_placeholder": "Entrez votre mot de passe",
     "login_button": "Se connecter",

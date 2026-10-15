@@ -214,7 +214,7 @@
   "login": {
     "hello": "Olá,",
     "welcome": "Bem-vindo!",
-    "welcome_text": "Faça login para acessar seu painel personalizado. Assim que você fizer login com suas credenciais registradas, será automaticamente direcionado ao painel específico do seu país, onde poderá visualizar dados, recursos e informações agrícolas relevantes para a sua região da CEDEAO.",
+    "welcome_text": "Inicie sessão com as suas credenciais registadas para aceder a todos os conjuntos de dados secundários disponíveis para cada país, recolhidos e harmonizados a partir de bases de dados fiáveis de organizações reconhecidas.",
     "email_placeholder": "Insira seu e-mail",
     "password_placeholder": "Insira sua senha",
     "login_button": "Entrar",

@@ -9,7 +9,7 @@ import SectorComparisonTrend, {
   type SectorExplorerFilters,
 } from './SectorComparisonTrend';
 import IntelligenceHighlights from './IntelligenceHighlights';
-
+import PredictiveAnalysis from './PredictiveAnalysis';
 
 const DEFAULT_FILTERS: SectorExplorerFilters = {
   countryIds: [],
@@ -591,7 +591,9 @@ const RealDataCrossSectorSnapshot = () => {
         <IntelligenceHighlights filters={filters} />
       </div>
 
-      
+      <div ref={predictiveRef} className="overflow-visible bg-white">
+        <PredictiveAnalysis filters={filters} />
+      </div>
     </div>
   );
 };

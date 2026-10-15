@@ -214,7 +214,7 @@
   "login": {
     "hello": "Hello,",
     "welcome": "Welcome!",
-    "welcome_text": "Please log in to access your personalized dashboard. Once you log in with your registered credentials, you'll be automatically directed to your country's specific dashboard, where you can view relevant agricultural data, resources, and insights for your ECOWAS region.",
+    "welcome_text": "Please log in with your registered credentials to access all available secondary datasets for individual countries, sourced and harmonised from reliable organisational databases.",
     "email_placeholder": "Enter Your Email",
     "password_placeholder": "Enter Your Password",
     "login_button": "Login",
