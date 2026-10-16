@@ -146,7 +146,7 @@ const HeroSection: React.FC = () => {
             <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs text-white/60 sm:mt-8 sm:text-sm">
               <span className="inline-flex items-center gap-2">
                 <Globe2 className="h-4 w-4 text-[var(--yellow)]" aria-hidden="true" />
-                15 ECOWAS Countries
+                12 ECOWAS Countries
               </span>
               <span className="inline-flex items-center gap-2">
                 <Database className="h-4 w-4 text-[var(--yellow)]" aria-hidden="true" />
@@ -154,7 +154,7 @@ const HeroSection: React.FC = () => {
               </span>
               <span className="inline-flex items-center gap-2">
                 <BarChart3 className="h-4 w-4 text-[var(--yellow)]" aria-hidden="true" />
-                2006–2025 Coverage
+                2006-2025 Coverage
               </span>
             </div>
           </div>

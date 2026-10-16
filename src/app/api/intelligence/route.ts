@@ -246,8 +246,8 @@ Use exactly this structure:
     "signal 2",
     "signal 3"
   ],
-  "attention": "who needs attention and why (1-2 sentences)",
-  "outlook": "practical implication or monitoring note (1-2 sentences)"
+  "attention": "who needs attention and why (2-3 sentences)",
+  "outlook": "practical implication or monitoring note (2-3 sentences)"
 }
 
 The summary should explain the most important patterns across the selected period.

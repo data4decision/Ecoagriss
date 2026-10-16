@@ -112,7 +112,7 @@ const AboutECOAGRIS: React.FC = () => {
                 className="h-px w-6 bg-[var(--yellow)]"
                 aria-hidden="true"
               /> */}
-              <span className="text-sm font-bold uppercase tracking-widest text-[var(--green)]">
+              <span className="text-sm font-bold  tracking-widest text-[var(--green)]">
                 About ECOAGRIS e-WATCH
               </span>
             </div>
@@ -128,12 +128,11 @@ const AboutECOAGRIS: React.FC = () => {
 
             {/* Description */}
             <p
-              className={`mt-3 max-w-xl text-[clamp(0.875rem,0.5vw+0.7rem,1rem)] leading-[1.65] text-gray-700 ${reveal(250).className}`}
+              className={`mt-3 max-w-[40rem] text-[clamp(0.875rem,0.5vw+0.7rem,1rem)] leading-[1.65] text-gray-700 ${reveal(250).className}`}
               style={reveal(250).style}
             >
-              ECOAGRIS e-WATCH brings together credible agricultural information
-              from across the ECOWAS region into one accessible environment,
-              helping researchers, policymakers and investors move from data
+              ECOAGRIS e-WATCH brings together agricultural information about ECOWAS regions from credible global platforms into one accessible environment,
+              analysing them, using descriptive, predictive and prescriptive model helping researchers, policymakers and investors move from data
               discovery to evidence-based action.
             </p>
 
@@ -165,12 +164,12 @@ const AboutECOAGRIS: React.FC = () => {
                         aria-hidden="true"
                       />
                       <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--green)] sm:text-base">
-                        Our Vision
+                         Vision
                       </h3>
                     </div>
 
                     <p className="text-[clamp(0.8125rem,0.4vw+0.65rem,0.9375rem)] leading-[1.65] text-gray-700">
-                      Our vision is to become a trusted regional gateway for
+                      e-WATCH vision is to become a trusted regional gateway for
                       West African agricultural data and intelligence, enabling
                       stakeholders to move seamlessly from data discovery to
                       analysis, evidence and informed action.
@@ -205,12 +204,12 @@ const AboutECOAGRIS: React.FC = () => {
                         aria-hidden="true"
                       />
                       <h3 className="text-sm font-bold uppercase tracking-widest text-[var(--green)] sm:text-base">
-                        Our Mission
+                         Mission
                       </h3>
                     </div>
 
                     <p className="text-[clamp(0.8125rem,0.4vw+0.65rem,0.9375rem)] leading-[1.65] text-gray-700">
-                      Our mission is to converge credible agricultural data,
+                      e-WATCH mission is to converge agricultural data from differennt credible global platforms,
                       make it accessible in usable formats, and transform it
                       into meaningful intelligence that supports research,
                       policy, investment and sustainable agricultural

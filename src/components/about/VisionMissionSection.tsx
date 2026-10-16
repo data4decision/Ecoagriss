@@ -8,10 +8,10 @@ import { useEffect, useRef, useState } from 'react';
 /* -------------------------------------------------------------------------- */
 
 const VISION_TEXT =
-  'To become a trusted regional gateway for agricultural data and intelligence across West Africa, enabling better evidence, stronger collaboration and more informed decisions for sustainable agricultural development.';
+  'e-WATCH vision is to become a trusted regional gateway for West African agricultural data and intelligence, enabling stakeholders to move seamlessly from data discovery to analysis, evidence and informed action.';
 
 const MISSION_TEXT =
-  'To converge credible agricultural data from across West Africa, make it accessible in usable formats, and transform it into meaningful intelligence that supports research, policy, investment and sustainable agricultural development.';
+  'e-WATCH mission is to converge agricultural data from differennt credible global platforms, make it accessible in usable formats, and transform it into meaningful intelligence that supports research, policy, investment and sustainable agricultural development across West Africa.';
 
 /* -------------------------------------------------------------------------- */
 /* Component                                                                  */
@@ -93,7 +93,7 @@ export default function VisionMissionSection() {
                   id="vision-mission-heading"
                   className="text-center text-xl font-bold uppercase tracking-wider text-[var(--white)] sm:text-2xl"
                 >
-                  Our Vision
+                   Vision
                 </h2>
                 <div className="mx-auto mt-3 mb-4 h-px w-16 bg-[var(--yellow)] sm:mt-4 sm:mb-5" aria-hidden="true" />
                 <p className="text-center text-sm leading-relaxed text-[var(--white)]/95 sm:text-base sm:leading-loose">
@@ -107,7 +107,7 @@ export default function VisionMissionSection() {
                 style={reveal(150).style}
               >
                 <h2 className="text-center text-xl font-bold uppercase tracking-wider text-[var(--white)] sm:text-2xl">
-                  Our Mission
+                  Mission
                 </h2>
                 <div className="mx-auto mt-3 mb-4 h-px w-16 bg-[var(--yellow)] sm:mt-4 sm:mb-5" aria-hidden="true" />
                 <p className="text-center text-sm leading-relaxed text-[var(--white)]/95 sm:text-base sm:leading-loose">
