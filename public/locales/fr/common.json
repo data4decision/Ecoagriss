@@ -8,66 +8,80 @@
     "ECOAGRIS e-WATCH": "ECOAGRIS e-WATCH"
   },
   "hero": {
-    "headline": "Renforcer l'agriculture durable à travers la CEDEAO",
-    "subheadline": "Connecter les pays de la CEDEAO avec des insights agricoles pour la croissance et la résilience.",
-    "cta": "Explorer les données",
+    "eyebrow": "Initiative de l'ECOAGRIS",
+    "title": "ECOAGRIS - Centre de suivi et de convergence agricole de l'Afrique de l'Ouest",
+    "subheadline": "Une passerelle régionale pour des données agricoles crédibles, des preuves et de l'intelligence à travers l'Afrique de l'Ouest.",
+    "description": "Découvrez, explorez et comprenez les données agricoles de toute la CEDEAO, en rassemblant des informations fiables issues de sources reconnues dans un environnement accessible et structuré pour la recherche, les politiques et l'investissement.",
+    "cta": "Explorer la plateforme",
+    "learnMore": "En savoir plus",
+    "trust": {
+      "countries": "12 pays de la CEDEAO",
+      "sources": "Sources crédibles multiples",
+      "coverage": "Couverture 2006–2025"
+    },
+    "sectorsInView": "Secteurs en vue",
+    "live": "En direct",
+    "goToSlide": "Aller à la diapositive {{number}}",
     "slides": {
       "agricInput": {
         "title": "Intrants agricoles",
-        "desc": "Explorez les données sur les engrais, les semences et les pesticides pour optimiser la productivité agricole à travers la CEDEAO."
+        "desc": "Semences, engrais, pesticides, mécanisation et dynamiques du marché des intrants dans la région."
       },
       "agroHydro": {
-        "title": "Agro-hydro-météorologie",
-        "desc": "Accédez aux insights météorologiques et hydrologiques pour soutenir les pratiques agricoles intelligentes face au climat."
+        "title": "Agro-hydrologie",
+        "desc": "Disponibilité en eau, régimes pluviométriques et indicateurs d'irrigation pour la planification de la production."
       },
       "agricProduction": {
         "title": "Production agricole",
-        "desc": "Analysez les rendements des cultures et les tendances de production pour renforcer la sécurité alimentaire dans la région."
+        "desc": "Production, rendements et tendances des principales cultures vivrières et de rente."
       },
       "agricMarket": {
-        "title": "Marché agricole",
-        "desc": "Suivez les prix du marché et les données commerciales pour autonomiser les agriculteurs et les parties prenantes."
+        "title": "Marchés agricoles",
+        "desc": "Prix, flux commerciaux et signaux d'accès au marché pour les producteurs et les décideurs."
       },
       "foodStocks": {
         "title": "Stocks alimentaires",
-        "desc": "Surveillez les réserves alimentaires pour assurer la stabilité et la préparation aux pénuries."
+        "desc": "Niveaux de stockage, réserves et indicateurs de disponibilité liés à la sécurité alimentaire."
       },
       "nutrition": {
         "title": "Nutrition",
-        "desc": "Comprenez les résultats nutritionnels pour promouvoir des régimes alimentaires et des systèmes alimentaires plus sains."
+        "desc": "Résultats nutritionnels et liens entre agriculture, régimes alimentaires et santé."
       },
       "livestock": {
         "title": "Élevage",
-        "desc": "Plongez dans les données sur la production et la santé du bétail pour stimuler l'élevage."
+        "desc": "Effectifs, production, santé animale et indicateurs d'offtake des systèmes d'élevage."
       },
       "fishery": {
         "title": "Pêche",
-        "desc": "Découvrez les métriques de production et de durabilité de la pêche pour les communautés côtières."
+        "desc": "Activité de la pêche de capture, débarquements et indicateurs de performance du secteur."
       },
       "aquaculture": {
         "title": "Aquaculture",
-        "desc": "Apprenez-en davantage sur les pratiques d'aquaculture pour améliorer l'élevage de poissons et l'approvisionnement alimentaire."
+        "desc": "Production de poissons d'élevage, pratiques et croissance des chaînes de valeur aquacoles."
       },
       "research": {
-        "title": "Résultats de recherche agricole",
-        "desc": "Accédez à des recherches de pointe pour stimuler l'innovation en agriculture."
+        "title": "Recherche et innovation",
+        "desc": "Preuves, méthodes et produits de connaissance qui renforcent les décisions agricoles."
       },
       "macro": {
-        "title": "Indices macroéconomiques",
-        "desc": "Examinez les indicateurs économiques impactant l'agriculture pour une prise de décision éclairée."
+        "title": "Macro et politiques",
+        "desc": "Contexte macroéconomique et politique qui façonne l'agriculture dans la CEDEAO."
       }
     }
   },
   "about": {
-    "experience": "Plus de 25 ans d'expérience",
-    "title": "Aliments cultivés naturellement par des agriculteurs passionnés.",
-    "description": "ECOAGRIS connecte les pays de la CEDEAO à travers des données agricoles, habilitant les parties prenantes avec des insights pour une meilleure prise de décision.",
-    "missionTitle": "Notre mission",
-    "mission": "Notre mission est d'habiliter les parties prenantes agricoles de la CEDEAO avec des insights basés sur les données pour améliorer la productivité, la durabilité et la résilience des systèmes de bétail et de cultures.",
-    "visionTitle": "Notre vision",
-    "vision": "Un paysage agricole prospère et axé sur les données à travers la CEDEAO, où des analyses innovantes favorisent une croissance équitable, une gestion environnementale et une souveraineté alimentaire pour tous.",
-    "callUs": "Appelez-nous : +234 704 000 9930",
-    "readMore": "En savoir plus"
+    "imageAlt": "Chercheurs agricoles de la CEDEAO collaborant sur des données régionales",
+    "eyebrow": "À propos d'ECOAGRIS e-WATCH",
+    "title": "Un hub régional de données et d'intelligence agricoles en Afrique de l'Ouest",
+    "description": "ECOAGRIS e-WATCH rassemble les informations agricoles sur les régions de la CEDEAO issues de plateformes mondiales crédibles dans un environnement accessible, en les analysant à l'aide de modèles descriptifs, prédictifs et prescriptifs pour aider les chercheurs, les décideurs et les investisseurs à passer de la découverte des données à l'action fondée sur des preuves.",
+    "vision": {
+      "label": "Vision",
+      "text": "La vision d'e-WATCH est de devenir une passerelle régionale de confiance pour les données et l'intelligence agricoles d'Afrique de l'Ouest, permettant aux acteurs de passer sans friction de la découverte des données à l'analyse, aux preuves et à l'action éclairée."
+    },
+    "mission": {
+      "label": "Mission",
+      "text": "La mission d'e-WATCH est de faire converger les données agricoles de différentes plateformes mondiales crédibles, de les rendre accessibles dans des formats utilisables et de les transformer en intelligence pertinente au service de la recherche, des politiques, de l'investissement et du développement agricole durable en Afrique de l'Ouest."
+    }
   },
   
   "keyData": {

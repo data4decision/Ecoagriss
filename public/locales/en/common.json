@@ -8,66 +8,80 @@
     "ECOAGRIS e-WATCH":  "ECOAGRIS e-WATCH"
     },
   "hero": {
-    "headline": "Empowering Sustainable Agriculture Across ECOWAS",
-    "subheadline": "Connecting ECOWAS countries with agricultural insights for growth and resilience.",
-    "cta": "Explore Data",
+    "eyebrow": "Initiative of ECOAGRIS",
+    "title": "ECOAGRIS West African Agricultural Tracking and Convergence Hub",
+    "subheadline": "One regional gateway for credible agricultural data, evidence and intelligence across West Africa.",
+    "description": "Discover, explore and understand agricultural data from across ECOWAS, bringing together reliable information from recognised sources into one accessible, structured environment for research, policy and investment.",
+    "cta": "Explore the Platform",
+    "learnMore": "Learn More",
+    "trust": {
+      "countries": "12 ECOWAS Countries",
+      "sources": "Multiple Credible Sources",
+      "coverage": "2006–2025 Coverage"
+    },
+    "sectorsInView": "Sectors in View",
+    "live": "Live",
+    "goToSlide": "Go to slide {{number}}",
     "slides": {
       "agricInput": {
-        "title": "Agric Input",
-        "desc": "Explore data on fertilizers, seeds, and pesticides to optimize agricultural productivity across ECOWAS."
+        "title": "Agricultural Inputs",
+        "desc": "Seeds, fertilisers, pesticides, mechanisation and input market dynamics across the region."
       },
       "agroHydro": {
-        "title": "Agro-hydro-meteorology",
-        "desc": "Access weather and hydrological insights to support climate-smart farming practices."
+        "title": "Agro-Hydrology",
+        "desc": "Water availability, rainfall patterns and irrigation indicators supporting production planning."
       },
       "agricProduction": {
         "title": "Agricultural Production",
-        "desc": "Analyze crop yields and production trends to enhance food security in the region."
+        "desc": "Crop output, yields and production trends for major food and cash crops."
       },
       "agricMarket": {
-        "title": "Agricultural Market",
-        "desc": "Track market prices and trade data to empower farmers and stakeholders."
+        "title": "Agricultural Markets",
+        "desc": "Prices, trade flows and market access signals for producers and policymakers."
       },
       "foodStocks": {
         "title": "Food Stocks",
-        "desc": "Monitor food reserves to ensure stability and preparedness for shortages."
+        "desc": "Storage levels, reserves and availability indicators relevant to food security."
       },
       "nutrition": {
         "title": "Nutrition",
-        "desc": "Understand nutritional outcomes to promote healthier diets and food systems."
+        "desc": "Nutrition-related outcomes and links between agriculture, diets and health."
       },
       "livestock": {
         "title": "Livestock",
-        "desc": "Dive into livestock production and health data to boost animal husbandry."
+        "desc": "Herd sizes, production, health and offtake indicators for livestock systems."
       },
       "fishery": {
         "title": "Fishery",
-        "desc": "Discover fishery production and sustainability metrics for coastal communities."
+        "desc": "Capture fisheries activity, landings and related sector performance metrics."
       },
       "aquaculture": {
         "title": "Aquaculture",
-        "desc": "Learn about aquaculture practices to enhance fish farming and food supply."
+        "desc": "Farmed fish production, practices and growth of aquaculture value chains."
       },
       "research": {
-        "title": "Agric Research Results",
-        "desc": "Access cutting-edge research to drive innovation in agriculture."
+        "title": "Research & Innovation",
+        "desc": "Evidence, methods and knowledge products that strengthen agricultural decisions."
       },
       "macro": {
-        "title": "Macroeconomics Indices",
-        "desc": "Examine economic indicators impacting agriculture for informed policy-making."
+        "title": "Macro & Policy",
+        "desc": "Macroeconomic and policy context shaping agriculture across ECOWAS."
       }
     }
   },
   "about": {
-    "experience": "25+ Years Experience",
-    "title": "Naturally grown food by passionate farmers.",
-    "description": "ECOAGRIS connects ECOWAS countries through agricultural data, empowering stakeholders with insights for better decision-making.",
-    "missionTitle": "Our Mission",
-    "mission": "Our Mission is to empower ECOWAS agricultural stakeholders with data-driven insights to enhance productivity, sustainability, and resilience in livestock and crop systems.",
-    "visionTitle": "Our Vision",
-    "vision": "Thriving, data-empowered agricultural landscape across ECOWAS, where innovative analytics drive equitable growth, environmental stewardship, and food sovereignty for all.",
-    "callUs": "Call Us: +234 704 000 9930",
-    "readMore": "Read More"
+    "imageAlt": "ECOWAS agricultural researchers collaborating on regional data",
+    "eyebrow": "About ECOAGRIS e-WATCH",
+    "title": "A regional hub for agricultural data and intelligence across West Africa",
+    "description": "ECOAGRIS e-WATCH brings together agricultural information about ECOWAS regions from credible global platforms into one accessible environment, analysing them with descriptive, predictive and prescriptive models to help researchers, policymakers and investors move from data discovery to evidence-based action.",
+    "vision": {
+      "label": "Vision",
+      "text": "e-WATCH's vision is to become a trusted regional gateway for West African agricultural data and intelligence, enabling stakeholders to move seamlessly from data discovery to analysis, evidence and informed action."
+    },
+    "mission": {
+      "label": "Mission",
+      "text": "e-WATCH's mission is to converge agricultural data from different credible global platforms, make it accessible in usable formats, and transform it into meaningful intelligence that supports research, policy, investment and sustainable agricultural development across West Africa."
+    }
   },
   "keyData": {
     "title": "Key Data Insights Across ECOWAS",
