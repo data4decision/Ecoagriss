@@ -438,11 +438,11 @@ const SimulatedCrossSectorSnapshot = () => {
       {/* Snapshot table (dummy coverage) — no filters needed */}
       <CrossSectorSnapshot countryId={selectedCountryId} />
 
-<div ref={chartRef} className="overflow-visible bg-white">
+{/* <div ref={chartRef} className="overflow-visible bg-white">
   <SimulatedSectorTrend filters={filters} />
 </div>
 {/* Export buttons */}
-      <div className="mb-4 flex flex-wrap items-center justify-end gap-2 px-4 sm:gap-3 sm:px-6">
+      {/* <div className="mb-4 flex flex-wrap items-center justify-end gap-2 px-4 sm:gap-3 sm:px-6">
         <button
           type="button"
           onClick={handleExportCSV}
@@ -490,14 +490,14 @@ const SimulatedCrossSectorSnapshot = () => {
             <>Download PDF</>
           )}
         </button>
-      </div>
-<div ref={intelligenceRef} className="overflow-visible bg-white">
+      </div> */}
+{/* <div ref={intelligenceRef} className="overflow-visible bg-white">
   <IntelligenceHighlights filters={filters} />
-</div>
+</div> */}
 
-<div ref={predictiveRef} className="overflow-visible bg-white">
+{/* <div ref={predictiveRef} className="overflow-visible bg-white">
   <PredictiveAnalysis filters={filters} />
-</div>
+</div>  */}
 </div>
   );
 };
