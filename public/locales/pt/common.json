@@ -197,6 +197,167 @@
     "poweredBy": "Desenvolvido por"
   },
   
+  "aboutHero": {
+    "imageAlt": "Vista aérea de terras agrícolas produtivas na África Ocidental",
+    "eyebrow": "ECOAGRIS e-WATCH",
+    "descriptor": "Centro de Acompanhamento e Convergência Agrícola da África Ocidental",
+    "title": "Ligar a África Ocidental através da inteligência de dados agrícolas",
+    "description": "Descubra, explore e compreenda dados agrícolas fiáveis de toda a África Ocidental através de uma plataforma regional de inteligência acessível.",
+    "cta": "Explorar Dados Agrícolas",
+    "panel": {
+      "eyebrow": "Inteligência Agrícola",
+      "title": "Convergência de Dados Regionais",
+      "description": "Uma visão unificada do acompanhamento agrícola na África Ocidental — estruturada para investigação, políticas e apoio à decisão."
+    },
+    "metrics": {
+      "scope": { "label": "Âmbito Regional", "value": "África Ocidental" },
+      "reach": { "label": "Alcance Geográfico", "value": "Cobertura Multi-País" },
+      "focus": { "label": "Área de Foco", "value": "Indicadores Agrícolas" },
+      "sources": { "label": "Camada de Inteligência", "value": "Múltiplas Fontes de Dados" }
+    },
+    "float": {
+      "focusLabel": "Foco",
+      "focusValue": "Evidências e Insights",
+      "roleLabel": "Papel da Plataforma",
+      "roleValue": "Acompanhamento e Convergência"
+    }
+  },
+  
+  "whatIs": {
+    "eyebrow": "Sobre a ECOAGRIS e-WATCH",
+    "title": "O que é a ECOAGRIS e-WATCH?",
+    "subtitle": "Um centro regional de convergência de dados agrícolas que liga informação agrícola fiável de toda a África Ocidental.",
+    "sources": {
+      "fao": "FAO",
+      "faostat": "FAOSTAT",
+      "au": "União Africana",
+      "who": "OMS",
+      "nsa": "Agências Nacionais de Estatística",
+      "regional": "Organizações Regionais",
+      "research": "Instituições de Investigação"
+    },
+    "center": {
+      "platform": "Plataforma",
+      "name": "ECOAGRIS e-WATCH",
+      "tagline": "Inteligência de Dados Agrícolas Regionais"
+    },
+    "disclaimerShort": "Exemplos ilustrativos — não são parceiros confirmados.",
+    "disclaimer": "Exemplos ilustrativos de fontes de dados agrícolas reconhecidas — não uma lista de parceiros confirmados da plataforma.",
+    "sideEyebrow": "Um Centro Regional de Convergência de Dados",
+    "mobile": {
+      "p1": "A ECOAGRIS e-WATCH é uma plataforma regional de inteligência de dados agrícolas que reúne dados agrícolas fiáveis e estruturados de toda a África Ocidental num único ambiente acessível.",
+      "p2": "Fornece uma camada de convergência para que os utilizadores possam descobrir, explorar e trabalhar com informação de fontes existentes credíveis, apoiando tanto o acesso a dados como a inteligência de dados."
+    },
+    "desktop": {
+      "p1": "A ECOAGRIS e-WATCH é uma plataforma regional de inteligência de dados agrícolas concebida para reunir dados agrícolas fiáveis, publicados e estruturados de toda a África Ocidental num único ambiente digital acessível.",
+      "p2": "A informação agrícola é gerada por numerosas instituições nacionais, regionais e internacionais, mas está frequentemente dispersa por diferentes bases de dados, relatórios, publicações e plataformas estatísticas.",
+      "p3": "A ECOAGRIS e-WATCH oferece uma camada de convergência e acesso que ajuda os utilizadores a descobrir, explorar, comparar e trabalhar com informação agrícola de fontes existentes credíveis.",
+      "p4Before": "A plataforma foi concebida para apoiar tanto o",
+      "dataAccess": "acesso a dados",
+      "p4And": "como a",
+      "dataIntelligence": "inteligência de dados",
+      "p4After": ", permitindo aos utilizadores ir além da simples procura de conjuntos de dados e compreender tendências agrícolas, indicadores, relações e padrões regionais."
+    },
+    "quote": "“De dados agrícolas fragmentados a inteligência regional conectada.”"
+  },
+  "visionMission": {
+    "vision": {
+      "label": "Visão",
+      "text": "A visão da e-WATCH é tornar-se um portal regional de confiança para dados e inteligência agrícola da África Ocidental, permitindo que as partes interessadas passem de forma fluida da descoberta de dados à análise, à evidência e à ação informada."
+    },
+    "mission": {
+      "label": "Missão",
+      "text": "A missão da e-WATCH é convergirem dados agrícolas de diferentes plataformas globais credíveis, torná-los acessíveis em formatos utilizáveis e transformá-los em inteligência significativa que apoie a investigação, as políticas, o investimento e o desenvolvimento agrícola sustentável em toda a África Ocidental."
+    }
+  },
+  
+  "purpose": {
+    "imageAlt": "Investigador agrícola a analisar evidências de culturas e campos na África Ocidental",
+    "eyebrow": "PROPÓSITO DA e-WATCH",
+    "title": "Tornar os dados agrícolas mais fáceis de descobrir, compreender e utilizar",
+    "p1": "A ECOAGRIS e-WATCH ajuda as pessoas a passar de informação agrícola dispersa para evidências e inteligência acessíveis que apoiam a investigação, o planeamento, as políticas e o investimento em toda a África Ocidental.",
+    "p2": "Informação agrícola valiosa está muitas vezes dispersa por muitas bases de dados e instituições. Como camada regional de convergência e acesso, a ECOAGRIS e-WATCH torna os dados fiáveis mais fáceis de descobrir, explorar, comparar e utilizar.",
+    "pillars": {
+      "connect": {
+        "number": "01",
+        "title": "Ligar",
+        "description": "Descubra conjuntos de dados e indicadores agrícolas de fontes reconhecidas através de um único ponto de acesso regional."
+      },
+      "clarify": {
+        "number": "02",
+        "title": "Clarificar",
+        "description": "Dados estruturados, comparações e visualizações que tornam a informação agrícola mais fácil de interpretar."
+      },
+      "enable": {
+        "number": "03",
+        "title": "Capacitar",
+        "description": "Evidências que apoiam a investigação, o planeamento, as políticas, o investimento e o desenvolvimento agrícola."
+      }
+    },
+    "quote": {
+      "before": "“Um melhor acesso à evidência pode conduzir a uma melhor compreensão.",
+      "highlight": "Uma melhor compreensão pode apoiar melhores decisões.”"
+    }
+  },
+  
+  "challenge": {
+    "eyebrow": "O Desafio que Abordamos",
+    "title": {
+      "before": "Os Dados Agrícolas Existem.",
+      "highlight": "Encontrá-los e Utilizá-los É o Desafio."
+    },
+    "intro": "Em toda a África Ocidental, informação agrícola valiosa é produzida por muitas instituições, mas está frequentemente dispersa por bases de dados, relatórios e plataformas, tornando a descoberta e a reutilização mais difíceis.",
+    "items": {
+      "fragmented": {
+        "number": "01",
+        "title": "Fontes Fragmentadas",
+        "description": "A informação agrícola está espalhada por muitas bases de dados, relatórios e plataformas."
+      },
+      "discovery": {
+        "number": "02",
+        "title": "Descoberta Difícil",
+        "description": "Encontrar o conjunto de dados ou indicador certo implica muitas vezes pesquisar várias fontes."
+      },
+      "comparison": {
+        "number": "03",
+        "title": "Comparação Complexa",
+        "description": "Comparar países, períodos e indicadores exige esforço extra para alinhar os dados."
+      },
+      "reusability": {
+        "number": "04",
+        "title": "Reutilização Limitada",
+        "description": "Informação difícil de encontrar é mais difícil de reutilizar para investigação, planeamento e decisões."
+      }
+    },
+    "quote": {
+      "before": "O desafio não é simplesmente encontrar dados.",
+      "highlight": "É tornar a evidência certa mais fácil de descobrir, compreender e utilizar."
+    },
+    "imageAlt": "Investigador agrícola a analisar dados de campo num contexto da África Ocidental",
+    "imageCaption": "A evidência agrícola existe em toda a região."
+  },
+
+  "finalCta": {
+    "eyebrow": "Explore os Dados. Compreenda a Região.",
+    "title": "Transformar Dados Agrícolas em Melhor Compreensão",
+    "description": "Explore dados agrícolas fiáveis, compare indicadores, descubra tendências regionais e aceda a inteligência significativa através da ECOAGRIS e-WATCH.",
+    "primaryCta": "Explorar Dados Agrícolas",
+    "secondaryCta": "Descobrir Inteligência de Dados",
+    "closing": {
+      "before": "Uma Região. Múltiplas Fontes.",
+      "highlight": "Um Portal de Dados."
+    }
+  },
+  "dataFlow": {
+    "heading": "Como os dados se tornam inteligência",
+    "stages": {
+      "sources": "Múltiplas Fontes de Dados",
+      "convergence": "Convergência de Dados",
+      "structured": "Dados Agrícolas Estruturados",
+      "analysis": "Análise e Visualização",
+      "intelligence": "Inteligência Agrícola"
+    }
+  },
   "signup": {
     "hello": "Olá,",
     "welcome": "Bem-vindo!",

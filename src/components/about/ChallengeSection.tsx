@@ -3,43 +3,17 @@
 
 import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
-/* -------------------------------------------------------------------------- */
-/* Challenge items                                                            */
-/* -------------------------------------------------------------------------- */
-
-const CHALLENGES = [
-  {
-    number: '01',
-    title: 'Fragmented Sources',
-    description:
-      'Agricultural information is spread across many databases, reports and platforms.',
-  },
-  {
-    number: '02',
-    title: 'Difficult Discovery',
-    description:
-      'Finding the right dataset or indicator often means searching several sources.',
-  },
-  {
-    number: '03',
-    title: 'Complex Comparison',
-    description:
-      'Comparing countries, periods and indicators requires extra effort to align data.',
-  },
-  {
-    number: '04',
-    title: 'Limited Reusability',
-    description:
-      'Hard-to-find information is harder to reuse for research, planning and decisions.',
-  },
+const CHALLENGE_KEYS = [
+  'fragmented',
+  'discovery',
+  'comparison',
+  'reusability',
 ] as const;
 
-/* -------------------------------------------------------------------------- */
-/* Component                                                                  */
-/* -------------------------------------------------------------------------- */
-
 export default function ChallengeSection() {
+  const { t } = useTranslation('common');
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -76,7 +50,6 @@ export default function ChallengeSection() {
       className="relative isolate overflow-x-hidden bg-gradient-to-b from-[#e4efe4] via-[#dce9dc] to-[#d4e4d4] py-12 sm:py-14 lg:py-16"
       aria-labelledby="challenge-heading"
     >
-      {/* Soft atmospheric wash */}
       <div
         className="pointer-events-none absolute inset-0"
         aria-hidden="true"
@@ -90,47 +63,37 @@ export default function ChallengeSection() {
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-12 lg:gap-10 xl:gap-12">
-          {/* ============================================================ */}
-          {/* CONTENT                                                      */}
-          {/* ============================================================ */}
+          {/* CONTENT */}
           <div className="flex flex-col lg:col-span-7">
-            {/* Eyebrow */}
             <p
               className={`flex items-center gap-2 text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--green)] sm:text-[11px] ${reveal(0).className}`}
               style={reveal(0).style}
             >
-              
-             
-              <span>The Challenge We Address</span>
+              <span>{t('challenge.eyebrow')}</span>
             </p>
 
-            {/* Heading */}
             <h2
               id="challenge-heading"
               className={`mt-2 max-w-lg text-[clamp(1.2rem,2.4vw+0.35rem,1.85rem)] font-bold leading-[1.2] tracking-tight text-[var(--dark-green)] ${reveal(40).className}`}
               style={reveal(40).style}
             >
-              Agricultural Data Exists.{' '}
+              {t('challenge.title.before')}{' '}
               <span className="text-[var(--green)]">
-                Finding and Using It Is the Challenge.
+                {t('challenge.title.highlight')}
               </span>
             </h2>
 
-            {/* Intro */}
             <p
               className={`mt-3 max-w-lg text-[13px] leading-relaxed text-[var(--olive-green)] sm:text-sm ${reveal(80).className}`}
               style={reveal(80).style}
             >
-              Across West Africa, valuable agricultural information is produced
-              by many institutions, but it is often scattered across databases,
-              reports and platforms, making discovery and reuse harder.
+              {t('challenge.intro')}
             </p>
 
-            {/* Challenge grid — 2×2 on sm+ */}
             <ol className="mt-5 grid grid-cols-1 gap-3 sm:mt-6 sm:grid-cols-2 sm:gap-3.5">
-              {CHALLENGES.map((item, index) => (
+              {CHALLENGE_KEYS.map((key, index) => (
                 <li
-                  key={item.number}
+                  key={key}
                   className={`rounded-lg border border-[var(--dark-green)]/10 bg-[var(--white)]/60 px-3.5 py-3 backdrop-blur-[2px] transition-shadow duration-300 hover:shadow-sm ${reveal(140 + index * 70).className}`}
                   style={reveal(140 + index * 70).style}
                 >
@@ -139,14 +102,14 @@ export default function ChallengeSection() {
                       className="shrink-0 text-sm font-bold tabular-nums text-[var(--green)]/65"
                       aria-hidden="true"
                     >
-                      {item.number}
+                      {t(`challenge.items.${key}.number`)}
                     </span>
                     <div className="min-w-0">
                       <h3 className="text-[12px] font-bold uppercase tracking-[0.08em] text-[var(--dark-green)] sm:text-[13px]">
-                        {item.title}
+                        {t(`challenge.items.${key}.title`)}
                       </h3>
                       <p className="mt-0.5 text-[12px] leading-snug text-[var(--olive-green)]/85 sm:text-[13px]">
-                        {item.description}
+                        {t(`challenge.items.${key}.description`)}
                       </p>
                     </div>
                   </div>
@@ -154,29 +117,24 @@ export default function ChallengeSection() {
               ))}
             </ol>
 
-            {/* Key statement */}
             <blockquote
               className={`mt-5 border-l-[3px] border-[var(--yellow)] pl-3.5 ${reveal(420).className}`}
               style={reveal(420).style}
             >
               <p className="text-[13px] font-medium italic leading-snug text-[var(--green)] sm:text-sm">
-                The challenge is not simply finding data.{' '}
+                {t('challenge.quote.before')}{' '}
                 <span className="text-[var(--wine)]">
-                  It is making the right evidence easier to discover, understand
-                  and use.
+                  {t('challenge.quote.highlight')}
                 </span>
               </p>
             </blockquote>
           </div>
 
-          {/* ============================================================ */}
-          {/* IMAGE                                                        */}
-          {/* ============================================================ */}
+          {/* IMAGE */}
           <div
             className={`relative lg:col-span-5 ${reveal(100).className}`}
             style={reveal(100).style}
           >
-            {/* Yellow offset accent */}
             <div
               className="absolute -bottom-2.5 -right-2.5 z-0 hidden h-[88%] w-[92%] rounded-lg bg-[var(--yellow)]/75 sm:block"
               aria-hidden="true"
@@ -186,7 +144,7 @@ export default function ChallengeSection() {
               <div className="relative aspect-[4/5] w-full max-h-[min(42vh,360px)] sm:max-h-[min(48vh,400px)]">
                 <Image
                   src="/agresearch.jpg"
-                  alt="Agricultural researcher reviewing field data in a West African setting"
+                  alt={t('challenge.imageAlt')}
                   fill
                   className="object-cover object-center"
                   sizes="(max-width: 1024px) 100vw, 40vw"
@@ -196,7 +154,7 @@ export default function ChallengeSection() {
                   aria-hidden="true"
                 />
                 <p className="absolute bottom-3 left-3 right-3 text-[11px] font-medium leading-snug text-[var(--white)]/95 sm:bottom-4 sm:left-4 sm:text-xs">
-                  Agricultural evidence exists across the region.
+                  {t('challenge.imageCaption')}
                 </p>
               </div>
             </div>

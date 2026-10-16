@@ -197,6 +197,168 @@
     "poweredBy": "Propulsé par"
   },
   
+  "aboutHero": {
+    "imageAlt": "Vue aérienne de terres agricoles productives en Afrique de l'Ouest",
+    "eyebrow": "ECOAGRIS e-WATCH",
+    "descriptor": "Centre de suivi et de convergence agricole de l'Afrique de l'Ouest",
+    "title": "Relier l'Afrique de l'Ouest grâce à l'intelligence des données agricoles",
+    "description": "Découvrez, explorez et comprenez des données agricoles crédibles de toute l'Afrique de l'Ouest via une plateforme régionale d'intelligence accessible.",
+    "cta": "Explorer les données agricoles",
+    "panel": {
+      "eyebrow": "Intelligence agricole",
+      "title": "Convergence des données régionales",
+      "description": "Une vue unifiée du suivi agricole en Afrique de l'Ouest — structurée pour la recherche, les politiques et l'aide à la décision."
+    },
+    "metrics": {
+      "scope": { "label": "Portée régionale", "value": "Afrique de l'Ouest" },
+      "reach": { "label": "Couverture géographique", "value": "Couverture multi-pays" },
+      "focus": { "label": "Domaine d'intérêt", "value": "Indicateurs agricoles" },
+      "sources": { "label": "Couche d'intelligence", "value": "Sources de données multiples" }
+    },
+    "float": {
+      "focusLabel": "Focus",
+      "focusValue": "Preuves et insights",
+      "roleLabel": "Rôle de la plateforme",
+      "roleValue": "Suivi et convergence"
+    }
+  },
+  
+  "whatIs": {
+    "eyebrow": "À propos d'ECOAGRIS e-WATCH",
+    "title": "Qu'est-ce qu'ECOAGRIS e-WATCH ?",
+    "subtitle": "Un hub régional de convergence des données agricoles reliant des informations agricoles crédibles de toute l'Afrique de l'Ouest.",
+    "sources": {
+      "fao": "FAO",
+      "faostat": "FAOSTAT",
+      "au": "Union africaine",
+      "who": "OMS",
+      "nsa": "Agences nationales de statistique",
+      "regional": "Organisations régionales",
+      "research": "Institutions de recherche"
+    },
+    "center": {
+      "platform": "Plateforme",
+      "name": "ECOAGRIS e-WATCH",
+      "tagline": "Intelligence des données agricoles régionales"
+    },
+    "disclaimerShort": "Exemples illustratifs — pas des partenaires confirmés.",
+    "disclaimer": "Exemples illustratifs de sources de données agricoles reconnues — pas une liste de partenaires confirmés de la plateforme.",
+    "sideEyebrow": "Un hub régional de convergence des données",
+    "mobile": {
+      "p1": "ECOAGRIS e-WATCH est une plateforme régionale d'intelligence des données agricoles qui rassemble des données agricoles fiables et structurées de toute l'Afrique de l'Ouest dans un environnement accessible unique.",
+      "p2": "Elle fournit une couche de convergence permettant aux utilisateurs de découvrir, d'explorer et de travailler avec des informations issues de sources existantes crédibles, en soutenant à la fois l'accès aux données et l'intelligence des données."
+    },
+    "desktop": {
+      "p1": "ECOAGRIS e-WATCH est une plateforme régionale d'intelligence des données agricoles conçue pour rassembler des données agricoles fiables, publiées et structurées de toute l'Afrique de l'Ouest dans un environnement numérique accessible unique.",
+      "p2": "Les informations agricoles sont produites par de nombreuses institutions nationales, régionales et internationales, mais elles sont souvent dispersées entre différentes bases de données, rapports, publications et plateformes statistiques.",
+      "p3": "ECOAGRIS e-WATCH offre une couche de convergence et d'accès qui aide les utilisateurs à découvrir, explorer, comparer et travailler avec des informations agricoles issues de sources existantes crédibles.",
+      "p4Before": "La plateforme est conçue pour soutenir à la fois l'",
+      "dataAccess": "accès aux données",
+      "p4And": "et l'",
+      "dataIntelligence": "intelligence des données",
+      "p4After": ", permettant aux utilisateurs d'aller au-delà de la simple recherche de jeux de données pour comprendre les tendances agricoles, les indicateurs, les relations et les schémas régionaux."
+    },
+    "quote": "« Des données agricoles fragmentées à une intelligence régionale connectée. »"
+  },
+  
+  "visionMission": {
+    "vision": {
+      "label": "Vision",
+      "text": "La vision d'e-WATCH est de devenir une passerelle régionale de confiance pour les données et l'intelligence agricoles d'Afrique de l'Ouest, permettant aux acteurs de passer sans friction de la découverte des données à l'analyse, aux preuves et à l'action éclairée."
+    },
+    "mission": {
+      "label": "Mission",
+      "text": "La mission d'e-WATCH est de faire converger les données agricoles de différentes plateformes mondiales crédibles, de les rendre accessibles dans des formats utilisables et de les transformer en intelligence pertinente au service de la recherche, des politiques, de l'investissement et du développement agricole durable en Afrique de l'Ouest."
+    }
+  },
+  
+  "purpose": {
+    "imageAlt": "Chercheur agricole examinant des preuves sur les cultures et les parcelles en Afrique de l'Ouest",
+    "eyebrow": "OBJECTIF D'e-WATCH",
+    "title": "Rendre les données agricoles plus faciles à découvrir, comprendre et utiliser",
+    "p1": "ECOAGRIS e-WATCH aide à passer d'informations agricoles dispersées à des preuves et une intelligence accessibles qui soutiennent la recherche, la planification, les politiques et l'investissement en Afrique de l'Ouest.",
+    "p2": "Des informations agricoles précieuses sont souvent réparties entre de nombreuses bases de données et institutions. En tant que couche régionale de convergence et d'accès, ECOAGRIS e-WATCH rend les données crédibles plus faciles à découvrir, explorer, comparer et utiliser.",
+    "pillars": {
+      "connect": {
+        "number": "01",
+        "title": "Connecter",
+        "description": "Découvrez des jeux de données et indicateurs agricoles issus de sources reconnues via un point d'accès régional unique."
+      },
+      "clarify": {
+        "number": "02",
+        "title": "Clarifier",
+        "description": "Données structurées, comparaisons et visualisations qui rendent l'information agricole plus facile à interpréter."
+      },
+      "enable": {
+        "number": "03",
+        "title": "Permettre",
+        "description": "Des preuves qui soutiennent la recherche, la planification, les politiques, l'investissement et le développement agricole."
+      }
+    },
+    "quote": {
+      "before": "« Un meilleur accès aux preuves peut conduire à une meilleure compréhension.",
+      "highlight": "Une meilleure compréhension peut soutenir de meilleures décisions. »"
+    }
+  },
+  
+  "challenge": {
+    "eyebrow": "Le défi que nous abordons",
+    "title": {
+      "before": "Les données agricoles existent.",
+      "highlight": "Les trouver et les utiliser, voilà le défi."
+    },
+    "intro": "En Afrique de l'Ouest, de nombreuses institutions produisent des informations agricoles précieuses, mais celles-ci sont souvent dispersées entre bases de données, rapports et plateformes, ce qui complique la découverte et la réutilisation.",
+    "items": {
+      "fragmented": {
+        "number": "01",
+        "title": "Sources fragmentées",
+        "description": "Les informations agricoles sont réparties entre de nombreuses bases de données, rapports et plateformes."
+      },
+      "discovery": {
+        "number": "02",
+        "title": "Découverte difficile",
+        "description": "Trouver le bon jeu de données ou indicateur implique souvent de consulter plusieurs sources."
+      },
+      "comparison": {
+        "number": "03",
+        "title": "Comparaison complexe",
+        "description": "Comparer des pays, des périodes et des indicateurs demande un effort supplémentaire pour aligner les données."
+      },
+      "reusability": {
+        "number": "04",
+        "title": "Réutilisabilité limitée",
+        "description": "Des informations difficiles à trouver sont plus difficiles à réutiliser pour la recherche, la planification et les décisions."
+      }
+    },
+    "quote": {
+      "before": "Le défi n'est pas simplement de trouver des données.",
+      "highlight": "C'est de rendre les bonnes preuves plus faciles à découvrir, comprendre et utiliser."
+    },
+    "imageAlt": "Chercheur agricole examinant des données de terrain dans un contexte ouest-africain",
+    "imageCaption": "Les preuves agricoles existent à travers la région."
+  },
+  
+  "finalCta": {
+    "eyebrow": "Explorez les données. Comprenez la région.",
+    "title": "Transformer les données agricoles en une meilleure compréhension",
+    "description": "Explorez des données agricoles crédibles, comparez des indicateurs, découvrez des tendances régionales et accédez à une intelligence pertinente via ECOAGRIS e-WATCH.",
+    "primaryCta": "Explorer les données agricoles",
+    "secondaryCta": "Découvrir l'intelligence des données",
+    "closing": {
+      "before": "Une région. Des sources multiples.",
+      "highlight": "Une passerelle de données."
+    }
+  },
+  "dataFlow": {
+    "heading": "Comment les données deviennent de l'intelligence",
+    "stages": {
+      "sources": "Sources de données multiples",
+      "convergence": "Convergence des données",
+      "structured": "Données agricoles structurées",
+      "analysis": "Analyse et visualisation",
+      "intelligence": "Intelligence agricole"
+    }
+  },
   "signup": {
     "hello": "Bonjour,",
     "welcome": "Bienvenue !",

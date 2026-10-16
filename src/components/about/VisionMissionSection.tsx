@@ -2,22 +2,10 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-
-/* -------------------------------------------------------------------------- */
-/* Content                                                                    */
-/* -------------------------------------------------------------------------- */
-
-const VISION_TEXT =
-  'e-WATCH vision is to become a trusted regional gateway for West African agricultural data and intelligence, enabling stakeholders to move seamlessly from data discovery to analysis, evidence and informed action.';
-
-const MISSION_TEXT =
-  'e-WATCH mission is to converge agricultural data from differennt credible global platforms, make it accessible in usable formats, and transform it into meaningful intelligence that supports research, policy, investment and sustainable agricultural development across West Africa.';
-
-/* -------------------------------------------------------------------------- */
-/* Component                                                                  */
-/* -------------------------------------------------------------------------- */
+import { useTranslation } from 'react-i18next';
 
 export default function VisionMissionSection() {
+  const { t } = useTranslation('common');
   const sectionRef = useRef<HTMLElement>(null);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -54,37 +42,43 @@ export default function VisionMissionSection() {
       className="relative isolate flex min-h-[350px] w-full items-center justify-center overflow-hidden bg-[var(--green)] py-8 sm:py-12"
       aria-labelledby="vision-mission-heading"
     >
-      {/* ============================================================ */}
-      {/* Background Decorations (Dashed Lines)                         */}
-      {/* ============================================================ */}
-      
-      {/* Top Left Dashed Circles */}
       <svg
         className="pointer-events-none absolute -left-12 -top-12 h-56 w-56 text-white/30 sm:h-72 sm:w-72"
         viewBox="0 0 200 200"
         fill="none"
         aria-hidden="true"
       >
-        <circle cx="40" cy="40" r="80" stroke="currentColor" strokeWidth="1.5" strokeDasharray="6 8" />
-        <circle cx="40" cy="40" r="120" stroke="currentColor" strokeWidth="1" strokeDasharray="4 10" />
-        <circle cx="40" cy="40" r="160" stroke="currentColor" strokeWidth="1" strokeDasharray="2 12" />
+        <circle
+          cx="40"
+          cy="40"
+          r="80"
+          stroke="currentColor"
+          strokeWidth="1.5"
+          strokeDasharray="6 8"
+        />
+        <circle
+          cx="40"
+          cy="40"
+          r="120"
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeDasharray="4 10"
+        />
+        <circle
+          cx="40"
+          cy="40"
+          r="160"
+          stroke="currentColor"
+          strokeWidth="1"
+          strokeDasharray="2 12"
+        />
       </svg>
 
-      {/* ============================================================ */}
-      {/* Main Content Container                                        */}
-      {/* ============================================================ */}
       <div className="relative z-10 mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8">
-        
-        {/* Inner White Base */}
         <div className="relative w-full rounded-2xl bg-[var(--white)] pt-0 shadow-[0_15px_35px_rgba(0,0,0,0.15)]">
-          
-          {/* Green Top Section containing the cards */}
           <div className="relative z-10 -mt-6 flex flex-col rounded-t-2xl bg-[var(--dark-green)] px-4 pb-16 pt-8 sm:-mt-8 sm:px-8 sm:pb-24 sm:pt-10 md:px-12">
-            
-            {/* Grid for Cards */}
             <div className="grid grid-cols-1 gap-5 md:grid-cols-2 md:gap-6">
-              
-              {/* --- VISION CARD --- */}
+              {/* VISION */}
               <div
                 className={`flex flex-col rounded-lg bg-[var(--green)] p-5 shadow-[0_8px_20px_rgba(0,0,0,0.25)] sm:p-6 ${reveal(0).className}`}
                 style={reveal(0).style}
@@ -93,35 +87,40 @@ export default function VisionMissionSection() {
                   id="vision-mission-heading"
                   className="text-center text-xl font-bold uppercase tracking-wider text-[var(--white)] sm:text-2xl"
                 >
-                   Vision
+                  {t('visionMission.vision.label')}
                 </h2>
-                <div className="mx-auto mt-3 mb-4 h-px w-16 bg-[var(--yellow)] sm:mt-4 sm:mb-5" aria-hidden="true" />
+                <div
+                  className="mx-auto mb-4 mt-3 h-px w-16 bg-[var(--yellow)] sm:mb-5 sm:mt-4"
+                  aria-hidden="true"
+                />
                 <p className="text-center text-sm leading-relaxed text-[var(--white)]/95 sm:text-base sm:leading-loose">
-                  {VISION_TEXT}
+                  {t('visionMission.vision.text')}
                 </p>
               </div>
 
-              {/* --- MISSION CARD --- */}
+              {/* MISSION */}
               <div
                 className={`flex flex-col rounded-lg bg-[var(--green)] p-5 shadow-[0_8px_20px_rgba(0,0,0,0.25)] sm:p-6 ${reveal(150).className}`}
                 style={reveal(150).style}
               >
                 <h2 className="text-center text-xl font-bold uppercase tracking-wider text-[var(--white)] sm:text-2xl">
-                  Mission
+                  {t('visionMission.mission.label')}
                 </h2>
-                <div className="mx-auto mt-3 mb-4 h-px w-16 bg-[var(--yellow)] sm:mt-4 sm:mb-5" aria-hidden="true" />
+                <div
+                  className="mx-auto mb-4 mt-3 h-px w-16 bg-[var(--yellow)] sm:mb-5 sm:mt-4"
+                  aria-hidden="true"
+                />
                 <p className="text-center text-sm leading-relaxed text-[var(--white)]/95 sm:text-base sm:leading-loose">
-                  {MISSION_TEXT}
+                  {t('visionMission.mission.text')}
                 </p>
               </div>
-
             </div>
           </div>
 
-          {/* ============================================================ */}
-          {/* Curved Green Bottom Edge (Overlays the white base)            */}
-          {/* ============================================================ */}
-          <div className="absolute left-0 right-0 top-[calc(100%-4rem)] z-0 leading-[0] sm:top-[calc(100%-6rem)]" aria-hidden="true">
+          <div
+            className="absolute left-0 right-0 top-[calc(100%-4rem)] z-0 leading-[0] sm:top-[calc(100%-6rem)]"
+            aria-hidden="true"
+          >
             <svg
               className="block w-full"
               viewBox="0 0 1440 80"
@@ -135,11 +134,7 @@ export default function VisionMissionSection() {
             </svg>
           </div>
 
-          {/* ============================================================ */}
-          {/* Lower White Section (Reduced breathing room)                  */}
-          {/* ============================================================ */}
           <div className="relative z-20 h-12 w-full sm:h-16" />
-
         </div>
       </div>
     </section>

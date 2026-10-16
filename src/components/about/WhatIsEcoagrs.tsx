@@ -1,6 +1,6 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import {
   Table2,
   Building2,
@@ -11,77 +11,59 @@ import {
   Network,
 } from 'lucide-react';
 
-/* -------------------------------------------------------------------------- */
-/* Types                                                                      */
-/* -------------------------------------------------------------------------- */
-
-interface SourceNode {
-  id: string;
-  label: string;
-  icon: ReactNode;
-  position: string;
-}
-
-/* -------------------------------------------------------------------------- */
-/* Static content — example sources only (not claimed partners)               */
-/* -------------------------------------------------------------------------- */
-
-const SOURCE_NODES: SourceNode[] = [
+const SOURCE_NODE_CONFIG = [
   {
     id: 'fao',
-    label: 'FAO',
+    labelKey: 'fao',
     icon: <Landmark className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />,
     position: 'left-[6%] top-[10%]',
   },
   {
     id: 'faostat',
-    label: 'FAOSTAT',
+    labelKey: 'faostat',
     icon: <FileSpreadsheet className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />,
     position: 'right-[6%] top-[8%]',
   },
   {
     id: 'au',
-    label: 'African Union',
+    labelKey: 'au',
     icon: <Globe2 className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />,
     position: 'left-[2%] top-[42%]',
   },
   {
     id: 'who',
-    label: 'WHO',
+    labelKey: 'who',
     icon: <Building2 className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />,
     position: 'right-[2%] top-[40%]',
   },
   {
     id: 'nsa',
-    label: 'National Statistical Agencies',
+    labelKey: 'nsa',
     icon: <Table2 className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />,
     position: 'left-[8%] bottom-[12%]',
   },
   {
     id: 'regional',
-    label: 'Regional Organisations',
+    labelKey: 'regional',
     icon: <Network className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />,
     position: 'right-[6%] bottom-[14%]',
   },
   {
     id: 'research',
-    label: 'Research Institutions',
+    labelKey: 'research',
     icon: <FlaskConical className="h-3.5 w-3.5" strokeWidth={1.75} aria-hidden="true" />,
     position: 'left-[36%] bottom-[2%]',
   },
-];
-
-/* -------------------------------------------------------------------------- */
-/* Component                                                                  */
-/* -------------------------------------------------------------------------- */
+] as const;
 
 export default function WhatIsEcoagris() {
+  const { t } = useTranslation('common');
+
   return (
     <section
       className="relative isolate flex min-h-[300px] flex-col justify-center overflow-hidden bg-[var(--green)]/8 py-6 sm:h-dvh sm:py-8 lg:py-10"
       aria-labelledby="what-is-ecoagris-heading"
     >
-      {/* Subtle green grid */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.04]"
         aria-hidden="true"
@@ -94,7 +76,6 @@ export default function WhatIsEcoagris() {
         }}
       />
 
-      {/* Soft green glows */}
       <div
         className="pointer-events-none absolute -left-24 top-1/4 h-72 w-72 rounded-full bg-[var(--green)]/10 blur-3xl"
         aria-hidden="true"
@@ -105,30 +86,26 @@ export default function WhatIsEcoagris() {
       />
 
       <div className="relative mx-auto flex h-full w-full max-w-7xl flex-col justify-center px-4 sm:px-6 lg:px-8">
-        {/* Section header — compact on mobile, original on desktop */}
         <div className="mb-3 max-w-2xl shrink-0 sm:mb-8">
           <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--green)] sm:text-xs">
-            About ECOAGRIS e-WATCH
+            {t('whatIs.eyebrow')}
           </p>
 
           <h2
             id="what-is-ecoagris-heading"
             className="mt-1 text-[clamp(1.15rem,4vw+0.4rem,1.85rem)] font-bold leading-tight tracking-tight text-[var(--dark-green)]"
           >
-            What Is ECOAGRIS e-WATCH?
+            {t('whatIs.title')}
           </h2>
 
           <p className="mt-1 max-w-xl text-[12px] leading-snug text-[var(--olive-green)]/85 sm:mt-1.5 sm:text-[0.9375rem] sm:leading-relaxed">
-            A regional agricultural data convergence hub connecting credible
-            agricultural information from across West Africa.
+            {t('whatIs.subtitle')}
           </p>
         </div>
 
-        {/* Two-column body */}
         <div className="grid min-h-0 flex-1 grid-cols-1 content-center items-center gap-3 sm:gap-6 lg:grid-cols-2 lg:gap-12 xl:gap-16">
-          {/* LEFT — Visual story */}
+          {/* LEFT — Visual */}
           <div className="relative mx-auto w-full max-w-md lg:max-w-none">
-            {/* Desktop / tablet network */}
             <div
               className="relative mx-auto hidden aspect-square w-full max-w-[340px] sm:block lg:max-w-[380px]"
               aria-hidden="true"
@@ -178,7 +155,7 @@ export default function WhatIsEcoagris() {
                 ))}
               </svg>
 
-              {SOURCE_NODES.map((node, index) => (
+              {SOURCE_NODE_CONFIG.map((node, index) => (
                 <div
                   key={node.id}
                   className={`absolute ${node.position} z-10 max-w-[9rem] motion-safe:animate-[fade-in-scale_0.5s_ease-out_both]`}
@@ -192,13 +169,12 @@ export default function WhatIsEcoagris() {
                       {node.icon}
                     </span>
                     <span className="truncate text-[10px] font-medium leading-tight text-[var(--dark-green)] sm:text-[11px]">
-                      {node.label}
+                      {t(`whatIs.sources.${node.labelKey}`)}
                     </span>
                   </div>
                 </div>
               ))}
 
-              {/* Central card */}
               <div className="absolute left-1/2 top-1/2 z-20 w-[min(100%,13rem)] -translate-x-1/2 -translate-y-1/2 motion-safe:animate-[fade-in-scale_0.6s_ease-out_0.1s_both]">
                 <div className="relative overflow-hidden rounded-2xl border border-[var(--green)]/20 bg-[var(--white)] px-4 py-4 text-center shadow-md">
                   <div
@@ -206,115 +182,85 @@ export default function WhatIsEcoagris() {
                     aria-hidden="true"
                   />
                   <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--green)]">
-                    Platform
+                    {t('whatIs.center.platform')}
                   </p>
                   <p className="mt-1 text-sm font-bold leading-snug text-[var(--dark-green)]">
-                    ECOAGRIS e-WATCH
+                    {t('whatIs.center.name')}
                   </p>
                   <p className="mt-1 text-[11px] leading-snug text-[var(--olive-green)]/80">
-                    Regional Agricultural Data Intelligence
+                    {t('whatIs.center.tagline')}
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* Mobile source list — compact */}
+            {/* Mobile */}
             <div className="sm:hidden" aria-hidden="true">
               <div className="mb-2 overflow-hidden rounded-xl border border-[var(--green)]/15 bg-[var(--white)] px-3 py-2.5 text-center shadow-sm">
                 <p className="text-[9px] font-semibold uppercase tracking-[0.16em] text-[var(--green)]">
-                  Platform
+                  {t('whatIs.center.platform')}
                 </p>
                 <p className="mt-0.5 text-sm font-bold text-[var(--dark-green)]">
-                  ECOAGRIS e-WATCH
+                  {t('whatIs.center.name')}
                 </p>
                 <p className="mt-0.5 text-[11px] text-[var(--olive-green)]/80">
-                  Regional Agricultural Data Intelligence
+                  {t('whatIs.center.tagline')}
                 </p>
               </div>
 
               <div className="flex flex-wrap justify-center gap-1">
-                {SOURCE_NODES.map((node) => (
+                {SOURCE_NODE_CONFIG.map((node) => (
                   <span
                     key={node.id}
                     className="inline-flex items-center gap-1 rounded-md border border-[var(--green)]/12 bg-[var(--white)]/80 px-1.5 py-0.5 text-[10px] font-medium text-[var(--dark-green)]"
                   >
                     <span className="text-[var(--green)]">{node.icon}</span>
-                    {node.label}
+                    {t(`whatIs.sources.${node.labelKey}`)}
                   </span>
                 ))}
               </div>
 
               <p className="mt-1.5 text-center text-[9px] leading-tight text-[var(--olive-green)]/55">
-                Illustrative examples — not confirmed partners.
+                {t('whatIs.disclaimerShort')}
               </p>
             </div>
 
-            {/* Disclaimer — desktop only */}
             <p className="mt-3 hidden text-center text-[10px] text-[var(--olive-green)]/55 sm:mt-4 sm:block sm:text-[11px]">
-              Illustrative examples of recognised agricultural data sources —
-              not a list of confirmed platform partners.
+              {t('whatIs.disclaimer')}
             </p>
           </div>
 
-          {/* RIGHT — Explanation */}
+          {/* RIGHT — Copy */}
           <div className="flex flex-col">
             <p className="text-[10px] font-semibold uppercase tracking-[0.16em] text-[var(--green)] sm:text-xs">
-              A Regional Data Convergence Hub
+              {t('whatIs.sideEyebrow')}
             </p>
 
-            {/* Mobile: shorter copy */}
             <div className="mt-1.5 space-y-1.5 text-[13px] leading-snug text-[var(--olive-green)]/90 sm:hidden">
-              <p>
-                ECOAGRIS e-WATCH is a regional agricultural data intelligence
-                platform that brings together reliable, structured agricultural
-                data from across West Africa into one accessible environment.
-              </p>
-              <p>
-                It provides a convergence layer so users can discover, explore
-                and work with information from credible existing sources,
-                supporting both data access and data intelligence.
-              </p>
+              <p>{t('whatIs.mobile.p1')}</p>
+              <p>{t('whatIs.mobile.p2')}</p>
             </div>
 
-            {/* Desktop / tablet: full copy */}
             <div className="mt-3 hidden space-y-2.5 text-sm leading-relaxed text-[var(--olive-green)]/90 sm:block sm:text-[0.9375rem]">
+              <p>{t('whatIs.desktop.p1')}</p>
+              <p>{t('whatIs.desktop.p2')}</p>
+              <p>{t('whatIs.desktop.p3')}</p>
               <p>
-                ECOAGRIS e-WATCH is a regional agricultural data intelligence
-                platform designed to bring together reliable, published and
-                structured agricultural data from across West Africa into one
-                accessible digital environment.
-              </p>
-              <p>
-                Agricultural information is generated by numerous national,
-                regional and international institutions, but this information is
-                often distributed across different databases, reports,
-                publications and statistical platforms.
-              </p>
-              <p>
-                ECOAGRIS e-WATCH provides a convergence and access layer that
-                helps users discover, explore, compare and work with agricultural
-                information from credible existing sources.
-              </p>
-              <p>
-                The platform is designed to support both{' '}
+                {t('whatIs.desktop.p4Before')}{' '}
                 <strong className="font-semibold text-[var(--dark-green)]">
-                  data access
+                  {t('whatIs.desktop.dataAccess')}
                 </strong>{' '}
-                and{' '}
+                {t('whatIs.desktop.p4And')}{' '}
                 <strong className="font-semibold text-[var(--dark-green)]">
-                  data intelligence
+                  {t('whatIs.desktop.dataIntelligence')}
                 </strong>
-                , enabling users to move beyond simply finding datasets towards
-                understanding agricultural trends, indicators, relationships and
-                regional patterns.
+                {t('whatIs.desktop.p4After')}
               </p>
             </div>
 
-            {/* Highlight statement */}
             <blockquote className="mt-2.5 overflow-hidden rounded-lg border border-[var(--green)]/20 bg-[var(--white)]/70 px-3 py-2 sm:mt-6 sm:rounded-xl sm:px-4 sm:py-3.5">
               <p className="text-[13px] font-semibold leading-snug text-[var(--dark-green)] sm:text-base">
-                “From fragmented agricultural data to connected regional
-                intelligence.”
+                {t('whatIs.quote')}
               </p>
             </blockquote>
           </div>

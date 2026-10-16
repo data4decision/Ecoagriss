@@ -34,7 +34,7 @@ const Navbar: React.FC = () => {
   return (
     <nav className="bg-[var(--medium-green)] text-white shadow-md px-6 py-4 md:flex justify-between items-center">
       <div className="flex items-center justify-between">
-        <Link href="https://www.data4decision.org/" passHref>
+        <Link href="/">
           <div className="text-xl font-bold flex items-center">
             <Image
               src="/logo.png"
