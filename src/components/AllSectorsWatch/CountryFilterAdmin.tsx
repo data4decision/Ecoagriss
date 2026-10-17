@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Check, ChevronDown, Globe2, ShieldCheck } from 'lucide-react';
 
 import { createClient } from '@/lib/supabase/client';
@@ -25,6 +26,7 @@ export default function CountryFilterAdmin({
   selectedCountryId = null,
   onCountryChange,
 }: CountryFilterAdminProps) {
+  const { t } = useTranslation('common');
   const [isAdmin, setIsAdmin] = useState(false);
   const [countries, setCountries] = useState<Country[]>([]);
   const [selectedCountry, setSelectedCountry] = useState<number | null>(
@@ -58,7 +60,6 @@ export default function CountryFilterAdmin({
             setIsAdmin(false);
             setLoading(false);
           }
-
           return;
         }
 
@@ -111,7 +112,7 @@ export default function CountryFilterAdmin({
         const message =
           err instanceof Error
             ? err.message
-            : 'Unable to load the country filter.';
+            : t('countryFilter.errorFallback');
 
         setError(message);
       } finally {
@@ -127,7 +128,7 @@ export default function CountryFilterAdmin({
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     setSelectedCountry(selectedCountryId ?? null);
@@ -161,9 +162,14 @@ export default function CountryFilterAdmin({
     onCountryChange?.(countryId);
   };
 
+  const selectedName =
+    selectedCountry === null
+      ? t('countryFilter.allCountries')
+      : countries.find((country) => country.id === selectedCountry)?.name ??
+        t('countryFilter.selectCountry');
+
   return (
     <section className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-[var(--dark-green)] via-[#005f00] to-[#003d00] p-5 shadow-lg sm:p-6">
-      {/* Decorative background */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -right-20 -top-20 h-52 w-52 rounded-full bg-[var(--yellow)]/10 blur-3xl" />
         <div className="absolute -bottom-24 -left-16 h-56 w-56 rounded-full bg-emerald-300/10 blur-3xl" />
@@ -179,37 +185,33 @@ export default function CountryFilterAdmin({
       </div>
 
       <div className="relative">
-        {/* Header */}
         <div className="mb-5 flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div className="max-w-2xl">
             <div className="mb-2 flex flex-wrap items-center gap-2">
               <span className="inline-flex items-center gap-1.5 rounded-full border border-[var(--yellow)]/30 bg-[var(--yellow)]/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.16em] text-[var(--yellow)]">
                 <ShieldCheck className="h-3.5 w-3.5" />
-                Admin Control
+                {t('countryFilter.badgeAdmin')}
               </span>
 
               <span className="inline-flex items-center rounded-full border border-white/10 bg-black/10 px-3 py-1 text-[10px] font-semibold uppercase tracking-wider text-white/70">
-                Admin View
+                {t('countryFilter.badgeView')}
               </span>
             </div>
 
             <h2 className="text-xl font-bold tracking-tight text-white sm:text-2xl">
-              Filter regional data by country
+              {t('countryFilter.title')}
             </h2>
 
             <p className="mt-1.5 max-w-xl text-sm leading-6 text-white/65">
-              Select a country to explore sector data within the regional
-              view.
+              {t('countryFilter.subtitle')}
             </p>
           </div>
 
-          {/* Globe icon */}
           <div className="hidden h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-white/10 bg-white/5 lg:flex">
             <Globe2 className="h-6 w-6 text-[var(--yellow)]" />
           </div>
         </div>
 
-        {/* Filter control */}
         <div className="rounded-xl border border-white/10 bg-black/15 p-3 backdrop-blur-sm sm:p-4">
           <div className="flex flex-col gap-3 md:flex-row md:items-center">
             <div className="flex min-w-0 items-center gap-3">
@@ -219,28 +221,26 @@ export default function CountryFilterAdmin({
 
               <div className="min-w-0">
                 <p className="text-xs font-semibold uppercase tracking-wider text-white/50">
-                  Country
+                  {t('countryFilter.countryLabel')}
                 </p>
 
                 <p className="truncate text-sm font-semibold text-white">
-                  {selectedCountry === null
-                    ? 'All Countries'
-                    : countries.find(
-                        (country) => country.id === selectedCountry
-                      )?.name ?? 'Select country'}
+                  {selectedName}
                 </p>
               </div>
             </div>
 
             <div className="relative w-full md:ml-auto md:max-w-sm">
               <select
-                value={selectedCountry === null ? 'all' : String(selectedCountry)}
+                value={
+                  selectedCountry === null ? 'all' : String(selectedCountry)
+                }
                 onChange={(event) => handleCountryChange(event.target.value)}
                 disabled={countriesLoading || countries.length === 0}
-                aria-label="Filter regional data by country"
+                aria-label={t('countryFilter.selectAria')}
                 className="w-full appearance-none rounded-lg border border-white/15 bg-white px-4 py-3 pr-10 text-sm font-medium text-[var(--dark-green)] outline-none transition focus:border-[var(--yellow)] focus:ring-2 focus:ring-[var(--yellow)]/30 disabled:cursor-not-allowed disabled:opacity-60"
               >
-                <option value="all">All Countries</option>
+                <option value="all">{t('countryFilter.allCountries')}</option>
 
                 {countries.map((country) => (
                   <option key={country.id} value={country.id}>
@@ -253,19 +253,17 @@ export default function CountryFilterAdmin({
             </div>
           </div>
 
-          {/* Current selection */}
           <div className="mt-3 flex items-center gap-2 text-xs text-white/55">
             <Check className="h-3.5 w-3.5 text-[var(--yellow)]" />
 
             <span>
               {selectedCountry === null
-                ? 'Regional view showing all accessible countries.'
-                : 'Regional view filtered to the selected country.'}
+                ? t('countryFilter.hintAll')
+                : t('countryFilter.hintFiltered')}
             </span>
           </div>
         </div>
 
-        {/* Error */}
         {error && (
           <div className="mt-3 rounded-lg border border-red-300/20 bg-red-500/10 px-4 py-3 text-xs text-red-100">
             {error}

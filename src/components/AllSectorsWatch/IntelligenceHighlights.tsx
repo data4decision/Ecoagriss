@@ -1,10 +1,9 @@
-
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
-  AlertTriangle,
   ArrowDownRight,
   ArrowUpRight,
   Award,
@@ -88,7 +87,11 @@ interface CountryIndicatorSeries {
   lowestValue: number;
   trend: TrendDirection;
   volatilityPercent: number | null;
-  acceleration: 'accelerating' | 'decelerating' | 'steady' | 'insufficient_data';
+  acceleration:
+    | 'accelerating'
+    | 'decelerating'
+    | 'steady'
+    | 'insufficient_data';
 }
 
 interface CountryMetricResult {
@@ -124,196 +127,46 @@ interface AiBriefing {
   outlook: string;
 }
 
-const AGRICULTURAL_INPUT_VARIABLES: VariableDefinition[] = [
-  {
-    key: 'cereal_seeds_tons',
-    label: 'Cereal Seeds',
-    unit: 'tons',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'fertilizer_tons',
-    label: 'Fertilizer',
-    unit: 'tons',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'pesticide_liters',
-    label: 'Pesticide',
-    unit: 'litres',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'improved_seed_use_pct',
-    label: 'Improved Seed Use',
-    unit: '%',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'fertilizer_kg_per_ha',
-    label: 'Fertilizer',
-    unit: 'kg/ha',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'input_price_index_2006_base',
-    label: 'Input Price Index',
-    unit: '2006 base',
-    performance: 'neutral',
-  },
-  {
-    key: 'agro_dealer_count',
-    label: 'Agro-dealer Count',
-    unit: 'count',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'input_subsidy_budget_usd',
-    label: 'Input Subsidy Budget',
-    unit: 'USD',
-    performance: 'neutral',
-  },
-  {
-    key: 'distribution_timeliness_pct',
-    label: 'Distribution Timeliness',
-    unit: '%',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'stockouts_days_per_year',
-    label: 'Stockouts',
-    unit: 'days/year',
-    performance: 'lower_is_better',
-  },
-  {
-    key: 'input_import_value_usd',
-    label: 'Input Import Value',
-    unit: 'USD',
-    performance: 'neutral',
-  },
-  {
-    key: 'local_production_inputs_tons',
-    label: 'Local Input Production',
-    unit: 'tons',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'mechanization_units_per_1000_farms',
-    label: 'Mechanization',
-    unit: 'units/1,000 farms',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'credit_access_pct',
-    label: 'Credit Access',
-    unit: '%',
-    performance: 'higher_is_better',
-  },
-];
+const AGRICULTURAL_INPUT_VARIABLE_KEYS = [
+  { key: 'cereal_seeds_tons', unitKey: 'tons', performance: 'higher_is_better' as const },
+  { key: 'fertilizer_tons', unitKey: 'tons', performance: 'higher_is_better' as const },
+  { key: 'pesticide_liters', unitKey: 'litres', performance: 'higher_is_better' as const },
+  { key: 'improved_seed_use_pct', unitKey: 'pct', performance: 'higher_is_better' as const },
+  { key: 'fertilizer_kg_per_ha', unitKey: 'kgHa', performance: 'higher_is_better' as const },
+  { key: 'input_price_index_2006_base', unitKey: 'base2006', performance: 'neutral' as const },
+  { key: 'agro_dealer_count', unitKey: 'count', performance: 'higher_is_better' as const },
+  { key: 'input_subsidy_budget_usd', unitKey: 'usd', performance: 'neutral' as const },
+  { key: 'distribution_timeliness_pct', unitKey: 'pct', performance: 'higher_is_better' as const },
+  { key: 'stockouts_days_per_year', unitKey: 'daysYear', performance: 'lower_is_better' as const },
+  { key: 'input_import_value_usd', unitKey: 'usd', performance: 'neutral' as const },
+  { key: 'local_production_inputs_tons', unitKey: 'tons', performance: 'higher_is_better' as const },
+  { key: 'mechanization_units_per_1000_farms', unitKey: 'unitsPer1000Farms', performance: 'higher_is_better' as const },
+  { key: 'credit_access_pct', unitKey: 'pct', performance: 'higher_is_better' as const },
+] as const;
 
-const LIVESTOCK_VARIABLES: VariableDefinition[] = [
-  {
-    key: 'cattle_head',
-    label: 'Cattle Population',
-    unit: 'head',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'small_ruminants_head',
-    label: 'Small Ruminants',
-    unit: 'head',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'pigs_head',
-    label: 'Pig Population',
-    unit: 'head',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'poultry_head',
-    label: 'Poultry Population',
-    unit: 'head',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'milk_production_tons',
-    label: 'Milk Production',
-    unit: 'tons',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'meat_production_tons',
-    label: 'Meat Production',
-    unit: 'tons',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'livestock_price_index_2006_base',
-    label: 'Livestock Price Index',
-    unit: '2006 base',
-    performance: 'neutral',
-  },
-  {
-    key: 'vaccination_coverage_pct',
-    label: 'Vaccination Coverage',
-    unit: '%',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'fmd_incidents_count',
-    label: 'FMD Incidents',
-    unit: 'count',
-    performance: 'lower_is_better',
-  },
-  {
-    key: 'grazing_area_ha',
-    label: 'Grazing Area',
-    unit: 'ha',
-    performance: 'neutral',
-  },
-  {
-    key: 'transhumance_events',
-    label: 'Transhumance Events',
-    unit: 'count',
-    performance: 'neutral',
-  },
-  {
-    key: 'veterinary_facilities_count',
-    label: 'Veterinary Facilities',
-    unit: 'count',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'feed_imports_tons',
-    label: 'Feed Imports',
-    unit: 'tons',
-    performance: 'neutral',
-  },
-  {
-    key: 'local_feed_production_tons',
-    label: 'Local Feed Production',
-    unit: 'tons',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'livestock_exports_tons',
-    label: 'Livestock Exports',
-    unit: 'tons',
-    performance: 'higher_is_better',
-  },
-  {
-    key: 'offtake_rate_pct',
-    label: 'Offtake Rate',
-    unit: '%',
-    performance: 'neutral',
-  },
-];
+const LIVESTOCK_VARIABLE_KEYS = [
+  { key: 'cattle_head', unitKey: 'head', performance: 'higher_is_better' as const },
+  { key: 'small_ruminants_head', unitKey: 'head', performance: 'higher_is_better' as const },
+  { key: 'pigs_head', unitKey: 'head', performance: 'higher_is_better' as const },
+  { key: 'poultry_head', unitKey: 'head', performance: 'higher_is_better' as const },
+  { key: 'milk_production_tons', unitKey: 'tons', performance: 'higher_is_better' as const },
+  { key: 'meat_production_tons', unitKey: 'tons', performance: 'higher_is_better' as const },
+  { key: 'livestock_price_index_2006_base', unitKey: 'base2006', performance: 'neutral' as const },
+  { key: 'vaccination_coverage_pct', unitKey: 'pct', performance: 'higher_is_better' as const },
+  { key: 'fmd_incidents_count', unitKey: 'count', performance: 'lower_is_better' as const },
+  { key: 'grazing_area_ha', unitKey: 'ha', performance: 'neutral' as const },
+  { key: 'transhumance_events', unitKey: 'count', performance: 'neutral' as const },
+  { key: 'veterinary_facilities_count', unitKey: 'count', performance: 'higher_is_better' as const },
+  { key: 'feed_imports_tons', unitKey: 'tons', performance: 'neutral' as const },
+  { key: 'local_feed_production_tons', unitKey: 'tons', performance: 'higher_is_better' as const },
+  { key: 'livestock_exports_tons', unitKey: 'tons', performance: 'higher_is_better' as const },
+  { key: 'offtake_rate_pct', unitKey: 'pct', performance: 'neutral' as const },
+] as const;
 
-function getVariablesForSector(sector: SectorKey): VariableDefinition[] {
+function getVariableKeysForSector(sector: SectorKey) {
   return sector === 'agricultural_inputs'
-    ? AGRICULTURAL_INPUT_VARIABLES
-    : LIVESTOCK_VARIABLES;
+    ? AGRICULTURAL_INPUT_VARIABLE_KEYS
+    : LIVESTOCK_VARIABLE_KEYS;
 }
 
 function isNumericValue(value: unknown): value is number {
@@ -331,8 +184,8 @@ function calculatePercentageChange(
   return ((lastValue - firstValue) / Math.abs(firstValue)) * 100;
 }
 
-function formatNumber(value: number): string {
-  return new Intl.NumberFormat('en-US', {
+function formatNumber(value: number, locale: string): string {
+  return new Intl.NumberFormat(locale, {
     maximumFractionDigits: 1,
   }).format(value);
 }
@@ -474,7 +327,8 @@ function getAcceleration(
 function buildCountryIndicatorSeries(
   records: DataRecord[],
   variable: VariableDefinition,
-  countryNameMap: Map<number, string>
+  countryNameMap: Map<number, string>,
+  countryFallback: (id: number) => string
 ): CountryIndicatorSeries[] {
   const groupedByCountry = new Map<number, TimeSeriesPoint[]>();
 
@@ -547,7 +401,7 @@ function buildCountryIndicatorSeries(
     results.push({
       countryId,
       countryName:
-        countryNameMap.get(countryId) ?? `Country ${countryId}`,
+        countryNameMap.get(countryId) ?? countryFallback(countryId),
       variable,
       series: sortedSeries,
       yearOverYearChanges,
@@ -577,6 +431,18 @@ function buildCountryIndicatorSeries(
 export default function IntelligenceHighlights({
   filters,
 }: IntelligenceHighlightsProps) {
+  const { t, i18n } = useTranslation('common');
+
+  /** Normalized for API: en | fr | pt */
+  const locale = useMemo(() => {
+    const base = (i18n.language || 'en').toLowerCase().split('-')[0];
+    if (base === 'fr' || base === 'pt') return base;
+    return 'en';
+  }, [i18n.language]);
+
+  /** Full locale for number formatting (e.g. fr-FR) */
+  const numberLocale = i18n.language || 'en';
+
   const supabase = useMemo(() => createClient(), []);
 
   const [countries, setCountries] = useState<Country[]>([]);
@@ -589,10 +455,14 @@ export default function IntelligenceHighlights({
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
 
-  const variables = useMemo(
-    () => getVariablesForSector(filters.sector),
-    [filters.sector]
-  );
+  const variables = useMemo((): VariableDefinition[] => {
+    return getVariableKeysForSector(filters.sector).map((v) => ({
+      key: v.key,
+      label: t(`intelligenceHighlights.variables.${v.key}`),
+      unit: t(`intelligenceHighlights.units.${v.unitKey}`),
+      performance: v.performance,
+    }));
+  }, [filters.sector, t]);
 
   const selectedVariableDefinitions = useMemo(
     () =>
@@ -605,6 +475,78 @@ export default function IntelligenceHighlights({
             Boolean(variable)
         ),
     [filters.variables, variables]
+  );
+
+  const enVariableLabels: Record<string, string> = useMemo(
+    () => ({
+      cereal_seeds_tons: 'Cereal Seeds',
+      fertilizer_tons: 'Fertilizer',
+      pesticide_liters: 'Pesticide',
+      improved_seed_use_pct: 'Improved Seed Use',
+      fertilizer_kg_per_ha: 'Fertilizer',
+      input_price_index_2006_base: 'Input Price Index',
+      agro_dealer_count: 'Agro-dealer Count',
+      input_subsidy_budget_usd: 'Input Subsidy Budget',
+      distribution_timeliness_pct: 'Distribution Timeliness',
+      stockouts_days_per_year: 'Stockouts',
+      input_import_value_usd: 'Input Import Value',
+      local_production_inputs_tons: 'Local Input Production',
+      mechanization_units_per_1000_farms: 'Mechanization',
+      credit_access_pct: 'Credit Access',
+      cattle_head: 'Cattle Population',
+      small_ruminants_head: 'Small Ruminants',
+      pigs_head: 'Pig Population',
+      poultry_head: 'Poultry Population',
+      milk_production_tons: 'Milk Production',
+      meat_production_tons: 'Meat Production',
+      livestock_price_index_2006_base: 'Livestock Price Index',
+      vaccination_coverage_pct: 'Vaccination Coverage',
+      fmd_incidents_count: 'FMD Incidents',
+      grazing_area_ha: 'Grazing Area',
+      transhumance_events: 'Transhumance Events',
+      veterinary_facilities_count: 'Veterinary Facilities',
+      feed_imports_tons: 'Feed Imports',
+      local_feed_production_tons: 'Local Feed Production',
+      livestock_exports_tons: 'Livestock Exports',
+      offtake_rate_pct: 'Offtake Rate',
+    }),
+    []
+  );
+
+  const enUnits: Record<string, string> = useMemo(
+    () => ({
+      cereal_seeds_tons: 'tons',
+      fertilizer_tons: 'tons',
+      pesticide_liters: 'litres',
+      improved_seed_use_pct: '%',
+      fertilizer_kg_per_ha: 'kg/ha',
+      input_price_index_2006_base: '2006 base',
+      agro_dealer_count: 'count',
+      input_subsidy_budget_usd: 'USD',
+      distribution_timeliness_pct: '%',
+      stockouts_days_per_year: 'days/year',
+      input_import_value_usd: 'USD',
+      local_production_inputs_tons: 'tons',
+      mechanization_units_per_1000_farms: 'units/1,000 farms',
+      credit_access_pct: '%',
+      cattle_head: 'head',
+      small_ruminants_head: 'head',
+      pigs_head: 'head',
+      poultry_head: 'head',
+      milk_production_tons: 'tons',
+      meat_production_tons: 'tons',
+      livestock_price_index_2006_base: '2006 base',
+      vaccination_coverage_pct: '%',
+      fmd_incidents_count: 'count',
+      grazing_area_ha: 'ha',
+      transhumance_events: 'count',
+      veterinary_facilities_count: 'count',
+      feed_imports_tons: 'tons',
+      local_feed_production_tons: 'tons',
+      livestock_exports_tons: 'tons',
+      offtake_rate_pct: '%',
+    }),
+    []
   );
 
   const loadIntelligenceData = useCallback(async () => {
@@ -632,9 +574,7 @@ export default function IntelligenceHighlights({
       }
 
       if (!user) {
-        setError(
-          'You must be logged in to view intelligence highlights.'
-        );
+        setError(t('intelligenceHighlights.errors.mustBeLoggedIn'));
         setData([]);
         return;
       }
@@ -677,18 +617,6 @@ export default function IntelligenceHighlights({
         ...filters.variables,
       ].join(', ');
 
-      /*
-       * IMPORTANT:
-       *
-       * This retrieves every available year inside the selected range.
-       *
-       * Example:
-       * startYear = 2020
-       * endYear   = 2025
-       *
-       * Returned years:
-       * 2020, 2021, 2022, 2023, 2024, 2025
-       */
       const { data: filteredData, error: queryError } =
         await supabase
           .from(tableName)
@@ -707,7 +635,7 @@ export default function IntelligenceHighlights({
       const message =
         caughtError instanceof Error
           ? caughtError.message
-          : 'Unable to load intelligence highlights.';
+          : t('intelligenceHighlights.errors.unableToLoad');
 
       setError(message);
       setData([]);
@@ -721,6 +649,7 @@ export default function IntelligenceHighlights({
     filters.startYear,
     filters.variables,
     supabase,
+    t,
   ]);
 
   useEffect(() => {
@@ -737,39 +666,24 @@ export default function IntelligenceHighlights({
     return map;
   }, [countries]);
 
-  /*
-   * FULL YEAR-BY-YEAR SERIES
-   *
-   * This is the important addition.
-   *
-   * The original component only retained:
-   * firstYear → lastYear
-   *
-   * This structure retains:
-   * 2020 → 2021 → 2022 → 2023 → 2024 → 2025
-   *
-   * for every selected country and variable.
-   */
+  const countryFallback = useCallback(
+    (id: number) => t('intelligenceHighlights.countryFallback', { id }),
+    [t]
+  );
+
   const countryIndicatorSeries = useMemo(
     () =>
       selectedVariableDefinitions.flatMap((variable) =>
         buildCountryIndicatorSeries(
           data,
           variable,
-          countryNameMap
+          countryNameMap,
+          countryFallback
         )
       ),
-    [countryNameMap, data, selectedVariableDefinitions]
+    [countryFallback, countryNameMap, data, selectedVariableDefinitions]
   );
 
-  /*
-   * Existing first-to-last metrics are preserved.
-   *
-   * These are still used for:
-   * - country performance
-   * - indicator comparison
-   * - computed signals
-   */
   const countryMetricResults = useMemo<CountryMetricResult[]>(
     () => {
       const results: CountryMetricResult[] = [];
@@ -934,52 +848,66 @@ export default function IntelligenceHighlights({
 
     return ranked.slice(0, 5).map((result) => {
       const direction = getDirection(result.change);
+      const metricLabel = result.variable.label;
+      const metricLower = metricLabel.toLowerCase();
 
-      let text = `${result.variable.label}: ${result.countryName} moved from ${formatNumber(
-        result.firstValue
-      )} to ${formatNumber(result.lastValue)} ${
-        result.variable.unit
-      }.`;
+      let text = t('intelligenceHighlights.signals.movedFromTo', {
+        metric: metricLabel,
+        country: result.countryName,
+        from: formatNumber(result.firstValue, numberLocale),
+        to: formatNumber(result.lastValue, numberLocale),
+        unit: result.variable.unit,
+      });
 
       if (
         result.variable.performance === 'lower_is_better' &&
         result.change !== null &&
         result.change < -2
       ) {
-        text = `${result.countryName} reduced ${result.variable.label.toLowerCase()} by ${formatPercentage(
-          result.change
-        )}, indicating improvement.`;
+        text = t('intelligenceHighlights.signals.reducedImprovement', {
+          country: result.countryName,
+          metric: metricLower,
+          pct: formatPercentage(result.change),
+        });
       } else if (
         result.variable.performance === 'lower_is_better' &&
         result.change !== null &&
         result.change > 2
       ) {
-        text = `${result.countryName} saw ${result.variable.label.toLowerCase()} rise by ${formatPercentage(
-          result.change
-        )}, a potential risk signal.`;
+        text = t('intelligenceHighlights.signals.riseRisk', {
+          country: result.countryName,
+          metric: metricLower,
+          pct: formatPercentage(result.change),
+        });
       } else if (
         result.change !== null &&
         Math.abs(result.change) > 2
       ) {
-        text = `${result.variable.label}: ${
-          result.countryName
-        } ${
-          result.change > 0 ? 'improved' : 'declined'
-        } by ${formatPercentage(
-          result.change
-        )} over the selected period.`;
+        text = t(
+          result.change > 0
+            ? 'intelligenceHighlights.signals.improvedBy'
+            : 'intelligenceHighlights.signals.declinedBy',
+          {
+            metric: metricLabel,
+            country: result.countryName,
+            pct: formatPercentage(result.change),
+          }
+        );
       } else if (result.change !== null) {
-        text = `${result.variable.label}: ${result.countryName} remained broadly stable over the selected period.`;
+        text = t('intelligenceHighlights.signals.stable', {
+          metric: metricLabel,
+          country: result.countryName,
+        });
       }
 
       return {
         id: `${result.countryId}-${result.variable.key}`,
         direction,
-        metric: result.variable.label,
+        metric: metricLabel,
         text,
       };
     });
-  }, [countryMetricResults]);
+  }, [countryMetricResults, numberLocale, t]);
 
   const selectedCountryNames = useMemo(
     () =>
@@ -991,7 +919,11 @@ export default function IntelligenceHighlights({
     [countryNameMap, filters.countryIds]
   );
 
-  const sectorLabel =
+  const sectorLabel = t(
+    `intelligenceHighlights.sectors.${filters.sector}`
+  );
+
+  const sectorLabelEn =
     filters.sector === 'agricultural_inputs'
       ? 'Agricultural Inputs'
       : 'Livestock';
@@ -999,7 +931,9 @@ export default function IntelligenceHighlights({
   const selectedVariableLabel =
     selectedVariableDefinitions.length === 1
       ? selectedVariableDefinitions[0].label
-      : `${selectedVariableDefinitions.length} variables`;
+      : t('intelligenceHighlights.variableCount', {
+          count: selectedVariableDefinitions.length,
+        });
 
   const hasAdminComparison =
     isAdmin &&
@@ -1019,47 +953,27 @@ export default function IntelligenceHighlights({
     hasAdminComparison ||
     keySignals.length > 0;
 
-  /*
-   * AI PAYLOAD
-   *
-   * The AI now receives the complete time series.
-   *
-   * It does NOT have to guess what happened between the
-   * start and end years.
-   */
   const intelligencePayload = useMemo(() => {
     if (countryIndicatorSeries.length === 0) {
       return null;
     }
 
     return {
-      sector: sectorLabel,
-
+      sector: sectorLabelEn,
       period: `${filters.startYear}–${filters.endYear}`,
-
       countries: selectedCountryNames,
-
       variables: selectedVariableDefinitions.map(
-        (item) => item.label
+        (item) => enVariableLabels[item.key] ?? item.label
       ),
-
-      /*
-       * Complete country × indicator × year data.
-       */
       timeSeries: countryIndicatorSeries.map((item) => ({
         country: item.countryName,
-
-        indicator: item.variable.label,
-
-        unit: item.variable.unit,
-
+        indicator: enVariableLabels[item.variable.key] ?? item.variable.label,
+        unit: enUnits[item.variable.key] ?? item.variable.unit,
         performance: item.variable.performance,
-
         series: item.series.map((point) => ({
           year: point.year,
           value: point.value,
         })),
-
         yearOverYearChanges: item.yearOverYearChanges.map(
           (change) => ({
             fromYear: change.fromYear,
@@ -1067,36 +981,23 @@ export default function IntelligenceHighlights({
             changePercent: change.changePercent,
           })
         ),
-
         analysis: {
           startYear: item.startYear,
           endYear: item.endYear,
-
           startValue: item.startValue,
           endValue: item.endValue,
-
           changePercent: item.changePercent,
-
           averageAnnualChangePercent:
             item.averageAnnualChangePercent,
-
           highestYear: item.highestYear,
           highestValue: item.highestValue,
-
           lowestYear: item.lowestYear,
           lowestValue: item.lowestValue,
-
           trend: item.trend,
-
           volatilityPercent: item.volatilityPercent,
-
           acceleration: item.acceleration,
         },
       })),
-
-      /*
-       * Existing overall country comparison.
-       */
       overall:
         hasAdminComparison &&
         strongestCountry &&
@@ -1108,7 +1009,6 @@ export default function IntelligenceHighlights({
                   strongestCountry.score.toFixed(0)
                 ),
               },
-
               weakest: {
                 country: weakestCountry.countryName,
                 score: Number(
@@ -1117,46 +1017,36 @@ export default function IntelligenceHighlights({
               },
             }
           : null,
-
-      /*
-       * Existing indicator-level comparison.
-       */
       indicators: indicatorComparisons.map(
         ({ variable, strongest, weakest }) => ({
-          name: variable.label,
-
+          name: enVariableLabels[variable.key] ?? variable.label,
           strongest: strongest.countryName,
-
           strongestChange: strongest.change,
-
           weakest: weakest.countryName,
-
           weakestChange: weakest.change,
         })
       ),
-
-      /*
-       * Existing deterministic signals.
-       */
       signals: keySignals.map((signal) => signal.text),
+      /** Tells the API which language to write the briefing in */
+      locale,
     };
   }, [
     countryIndicatorSeries,
+    enUnits,
+    enVariableLabels,
     filters.endYear,
     filters.startYear,
     hasAdminComparison,
     indicatorComparisons,
     keySignals,
-    sectorLabel,
+    locale,
+    sectorLabelEn,
     selectedCountryNames,
     selectedVariableDefinitions,
     strongestCountry,
     weakestCountry,
   ]);
 
-  /*
-   * Send the complete deterministic analysis to the AI.
-   */
   useEffect(() => {
     if (!intelligencePayload || loading || error) {
       setAiBriefing(null);
@@ -1190,7 +1080,7 @@ export default function IntelligenceHighlights({
             'error' in result &&
             typeof result.error === 'string'
               ? result.error
-              : 'Unable to generate AI briefing.';
+              : t('intelligenceHighlights.errors.unableAiBriefing');
 
           throw new Error(errorMessage);
         }
@@ -1242,7 +1132,7 @@ export default function IntelligenceHighlights({
         const message =
           caughtError instanceof Error
             ? caughtError.message
-            : 'Unable to generate AI briefing.';
+            : t('intelligenceHighlights.errors.unableAiBriefing');
 
         setAiError(message);
         setAiBriefing(null);
@@ -1258,14 +1148,15 @@ export default function IntelligenceHighlights({
     return () => {
       controller.abort();
     };
-  }, [error, intelligencePayload, loading]);
+    // locale is inside intelligencePayload — changing FR/EN/PT refetches AI
+  }, [error, intelligencePayload, loading, t]);
 
   if (loading) {
     return (
       <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="flex min-h-[280px] items-center justify-center gap-2 text-gray-500">
           <Loader2 className="h-5 w-5 animate-spin" />
-          <span>Interpreting the selected data...</span>
+          <span>{t('intelligenceHighlights.loading')}</span>
         </div>
       </section>
     );
@@ -1273,7 +1164,6 @@ export default function IntelligenceHighlights({
 
   return (
     <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-      {/* Header */}
       <div className="bg-gradient-to-r from-[#062f24] via-[#075b3d] to-[#0b3939] px-5 py-6 text-white sm:px-7">
         <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -1281,18 +1171,16 @@ export default function IntelligenceHighlights({
               <Lightbulb className="h-5 w-5 text-yellow-300" />
 
               <span className="text-sm font-semibold uppercase tracking-wider text-green-100">
-                Intelligence Highlights
+                {t('intelligenceHighlights.badge')}
               </span>
             </div>
 
             <h2 className="text-xl font-bold sm:text-2xl">
-              Signals Worth Watching
+              {t('intelligenceHighlights.title')}
             </h2>
 
             <p className="mt-1 max-w-3xl text-sm leading-6 text-green-50">
-              Unified interpretation of the data currently
-              selected in the Sector Data Explorer, with
-              AI-assisted briefing.
+              {t('intelligenceHighlights.subtitle')}
             </p>
           </div>
 
@@ -1301,15 +1189,15 @@ export default function IntelligenceHighlights({
 
             <div>
               <p className="text-xs text-green-100">
-                Data-driven
+                {t('intelligenceHighlights.dataDriven')}
               </p>
 
               <p className="text-sm font-semibold">
                 {isAdmin
                   ? hasAdminComparison
-                    ? 'Admin comparison'
-                    : 'Admin view'
-                  : 'Authorised view'}
+                    ? t('intelligenceHighlights.view.adminComparison')
+                    : t('intelligenceHighlights.view.admin')
+                  : t('intelligenceHighlights.view.authorised')}
               </p>
             </div>
           </div>
@@ -1327,7 +1215,9 @@ export default function IntelligenceHighlights({
           <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 font-semibold text-green-50">
             {selectedCountryNames.length === 1
               ? selectedCountryNames[0]
-              : `${selectedCountryNames.length} countries`}
+              : t('intelligenceHighlights.countryCount', {
+                  count: selectedCountryNames.length,
+                })}
           </span>
 
           <span className="rounded-full border border-white/20 bg-white/10 px-3 py-1 font-semibold text-green-50">
@@ -1349,13 +1239,11 @@ export default function IntelligenceHighlights({
               <BarChart3 className="mx-auto h-8 w-8 text-gray-400" />
 
               <p className="mt-3 font-semibold text-gray-700">
-                No intelligence signals available
+                {t('intelligenceHighlights.emptyTitle')}
               </p>
 
               <p className="mt-1 max-w-md text-sm text-gray-500">
-                There is not enough data within the current
-                filters to generate a meaningful
-                interpretation.
+                {t('intelligenceHighlights.emptyDescription')}
               </p>
             </div>
           </div>
@@ -1363,7 +1251,6 @@ export default function IntelligenceHighlights({
       ) : (
         !error && (
           <div className="divide-y divide-gray-100">
-            {/* Overall Country Performance */}
             {hasAdminComparison &&
               strongestCountry &&
               weakestCountry && (
@@ -1372,14 +1259,14 @@ export default function IntelligenceHighlights({
                     <Award className="h-4 w-4 text-emerald-700" />
 
                     <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
-                      Overall Country Performance
+                      {t('intelligenceHighlights.overallPerformance')}
                     </h3>
                   </div>
 
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                     <div className="rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50 to-white p-5">
                       <p className="text-xs font-semibold uppercase tracking-wide text-emerald-700">
-                        Strongest performance
+                        {t('intelligenceHighlights.strongestPerformance')}
                       </p>
 
                       <p className="mt-2 text-2xl font-bold text-gray-900">
@@ -1391,19 +1278,15 @@ export default function IntelligenceHighlights({
                       </p>
 
                       <p className="mt-2 text-xs text-gray-500">
-                        Across{' '}
-                        {strongestCountry.indicatorsConsidered}{' '}
-                        comparable indicator
-                        {strongestCountry.indicatorsConsidered ===
-                        1
-                          ? ''
-                          : 's'}
+                        {t('intelligenceHighlights.acrossIndicators', {
+                          count: strongestCountry.indicatorsConsidered,
+                        })}
                       </p>
                     </div>
 
                     <div className="rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50/80 to-white p-5">
                       <p className="text-xs font-semibold uppercase tracking-wide text-amber-700">
-                        Needs attention
+                        {t('intelligenceHighlights.needsAttention')}
                       </p>
 
                       <p className="mt-2 text-2xl font-bold text-gray-900">
@@ -1415,20 +1298,15 @@ export default function IntelligenceHighlights({
                       </p>
 
                       <p className="mt-2 text-xs text-gray-500">
-                        Across{' '}
-                        {weakestCountry.indicatorsConsidered}{' '}
-                        comparable indicator
-                        {weakestCountry.indicatorsConsidered ===
-                        1
-                          ? ''
-                          : 's'}
+                        {t('intelligenceHighlights.acrossIndicators', {
+                          count: weakestCountry.indicatorsConsidered,
+                        })}
                       </p>
                     </div>
                   </div>
                 </div>
               )}
 
-            {/* Indicator Performance table */}
             {hasAdminComparison &&
               indicatorComparisons.length > 0 && (
                 <div className="p-5 sm:p-7">
@@ -1436,7 +1314,7 @@ export default function IntelligenceHighlights({
                     <Target className="h-4 w-4 text-blue-700" />
 
                     <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
-                      Indicator Performance
+                      {t('intelligenceHighlights.indicatorPerformance')}
                     </h3>
                   </div>
 
@@ -1445,15 +1323,15 @@ export default function IntelligenceHighlights({
                       <thead className="bg-gray-50 text-xs font-semibold uppercase tracking-wide text-gray-500">
                         <tr>
                           <th className="px-4 py-3">
-                            Indicator
+                            {t('intelligenceHighlights.table.indicator')}
                           </th>
 
                           <th className="px-4 py-3">
-                            Strongest
+                            {t('intelligenceHighlights.table.strongest')}
                           </th>
 
                           <th className="px-4 py-3">
-                            Needs Attention
+                            {t('intelligenceHighlights.table.needsAttention')}
                           </th>
                         </tr>
                       </thead>
@@ -1513,36 +1391,31 @@ export default function IntelligenceHighlights({
                 </div>
               )}
 
-            {/* AI Briefing */}
             <div className="p-5 sm:p-7">
               <div className="mb-2 flex items-center gap-2">
                 <Lightbulb className="h-4 w-4 text-yellow-600" />
 
                 <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
-                  AI Intelligence Briefing
+                  {t('intelligenceHighlights.aiBriefingTitle')}
                 </h3>
               </div>
 
               <p className="mb-4 text-xs leading-5 text-gray-500">
-                AI-generated interpretation based on the
-                complete selected time series, countries,
-                period, sector and variables. Scores,
-                percentages, trends and statistical summaries
-                are calculated by the application; the model
-                interprets those measured facts.
+                {t('intelligenceHighlights.aiBriefingIntro')}
               </p>
 
               {aiLoading && (
                 <div className="flex items-center gap-2 rounded-xl border border-gray-200 bg-gray-50 px-4 py-6 text-sm text-gray-500">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Generating interpretation from measured
-                  results...
+                  {t('intelligenceHighlights.generatingAi')}
                 </div>
               )}
 
               {!aiLoading && aiError && (
                 <div className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
-                  AI briefing unavailable: {aiError}
+                  {t('intelligenceHighlights.aiUnavailable', {
+                    error: aiError,
+                  })}
                 </div>
               )}
 
@@ -1550,7 +1423,7 @@ export default function IntelligenceHighlights({
                 <div className="space-y-4 rounded-2xl border border-emerald-200 bg-gradient-to-br from-emerald-50/80 to-white p-5">
                   <div>
                     <p className="mb-1 text-xs font-bold uppercase tracking-wide text-gray-500">
-                      Overall assessment
+                      {t('intelligenceHighlights.overallAssessment')}
                     </p>
 
                     <p className="text-sm leading-6 text-gray-800">
@@ -1561,7 +1434,7 @@ export default function IntelligenceHighlights({
                   {aiBriefing.keySignals.length > 0 && (
                     <div>
                       <p className="mb-2 text-xs font-bold uppercase tracking-wide text-gray-500">
-                        Key signals
+                        {t('intelligenceHighlights.keySignals')}
                       </p>
 
                       <ul className="space-y-2">
@@ -1583,7 +1456,7 @@ export default function IntelligenceHighlights({
 
                   <div className="rounded-xl border border-amber-200 bg-amber-50/80 px-4 py-3">
                     <p className="text-xs font-bold uppercase tracking-wide text-amber-800">
-                      Needs attention
+                      {t('intelligenceHighlights.needsAttention')}
                     </p>
 
                     <p className="mt-1 text-sm leading-6 text-amber-900">
@@ -1593,7 +1466,7 @@ export default function IntelligenceHighlights({
 
                   <div>
                     <p className="mb-1 text-xs font-bold uppercase tracking-wide text-gray-500">
-                      Outlook
+                      {t('intelligenceHighlights.outlook')}
                     </p>
 
                     <p className="text-sm leading-6 text-gray-700">
@@ -1604,14 +1477,13 @@ export default function IntelligenceHighlights({
               )}
             </div>
 
-            {/* Deterministic key signals fallback list */}
             {keySignals.length > 0 && (
               <div className="p-5 sm:p-7">
                 <div className="mb-4 flex items-center gap-2">
                   <BarChart3 className="h-4 w-4 text-orange-600" />
 
                   <h3 className="text-sm font-bold uppercase tracking-wide text-gray-700">
-                    Computed Signals
+                    {t('intelligenceHighlights.computedSignals')}
                   </h3>
                 </div>
 
@@ -1657,7 +1529,6 @@ export default function IntelligenceHighlights({
               </div>
             )}
 
-            {/* Methodology */}
             <div className="bg-gray-50 px-5 py-5 sm:px-7">
               <div className="flex items-start gap-3">
                 <Info className="mt-0.5 h-4 w-4 shrink-0 text-gray-400" />
@@ -1665,42 +1536,23 @@ export default function IntelligenceHighlights({
                 <div className="space-y-2 text-xs leading-5 text-gray-500">
                   <p>
                     <strong className="text-gray-700">
-                      How this works:{' '}
+                      {t('intelligenceHighlights.methodology.howTitle')}
                     </strong>
-                    the application retrieves every available
-                    year within the selected period and
-                    calculates percentage changes, year-on-year
-                    changes, rankings, trends, volatility and
-                    performance scores from the selected
-                    dataset. The AI briefing interprets these
-                    computed facts. It does not recalculate
-                    metrics or invent data.
+                    {t('intelligenceHighlights.methodology.howBody')}
                   </p>
 
                   <p>
-                    The intelligence layer preserves the full
-                    selected time series. For example, a
-                    2020–2025 selection includes 2020, 2021,
-                    2022, 2023, 2024 and 2025 rather than only
-                    the endpoint years.
+                    {t('intelligenceHighlights.methodology.timeSeries')}
                   </p>
 
                   {hasAdminComparison && (
                     <p>
-                      For multi-country comparisons, each
-                      performance-relevant indicator is ranked
-                      separately. Indicator scores are averaged
-                      into an overall country performance score.
-                      Higher-is-better and lower-is-better
-                      metrics are handled accordingly; neutral
-                      indicators are excluded from the score.
+                      {t('intelligenceHighlights.methodology.adminComparison')}
                     </p>
                   )}
 
                   <p>
-                    This is a relative assessment within the
-                    current selection only — not an absolute
-                    national ranking.
+                    {t('intelligenceHighlights.methodology.relative')}
                   </p>
                 </div>
               </div>

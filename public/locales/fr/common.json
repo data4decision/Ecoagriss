@@ -1608,6 +1608,759 @@
   },
   "common": {
     "retry": "Réessayer"
+  },
+  
+  "allSectorsWatch": {
+    "badge": "Intelligence Ecoagris",
+    "title": "Observatoire de tous les secteurs",
+    "tagline": "Une vue. Plusieurs secteurs. Des décisions plus éclairées.",
+    "description": "Consultez les chiffres de l'agriculture, de l'élevage et d'autres secteurs en un seul endroit. Choisissez des données réelles (validées) ou entraînez-vous avec des données simulées. Faites défiler pour explorer les graphiques et comparer les pays.",
+    "coverage": {
+      "ecowas": "Vue régionale CEDEAO"
+    },
+    "cards": {
+      "coverage": "Votre couverture",
+      "period": "Période des données",
+      "status": "Statut des données"
+    },
+    "periodValue": "2006–2025",
+    "status": {
+      "validated": "Données brutes validées",
+      "simulated": "Données simulées",
+      "validatedHint": "Chiffres officiels issus de registres réels",
+      "simulatedHint": "Chiffres d'exemple pour l'apprentissage et les tests"
+    },
+    "toggle": {
+      "aria": "Choisir le type de données",
+      "validated": "Données brutes validées",
+      "simulated": "Données simulées"
+    },
+    "preview": {
+      "label": "Aperçu · Voir les données disponibles de tous les secteurs en un seul endroit",
+      "validatedNote": "Vous consultez des chiffres officiels et vérifiés issus de registres réels.",
+      "simulatedNote": "Vous consultez des chiffres d'exemple pour la pratique — pas des registres officiels."
+    },
+    "scrollHint": "Faites défiler pour voir plus de données"
+  },
+  "crossSector": {
+    "eyebrow": "Instantané transversal des données réelles",
+    "title": "Un aperçu rapide des secteurs ECOAGRIS",
+    "subtitle": "Explorez les données sur les intrants agricoles et l'élevage pour tous les pays représentés dans le jeu de données disponible.",
+    "scopeAll": "Affichage de tous les pays accessibles",
+    "scopeSelected": "Affichage du pays sélectionné",
+    "loadingAria": "Chargement de l'instantané transversal",
+    "errorTitle": "Impossible de charger l'instantané transversal pour le moment.",
+    "errorHint": "Veuillez réessayer plus tard.",
+    "emptyTitle": "Aucune donnée d'instantané sectoriel n'est disponible pour le moment.",
+    "emptyHint": "Les informations de couverture apparaîtront ici lorsque des enregistrements seront disponibles pour le périmètre sélectionné.",
+    "col": {
+      "sector": "Secteur",
+      "records": "Enregistrements",
+      "countries": "Pays",
+      "period": "Période de couverture"
+    },
+    "oneCountry": "1 pays",
+    "nCountries": "{{count}} pays",
+    "sectors": {
+      "inputs": {
+        "name": "Intrants agricoles",
+        "description": "Engrais, semences, pesticides et indicateurs connexes d'intrants agricoles."
+      },
+      "livestock": {
+        "name": "Élevage",
+        "description": "Effectifs, production et indicateurs du secteur de l'élevage."
+      }
+    },
+  "countryFilter": {
+    "badgeAdmin": "Contrôle administrateur",
+    "badgeView": "Vue administrateur",
+    "title": "Filtrer les données régionales par pays",
+    "subtitle": "Sélectionnez un pays pour explorer les données sectorielles dans la vue régionale.",
+    "countryLabel": "Pays",
+    "allCountries": "Tous les pays",
+    "selectCountry": "Sélectionner un pays",
+    "selectAria": "Filtrer les données régionales par pays",
+    "hintAll": "Vue régionale affichant tous les pays accessibles.",
+    "hintFiltered": "Vue régionale filtrée sur le pays sélectionné.",
+    "errorFallback": "Impossible de charger le filtre par pays."
+  },
+  "dataCoverage": {
+    "eyebrow": "Couverture des données",
+    "title": "Explorez les données derrière l'intelligence Ecoagris",
+    "subtitle": "Suivez les secteurs, pays et périodes historiques couverts par la plateforme de données Ecoagris.",
+    "loadingAria": "Chargement des données de couverture",
+    "errorTitle": "Impossible de charger les informations de couverture pour le moment.",
+    "errorHint": "Veuillez réessayer plus tard.",
+    "emptyTitle": "Aucune donnée de couverture n'est disponible pour le moment.",
+    "records": "Enregistrements",
+    "oneCountry": "1 pays",
+    "nCountries": "{{count}} pays",
+    "available": "Disponible",
+    "noData": "Aucune donnée",
+    "sectors": {
+      "inputs": {
+        "name": "Intrants agricoles",
+        "description": "Engrais, semences, pesticides et indicateurs d'intrants connexes"
+      },
+      "livestock": {
+        "name": "Élevage",
+        "description": "Effectifs, production et indicateurs du secteur de l'élevage"
+      }
+    }
+  },
+  "common": {
+    "country_one": "pays",
+    "country_other": "pays",
+    "variable_one": "variable",
+    "variable_other": "variables"
+  },
+
+  "sectors": {
+    "agricultural_inputs": "Intrants agricoles",
+    "livestock": "Élevage"
+  },
+
+  "variables": {
+    "cereal_seeds_tons": {
+      "label": "Semences de céréales",
+      "unit": "tonnes",
+      "header": "Semences de céréales (tonnes)"
+    },
+    "fertilizer_tons": {
+      "label": "Engrais",
+      "unit": "tonnes",
+      "header": "Engrais (tonnes)"
+    },
+    "pesticide_liters": {
+      "label": "Pesticide",
+      "unit": "litres",
+      "header": "Pesticide (litres)"
+    },
+    "improved_seed_use_pct": {
+      "label": "Utilisation de semences améliorées",
+      "unit": "%",
+      "header": "Utilisation de semences améliorées (%)"
+    },
+    "fertilizer_kg_per_ha": {
+      "label": "Engrais",
+      "unit": "kg/ha",
+      "header": "Engrais (kg/ha)"
+    },
+    "input_price_index_2006_base": {
+      "label": "Indice des prix des intrants",
+      "unit": "base 2006",
+      "header": "Indice des prix des intrants (base 2006)"
+    },
+    "agro_dealer_count": {
+      "label": "Nombre de revendeurs agricoles",
+      "unit": "nombre",
+      "header": "Nombre de revendeurs agricoles"
+    },
+    "input_subsidy_budget_usd": {
+      "label": "Budget de subvention aux intrants",
+      "unit": "USD",
+      "header": "Budget de subvention aux intrants (USD)"
+    },
+    "distribution_timeliness_pct": {
+      "label": "Ponctualité de la distribution",
+      "unit": "%",
+      "header": "Ponctualité de la distribution (%)"
+    },
+    "stockouts_days_per_year": {
+      "label": "Ruptures de stock",
+      "unit": "jours/an",
+      "header": "Ruptures de stock (jours/an)"
+    },
+    "input_import_value_usd": {
+      "label": "Valeur des importations d'intrants",
+      "unit": "USD",
+      "header": "Valeur des importations d'intrants (USD)"
+    },
+    "local_production_inputs_tons": {
+      "label": "Production locale d'intrants",
+      "unit": "tonnes",
+      "header": "Production locale d'intrants (tonnes)"
+    },
+    "mechanization_units_per_1000_farms": {
+      "label": "Mécanisation",
+      "unit": "unités/1 000 exploitations",
+      "header": "Mécanisation (unités/1 000 exploitations)"
+    },
+    "credit_access_pct": {
+      "label": "Accès au crédit",
+      "unit": "%",
+      "header": "Accès au crédit (%)"
+    },
+    "cattle_head": {
+      "label": "Population bovine",
+      "unit": "têtes",
+      "header": "Population bovine (têtes)"
+    },
+    "small_ruminants_head": {
+      "label": "Petits ruminants",
+      "unit": "têtes",
+      "header": "Petits ruminants (têtes)"
+    },
+    "pigs_head": {
+      "label": "Population porcine",
+      "unit": "têtes",
+      "header": "Population porcine (têtes)"
+    },
+    "poultry_head": {
+      "label": "Population avicole",
+      "unit": "têtes",
+      "header": "Population avicole (têtes)"
+    },
+    "milk_production_tons": {
+      "label": "Production laitière",
+      "unit": "tonnes",
+      "header": "Production laitière (tonnes)"
+    },
+    "meat_production_tons": {
+      "label": "Production de viande",
+      "unit": "tonnes",
+      "header": "Production de viande (tonnes)"
+    },
+    "livestock_price_index_2006_base": {
+      "label": "Indice des prix de l'élevage",
+      "unit": "base 2006",
+      "header": "Indice des prix de l'élevage (base 2006)"
+    },
+    "vaccination_coverage_pct": {
+      "label": "Couverture vaccinale",
+      "unit": "%",
+      "header": "Couverture vaccinale (%)"
+    },
+    "fmd_incidents_count": {
+      "label": "Incidents de fièvre aphteuse",
+      "unit": "nombre",
+      "header": "Incidents de fièvre aphteuse (nombre)"
+    },
+    "grazing_area_ha": {
+      "label": "Surface de pâturage",
+      "unit": "ha",
+      "header": "Surface de pâturage (ha)"
+    },
+    "transhumance_events": {
+      "label": "Événements de transhumance",
+      "unit": "nombre",
+      "header": "Événements de transhumance (nombre)"
+    },
+    "veterinary_facilities_count": {
+      "label": "Installations vétérinaires",
+      "unit": "nombre",
+      "header": "Installations vétérinaires (nombre)"
+    },
+    "feed_imports_tons": {
+      "label": "Importations d'aliments pour animaux",
+      "unit": "tonnes",
+      "header": "Importations d'aliments pour animaux (tonnes)"
+    },
+    "local_feed_production_tons": {
+      "label": "Production locale d'aliments pour animaux",
+      "unit": "tonnes",
+      "header": "Production locale d'aliments pour animaux (tonnes)"
+    },
+    "livestock_exports_tons": {
+      "label": "Exportations d'élevage",
+      "unit": "tonnes",
+      "header": "Exportations d'élevage (tonnes)"
+    },
+    "offtake_rate_pct": {
+      "label": "Taux de déstockage",
+      "unit": "%",
+      "header": "Taux de déstockage (%)"
+    }
+  },
+
+  "aboutHero": {
+    "imageAlt": "Paysage agricole en Afrique de l'Ouest",
+    "eyebrow": "À propos d'ECOAGRIS",
+    "descriptor": "Plateforme régionale d'intelligence agricole",
+    "title": "Transformer les données agricoles en décisions pour l'Afrique de l'Ouest",
+    "description": "ECOAGRIS rassemble des données fiables sur la sécurité alimentaire, les marchés et la production à travers la région — aidant les analystes, les décideurs et les partenaires à prendre des décisions éclairées qui renforcent l'agriculture et les systèmes alimentaires.",
+    "cta": "Se connecter pour explorer",
+    "panel": {
+      "eyebrow": "Aperçu de la plateforme",
+      "title": "Conçue pour l'analyse régionale",
+      "description": "Une vue unifiée par pays, secteurs et indicateurs."
+    },
+    "metrics": {
+      "scope": { "label": "Portée", "value": "Régionale" },
+      "reach": { "label": "Couverture", "value": "Afrique de l'Ouest" },
+      "focus": { "label": "Focus", "value": "Agriculture" },
+      "sources": { "label": "Sources", "value": "Multi-sources" }
+    },
+    "float": {
+      "focusLabel": "Focus",
+      "focusValue": "Sécurité alimentaire",
+      "roleLabel": "Rôle",
+      "roleValue": "Plateforme régionale"
+    }
+  },
+
+  "export": {
+    "buttons": {
+      "exportCsv": "Exporter CSV",
+      "exportingCsv": "Exportation CSV...",
+      "downloadPng": "Télécharger PNG",
+      "generatingPng": "Génération du PNG...",
+      "downloadPdf": "Télécharger PDF",
+      "generatingPdf": "Génération du PDF..."
+    },
+    "pdf": {
+      "chartTitle": "Graphique de comparaison sectorielle",
+      "intelligenceTitle": "Points saillants",
+      "predictiveTitle": "Analyse prédictive"
+    },
+    "csv": {
+      "countryHeader": "Pays",
+      "yearHeader": "Année",
+      "countryFallback": "Pays {{id}}"
+    },
+    "errors": {
+      "pdfDownload": "Échec du téléchargement du PDF. Veuillez réessayer.",
+      "pngDownload": "Échec du téléchargement du PNG. Veuillez réessayer.",
+      "csvExport": "Échec de l'exportation CSV. Veuillez réessayer.",
+      "csvSelectPrompt": "Veuillez sélectionner au moins un pays et une variable avant d'exporter."
+    }
+  },
+
+  "predictive": {
+    "header": {
+      "eyebrow": "Prévision assistée par IA",
+      "title": "Analyse prédictive",
+      "description": "Prévision basée sur vos filtres sélectionnés. La tendance historique est prolongée de {{horizon}} ans au-delà de la dernière année de données disponible."
+    },
+    "controls": {
+      "horizon": "Horizon",
+      "yearsCount_one": "{{count}} an",
+      "yearsCount_other": "{{count}} ans",
+      "chart": "Graphique",
+      "line": "Ligne",
+      "bar": "Barres"
+    },
+    "filterSummary": "{{sector}} · {{countries}} {{countryWord}} · {{variables}} {{variableWord}}",
+    "countryFallback": "Pays {{id}}",
+    "loading": "Construction de la prévision...",
+    "empty": {
+      "title": "Aucune prévision disponible",
+      "description": "Sélectionnez au moins un pays et une variable dans le graphique ci-dessus."
+    },
+    "chart": {
+      "title": "Prévision – {{sector}}",
+      "legend": "Traits pleins = historique · Les années projetées suivent la séparation",
+      "splitAt": "Séparation en {{year}}",
+      "forecastArrow": "Prévision →"
+    },
+    "metrics": {
+      "projected": "Projeté ({{year}})",
+      "avgAcrossSeries": "Moyenne sur les séries sélectionnées",
+      "avgAnnualGrowth": "Croissance annuelle moyenne",
+      "historicalTrend": "Tendance historique",
+      "direction": "Direction",
+      "horizonOutlook": "Perspective à {{h}} ans",
+      "confidence": "Confiance",
+      "basedOnCoverage": "Basé sur la couverture des données"
+    },
+    "direction": {
+      "rising": "En hausse",
+      "stable": "Stable",
+      "declining": "En baisse"
+    },
+    "confidence": {
+      "medium_high": "Moyenne–Élevée",
+      "medium": "Moyenne",
+      "low": "Faible"
+    },
+    "aiPanel": {
+      "title": "Interprétation par IA",
+      "subtitle": "Lecture assistée par modèle de la prévision ci-dessus",
+      "generating": "Génération de l'interprétation...",
+      "summary": "Résumé",
+      "keySignals": "Signaux clés",
+      "attention": "Attention",
+      "outlook": "Perspectives",
+      "disclaimer": "La prévision utilise un modèle de tendance linéaire sur les données historiques. L'interprétation par IA est limitée aux faits fournis et n'invente ni causes ni recommandations non étayées. À confronter au jugement d'experts avant toute décision."
+    },
+    "errors": {
+      "notEnoughHistorical": "Données historiques insuffisantes pour générer une prévision avec les filtres actuels.",
+      "notEnoughSeries": "Données de séries insuffisantes pour générer une interprétation par IA.",
+      "aiRequestFailed": "Échec de la requête IA",
+      "aiGeneration": "Impossible de générer l'interprétation par IA.",
+      "buildForecast": "Impossible de construire la prévision."
+    }
+  },
+
+  "export": {
+    "buttons": {
+      "exportCsv": "Exporter CSV",
+      "exportingCsv": "Exportation CSV...",
+      "downloadPng": "Télécharger PNG",
+      "generatingPng": "Génération du PNG...",
+      "downloadPdf": "Télécharger PDF",
+      "generatingPdf": "Génération du PDF..."
+    },
+    "pdf": {
+      "chartTitle": "Graphique de comparaison sectorielle",
+      "intelligenceTitle": "Points saillants",
+      "predictiveTitle": "Analyse prédictive"
+    },
+    "csv": {
+      "countryHeader": "Pays",
+      "yearHeader": "Année",
+      "countryFallback": "Pays {{id}}"
+    },
+    "errors": {
+      "pdfDownload": "Échec du téléchargement du PDF. Veuillez réessayer.",
+      "pngDownload": "Échec du téléchargement du PNG. Veuillez réessayer.",
+      "csvExport": "Échec de l'exportation CSV. Veuillez réessayer.",
+      "csvSelectPrompt": "Veuillez sélectionner au moins un pays et une variable avant d'exporter."
+    }
+  },
+  "variables": {
+    "cereal_seeds_tons": { "header": "Semences de céréales (tonnes)" },
+    "fertilizer_tons": { "header": "Engrais (tonnes)" },
+    "pesticide_liters": { "header": "Pesticide (litres)" },
+    "improved_seed_use_pct": { "header": "Utilisation de semences améliorées (%)" },
+    "fertilizer_kg_per_ha": { "header": "Engrais (kg/ha)" },
+    "input_price_index_2006_base": { "header": "Indice des prix des intrants (base 2006)" },
+    "agro_dealer_count": { "header": "Nombre de revendeurs agricoles" },
+    "input_subsidy_budget_usd": { "header": "Budget de subvention aux intrants (USD)" },
+    "distribution_timeliness_pct": { "header": "Ponctualité de la distribution (%)" },
+    "stockouts_days_per_year": { "header": "Ruptures de stock (jours/an)" },
+    "input_import_value_usd": { "header": "Valeur des importations d'intrants (USD)" },
+    "local_production_inputs_tons": { "header": "Production locale d'intrants (tonnes)" },
+    "mechanization_units_per_1000_farms": { "header": "Mécanisation (unités/1 000 exploitations)" },
+    "credit_access_pct": { "header": "Accès au crédit (%)" },
+    "cattle_head": { "header": "Population bovine (têtes)" },
+    "small_ruminants_head": { "header": "Petits ruminants (têtes)" },
+    "pigs_head": { "header": "Population porcine (têtes)" },
+    "poultry_head": { "header": "Population avicole (têtes)" },
+    "milk_production_tons": { "header": "Production laitière (tonnes)" },
+    "meat_production_tons": { "header": "Production de viande (tonnes)" },
+    "livestock_price_index_2006_base": { "header": "Indice des prix de l'élevage (base 2006)" },
+    "vaccination_coverage_pct": { "header": "Couverture vaccinale (%)" },
+    "fmd_incidents_count": { "header": "Incidents de fièvre aphteuse (nombre)" },
+    "grazing_area_ha": { "header": "Surface de pâturage (ha)" },
+    "transhumance_events": { "header": "Événements de transhumance (nombre)" },
+    "veterinary_facilities_count": { "header": "Installations vétérinaires (nombre)" },
+    "feed_imports_tons": { "header": "Importations d'aliments pour animaux (tonnes)" },
+    "local_feed_production_tons": { "header": "Production locale d'aliments pour animaux (tonnes)" },
+    "livestock_exports_tons": { "header": "Exportations d'élevage (tonnes)" },
+    "offtake_rate_pct": { "header": "Taux de déstockage (%)" }
+  },
+  "predictive": {
+    "aiPanel": {
+      "generating": "Génération de l'interprétation..."
+    }
   }
+  },
+  "predictiveAnalysis": {
+  "badge": "Prévision assistée par IA",
+  "title": "Analyse prédictive",
+  "subtitle": "Prévision basée sur vos filtres sélectionnés. La tendance historique est prolongée de {{horizon}} ans au-delà de la dernière année de données disponible.",
+  "horizon": "Horizon",
+  "years_one": "{{count}} an",
+  "years_other": "{{count}} ans",
+  "chart": "Graphique",
+  "line": "Ligne",
+  "bar": "Barres",
+  "sectorSummary_one": "{{sector}} · {{count}} pays",
+  "sectorSummary_other": "{{sector}} · {{count}} pays",
+  "variableSummary_one": "{{count}} variable",
+  "variableSummary_other": "{{count}} variables",
+  "buildingForecast": "Construction de la prévision...",
+  "noForecastTitle": "Aucune prévision disponible",
+  "noForecastDescription": "Sélectionnez au moins un pays et une variable dans le graphique ci-dessus.",
+  "forecastTitle": "Prévision {{sector}}",
+  "forecastLegend": "Trait plein = historique · Les années projetées suivent la séparation",
+  "splitAt": "· Séparation à {{year}}",
+  "forecastArrow": "Prévision →",
+  "metrics": {
+    "projected": "Projeté ({{year}})",
+    "projectedSub": "Moy. sur les séries sélectionnées",
+    "avgAnnualGrowth": "Croissance annuelle moy.",
+    "avgAnnualGrowthSub": "Tendance historique",
+    "direction": "Direction",
+    "directionSub": "Perspectives à {{horizon}} ans",
+    "confidence": "Confiance",
+    "confidenceSub": "Basée sur la couverture des données"
+  },
+  "direction": {
+    "Rising": "En hausse",
+    "Stable": "Stable",
+    "Declining": "En baisse"
+  },
+  "confidence": {
+    "mediumHigh": "Moyenne–Élevée",
+    "medium": "Moyenne",
+    "low": "Faible"
+  },
+  "aiInterpretation": "Interprétation IA",
+  "aiInterpretationSub": "Lecture assistée par modèle de la prévision ci-dessus",
+  "generatingInterpretation": "Génération de l'interprétation...",
+  "summary": "Résumé",
+  "keySignals": "Signaux clés",
+  "attention": "Points d'attention",
+  "outlook": "Perspectives",
+  "disclaimer": "La prévision utilise un modèle de tendance linéaire sur les données historiques. L'interprétation IA se limite aux faits fournis et n'invente ni causes ni recommandations non étayées. À combiner avec le jugement d'experts avant toute décision.",
+  "errors": {
+    "notEnoughHistorical": "Données historiques insuffisantes pour générer une prévision avec les filtres actuels.",
+    "notEnoughSeries": "Données de séries insuffisantes pour générer une interprétation IA.",
+    "aiRequestFailed": "Échec de la requête IA",
+    "unableAi": "Impossible de générer l'interprétation IA.",
+    "unableForecast": "Impossible de construire la prévision."
+  },
+  "sectors": {
+    "agricultural_inputs": "Intrants agricoles",
+    "livestock": "Élevage"
+  },
+  "variables": {
+    "cereal_seeds_tons": "Semences céréalières",
+    "fertilizer_tons": "Engrais",
+    "pesticide_liters": "Pesticide",
+    "improved_seed_use_pct": "Utilisation de semences améliorées",
+    "fertilizer_kg_per_ha": "Engrais",
+    "input_price_index_2006_base": "Indice des prix des intrants",
+    "agro_dealer_count": "Nombre d'agrodistributeurs",
+    "input_subsidy_budget_usd": "Budget de subvention aux intrants",
+    "distribution_timeliness_pct": "Ponctualité de la distribution",
+    "stockouts_days_per_year": "Ruptures de stock",
+    "input_import_value_usd": "Valeur des importations d'intrants",
+    "local_production_inputs_tons": "Production locale d'intrants",
+    "mechanization_units_per_1000_farms": "Mécanisation",
+    "credit_access_pct": "Accès au crédit",
+    "cattle_head": "Cheptel bovin",
+    "small_ruminants_head": "Petits ruminants",
+    "pigs_head": "Cheptel porcin",
+    "poultry_head": "Cheptel avicole",
+    "milk_production_tons": "Production de lait",
+    "meat_production_tons": "Production de viande",
+    "livestock_price_index_2006_base": "Indice des prix du bétail",
+    "vaccination_coverage_pct": "Couverture vaccinale",
+    "fmd_incidents_count": "Incidents de fièvre aphteuse",
+    "grazing_area_ha": "Surface de pâturage",
+    "transhumance_events": "Événements de transhumance",
+    "veterinary_facilities_count": "Infrastructures vétérinaires",
+    "feed_imports_tons": "Importations d'aliments",
+    "local_feed_production_tons": "Production locale d'aliments",
+    "livestock_exports_tons": "Exportations de bétail",
+    "offtake_rate_pct": "Taux d'abattage"
+  },
+  "units": {
+    "tons": "tonnes",
+    "litres": "litres",
+    "pct": "%",
+    "kgHa": "kg/ha",
+    "base2006": "base 2006",
+    "count": "nombre",
+    "usd": "USD",
+    "daysYear": "jours/an",
+    "unitsPer1000Farms": "unités/1 000 exploitations",
+    "head": "têtes",
+    "ha": "ha"
+  },
+  "countryFallback": "Pays {{id}}",
+  "seriesName": "{{country}} — {{indicator}}"
+},
+"intelligenceHighlights": {
+  "badge": "Points d'intelligence",
+  "title": "Signaux à surveiller",
+  "subtitle": "Interprétation unifiée des données actuellement sélectionnées dans l'explorateur de données sectorielles, avec briefing assisté par IA.",
+  "dataDriven": "Fondé sur les données",
+  "view": {
+    "adminComparison": "Comparaison administrateur",
+    "admin": "Vue administrateur",
+    "authorised": "Vue autorisée"
+  },
+  "loading": "Interprétation des données sélectionnées...",
+  "emptyTitle": "Aucun signal d'intelligence disponible",
+  "emptyDescription": "Il n'y a pas assez de données avec les filtres actuels pour générer une interprétation pertinente.",
+  "overallPerformance": "Performance globale des pays",
+  "strongestPerformance": "Meilleure performance",
+  "needsAttention": "Nécessite une attention",
+  "acrossIndicators_one": "Sur {{count}} indicateur comparable",
+  "acrossIndicators_other": "Sur {{count}} indicateurs comparables",
+  "indicatorPerformance": "Performance des indicateurs",
+  "table": {
+    "indicator": "Indicateur",
+    "strongest": "Le plus fort",
+    "needsAttention": "Nécessite une attention"
+  },
+  "aiBriefingTitle": "Briefing d'intelligence IA",
+  "aiBriefingIntro": "Interprétation générée par l'IA à partir de la série temporelle complète sélectionnée, des pays, de la période, du secteur et des variables. Les scores, pourcentages, tendances et résumés statistiques sont calculés par l'application ; le modèle interprète ces faits mesurés.",
+  "generatingAi": "Génération de l'interprétation à partir des résultats mesurés...",
+  "aiUnavailable": "Briefing IA indisponible : {{error}}",
+  "overallAssessment": "Évaluation globale",
+  "keySignals": "Signaux clés",
+  "outlook": "Perspectives",
+  "computedSignals": "Signaux calculés",
+  "countryCount_one": "{{count}} pays",
+  "countryCount_other": "{{count}} pays",
+  "variableCount_one": "{{count}} variable",
+  "variableCount_other": "{{count}} variables",
+  "countryFallback": "Pays {{id}}",
+  "sectors": {
+    "agricultural_inputs": "Intrants agricoles",
+    "livestock": "Élevage"
+  },
+  "signals": {
+    "movedFromTo": "{{metric}} : {{country}} est passé de {{from}} à {{to}} {{unit}}.",
+    "reducedImprovement": "{{country}} a réduit {{metric}} de {{pct}}, ce qui indique une amélioration.",
+    "riseRisk": "{{country}} a vu {{metric}} augmenter de {{pct}}, un signal de risque potentiel.",
+    "improvedBy": "{{metric}} : {{country}} s'est amélioré de {{pct}} sur la période sélectionnée.",
+    "declinedBy": "{{metric}} : {{country}} a reculé de {{pct}} sur la période sélectionnée.",
+    "stable": "{{metric}} : {{country}} est resté globalement stable sur la période sélectionnée."
+  },
+  "methodology": {
+    "howTitle": "Comment cela fonctionne : ",
+    "howBody": "l'application récupère chaque année disponible dans la période sélectionnée et calcule les variations en pourcentage, les variations d'une année sur l'autre, les classements, les tendances, la volatilité et les scores de performance à partir du jeu de données sélectionné. Le briefing IA interprète ces faits calculés. Il ne recalcule pas les indicateurs et n'invente pas de données.",
+    "timeSeries": "La couche d'intelligence conserve la série temporelle sélectionnée dans son intégralité. Par exemple, une sélection 2020–2025 inclut 2020, 2021, 2022, 2023, 2024 et 2025, et non seulement les années de début et de fin.",
+    "adminComparison": "Pour les comparaisons multi-pays, chaque indicateur pertinent pour la performance est classé séparément. Les scores d'indicateurs sont moyennés en un score global de performance du pays. Les métriques « plus élevé = mieux » et « plus bas = mieux » sont traitées en conséquence ; les indicateurs neutres sont exclus du score.",
+    "relative": "Il s'agit d'une évaluation relative dans la sélection actuelle uniquement — pas d'un classement national absolu."
+  },
+  "errors": {
+    "mustBeLoggedIn": "Vous devez être connecté pour consulter les points d'intelligence.",
+    "unableToLoad": "Impossible de charger les points d'intelligence.",
+    "unableAiBriefing": "Impossible de générer le briefing IA."
+  },
+  "variables": {
+    "cereal_seeds_tons": "Semences céréalières",
+    "fertilizer_tons": "Engrais",
+    "pesticide_liters": "Pesticide",
+    "improved_seed_use_pct": "Utilisation de semences améliorées",
+    "fertilizer_kg_per_ha": "Engrais",
+    "input_price_index_2006_base": "Indice des prix des intrants",
+    "agro_dealer_count": "Nombre d'agrodistributeurs",
+    "input_subsidy_budget_usd": "Budget de subvention aux intrants",
+    "distribution_timeliness_pct": "Ponctualité de la distribution",
+    "stockouts_days_per_year": "Ruptures de stock",
+    "input_import_value_usd": "Valeur des importations d'intrants",
+    "local_production_inputs_tons": "Production locale d'intrants",
+    "mechanization_units_per_1000_farms": "Mécanisation",
+    "credit_access_pct": "Accès au crédit",
+    "cattle_head": "Cheptel bovin",
+    "small_ruminants_head": "Petits ruminants",
+    "pigs_head": "Cheptel porcin",
+    "poultry_head": "Cheptel avicole",
+    "milk_production_tons": "Production de lait",
+    "meat_production_tons": "Production de viande",
+    "livestock_price_index_2006_base": "Indice des prix du bétail",
+    "vaccination_coverage_pct": "Couverture vaccinale",
+    "fmd_incidents_count": "Incidents de fièvre aphteuse",
+    "grazing_area_ha": "Surface de pâturage",
+    "transhumance_events": "Événements de transhumance",
+    "veterinary_facilities_count": "Infrastructures vétérinaires",
+    "feed_imports_tons": "Importations d'aliments",
+    "local_feed_production_tons": "Production locale d'aliments",
+    "livestock_exports_tons": "Exportations de bétail",
+    "offtake_rate_pct": "Taux d'abattage"
+  },
+  "units": {
+    "tons": "tonnes",
+    "litres": "litres",
+    "pct": "%",
+    "kgHa": "kg/ha",
+    "base2006": "base 2006",
+    "count": "nombre",
+    "usd": "USD",
+    "daysYear": "jours/an",
+    "unitsPer1000Farms": "unités/1 000 exploitations",
+    "head": "têtes",
+    "ha": "ha"
+  }
+},
+"sectorComparisonTrend": {
+  "badge": "Explorateur de données sectorielles",
+  "title": "Comparer les tendances sectorielles",
+  "subtitle": "Comparez les pays, sélectionnez une période et explorez différentes variables sectorielles à partir du jeu de données 2006–2025.",
+  "datasetPeriod": "Période du jeu de données",
+  "loading": "Chargement de la comparaison sectorielle...",
+  "loadingChart": "Chargement des données de comparaison...",
+  "emptyTitle": "Aucune donnée de comparaison disponible",
+  "emptyDescription": "Essayez de sélectionner un autre pays, une autre période, un autre secteur ou une autre variable.",
+  "activeFilters": "Filtres actifs :",
+  "trendsTitle": "Tendances — {{sector}}",
+  "yearsDisplayed_one": "{{count}} année affichée",
+  "yearsDisplayed_other": "{{count}} années affichées",
+  "countryCount_one": "{{count}} pays",
+  "countryCount_other": "{{count}} pays",
+  "variableCount_one": "{{count}} variable",
+  "variableCount_other": "{{count}} variables",
+  "countryFallback": "Pays {{id}}",
+  "seriesName": "{{country}} — {{indicator}}",
+  "interpretationNoteTitle": "Note d'interprétation :",
+  "interpretationNoteBody": "Les variables peuvent utiliser des unités différentes (tonnes, pourcentages, têtes, USD ou hectares). Lorsque plusieurs variables sont sélectionnées, utilisez le graphique surtout pour comparer leurs tendances plutôt que leurs grandeurs absolues.",
+  "filters": {
+    "country": "Pays",
+    "selectCountries": "Sélectionner des pays",
+    "countriesSelected_one": "{{count}} pays sélectionné",
+    "countriesSelected_other": "{{count}} pays sélectionnés",
+    "selectAll": "Tout sélectionner",
+    "reset": "Réinitialiser",
+    "startYear": "Année de début",
+    "endYear": "Année de fin",
+    "sector": "Secteur",
+    "variables": "Variables",
+    "variablesSelected_one": "{{count}} variable sélectionnée",
+    "variablesSelected_other": "{{count}} variables sélectionnées"
+  },
+  "sectors": {
+    "agricultural_inputs": "Intrants agricoles",
+    "livestock": "Élevage"
+  },
+  "errors": {
+    "mustBeLoggedIn": "Vous devez être connecté pour consulter les comparaisons sectorielles.",
+    "unableToLoadFilters": "Impossible de charger les filtres de comparaison sectorielle.",
+    "unableToLoadData": "Impossible de charger les données de comparaison."
+  },
+  "variables": {
+    "cereal_seeds_tons": "Semences céréalières",
+    "fertilizer_tons": "Engrais",
+    "pesticide_liters": "Pesticide",
+    "improved_seed_use_pct": "Utilisation de semences améliorées",
+    "fertilizer_kg_per_ha": "Engrais",
+    "input_price_index_2006_base": "Indice des prix des intrants",
+    "agro_dealer_count": "Nombre d'agrodistributeurs",
+    "input_subsidy_budget_usd": "Budget de subvention aux intrants",
+    "distribution_timeliness_pct": "Ponctualité de la distribution",
+    "stockouts_days_per_year": "Ruptures de stock",
+    "input_import_value_usd": "Valeur des importations d'intrants",
+    "local_production_inputs_tons": "Production locale d'intrants",
+    "mechanization_units_per_1000_farms": "Mécanisation",
+    "credit_access_pct": "Accès au crédit",
+    "cattle_head": "Cheptel bovin",
+    "small_ruminants_head": "Petits ruminants",
+    "pigs_head": "Cheptel porcin",
+    "poultry_head": "Cheptel avicole",
+    "milk_production_tons": "Production de lait",
+    "meat_production_tons": "Production de viande",
+    "livestock_price_index_2006_base": "Indice des prix du bétail",
+    "vaccination_coverage_pct": "Couverture vaccinale",
+    "fmd_incidents_count": "Incidents de fièvre aphteuse",
+    "grazing_area_ha": "Surface de pâturage",
+    "transhumance_events": "Événements de transhumance",
+    "veterinary_facilities_count": "Infrastructures vétérinaires",
+    "feed_imports_tons": "Importations d'aliments",
+    "local_feed_production_tons": "Production locale d'aliments",
+    "livestock_exports_tons": "Exportations de bétail",
+    "offtake_rate_pct": "Taux d'abattage"
+  },
+  "units": {
+    "tons": "tonnes",
+    "litres": "litres",
+    "pct": "%",
+    "kgHa": "kg/ha",
+    "base2006": "base 2006",
+    "count": "nombre",
+    "usd": "USD",
+    "daysYear": "jours/an",
+    "unitsPer1000Farms": "unités/1 000 exploitations",
+    "head": "têtes",
+    "ha": "ha"
+  }
+}
+
 }
 

@@ -1,44 +1,11 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toPng } from 'html-to-image';
 import jsPDF from 'jspdf';
 import { createClient } from '@/lib/supabase/client';
 import type { SectorExplorerFilters } from './SectorComparisonTrend';
-
-/** Friendly labels for CSV headers (key → label) */
-const VARIABLE_LABELS: Record<string, string> = {
-  cereal_seeds_tons: 'Cereal Seeds (tons)',
-  fertilizer_tons: 'Fertilizer (tons)',
-  pesticide_liters: 'Pesticide (litres)',
-  improved_seed_use_pct: 'Improved Seed Use (%)',
-  fertilizer_kg_per_ha: 'Fertilizer (kg/ha)',
-  input_price_index_2006_base: 'Input Price Index (2006 base)',
-  agro_dealer_count: 'Agro-dealer Count',
-  input_subsidy_budget_usd: 'Input Subsidy Budget (USD)',
-  distribution_timeliness_pct: 'Distribution Timeliness (%)',
-  stockouts_days_per_year: 'Stockouts (days/year)',
-  input_import_value_usd: 'Input Import Value (USD)',
-  local_production_inputs_tons: 'Local Input Production (tons)',
-  mechanization_units_per_1000_farms: 'Mechanization (units/1,000 farms)',
-  credit_access_pct: 'Credit Access (%)',
-  cattle_head: 'Cattle Population (head)',
-  small_ruminants_head: 'Small Ruminants (head)',
-  pigs_head: 'Pig Population (head)',
-  poultry_head: 'Poultry Population (head)',
-  milk_production_tons: 'Milk Production (tons)',
-  meat_production_tons: 'Meat Production (tons)',
-  livestock_price_index_2006_base: 'Livestock Price Index (2006 base)',
-  vaccination_coverage_pct: 'Vaccination Coverage (%)',
-  fmd_incidents_count: 'FMD Incidents (count)',
-  grazing_area_ha: 'Grazing Area (ha)',
-  transhumance_events: 'Transhumance Events (count)',
-  veterinary_facilities_count: 'Veterinary Facilities (count)',
-  feed_imports_tons: 'Feed Imports (tons)',
-  local_feed_production_tons: 'Local Feed Production (tons)',
-  livestock_exports_tons: 'Livestock Exports (tons)',
-  offtake_rate_pct: 'Offtake Rate (%)',
-};
 
 type ExportButtonsProps = {
   filters: SectorExplorerFilters;
@@ -53,6 +20,8 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
   intelligenceRef,
   predictiveRef,
 }) => {
+  const { t } = useTranslation('common');
+
   const [isDownloadingPdf, setIsDownloadingPdf] = useState(false);
   const [isDownloadingPng, setIsDownloadingPng] = useState(false);
   const [isExportingCsv, setIsExportingCsv] = useState(false);
@@ -159,7 +128,6 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
     document.body.removeChild(link);
   };
 
-  /** Capture a section and add it as a new PDF page (skips first page add) */
   const addSectionToPdf = async (
     pdf: jsPDF,
     element: HTMLElement | null,
@@ -210,21 +178,21 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
       isFirstPage = await addSectionToPdf(
         pdf,
         chartRef.current,
-        'Sector Comparison Chart',
+        t('export.pdf.chartTitle'),
         isFirstPage
       );
 
       isFirstPage = await addSectionToPdf(
         pdf,
         intelligenceRef.current,
-        'Intelligence Highlights',
+        t('export.pdf.intelligenceTitle'),
         isFirstPage
       );
 
       await addSectionToPdf(
         pdf,
         predictiveRef.current,
-        'Predictive Analysis',
+        t('export.pdf.predictiveTitle'),
         isFirstPage
       );
 
@@ -232,7 +200,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
       pdf.save(`ecoagris-sector-report-${date}.pdf`);
     } catch (error) {
       console.error('Failed to generate PDF:', error);
-      alert('Failed to download the PDF. Please try again.');
+      alert(t('export.errors.pdfDownload'));
     } finally {
       setIsDownloadingPdf(false);
     }
@@ -251,7 +219,16 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
     setIsDownloadingPng(true);
 
     try {
-      // Wait until AI interpretation has finished (no "Generating interpretation...")
+      // Wait until AI interpretation has finished.
+      // The spinner text is localised, so we watch for the localized key's
+      // value. We check both the current locale value AND a stable English
+      // fallback in case the locale is changed mid-render.
+      const generatingText = t('predictive.aiPanel.generating');
+      const generatingRegex = new RegExp(
+        `${generatingText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}|generating interpretation`,
+        'i'
+      );
+
       const waitForInterpretation = async (
         element: HTMLElement,
         maxMs = 45000
@@ -259,21 +236,18 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
         const start = Date.now();
         while (Date.now() - start < maxMs) {
           const text = element.innerText || element.textContent || '';
-          if (!/generating interpretation/i.test(text)) {
-            // Extra pause so the final text can paint
+          if (!generatingRegex.test(text)) {
             await wait(600);
             return;
           }
           await wait(400);
         }
-        // Timed out — still capture whatever is on screen
       };
 
       if (predictiveRef.current) {
         await waitForInterpretation(predictiveRef.current);
       }
 
-      // Capture each section
       const sections: { dataUrl: string; label: string }[] = [];
 
       if (chartRef.current) {
@@ -297,7 +271,6 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
 
       if (sections.length === 0) return;
 
-      // Load images
       const images = await Promise.all(
         sections.map(
           (s) =>
@@ -310,8 +283,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
         )
       );
 
-      // Stitch vertically into one PNG
-      const gap = 24; // space between sections (px)
+      const gap = 24;
       const padding = 16;
       const maxWidth = Math.max(...images.map((img) => img.width));
       const totalHeight =
@@ -326,7 +298,6 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
       const ctx = canvas.getContext('2d');
       if (!ctx) throw new Error('Could not create canvas context');
 
-      // White background
       ctx.fillStyle = '#ffffff';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
@@ -345,7 +316,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
       );
     } catch (error) {
       console.error('Failed to generate PNG:', error);
-      alert('Failed to download the PNG. Please try again.');
+      alert(t('export.errors.pngDownload'));
     } finally {
       setIsDownloadingPng(false);
     }
@@ -358,9 +329,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
       filters.variables.length === 0 ||
       filters.startYear > filters.endYear
     ) {
-      alert(
-        'Please select at least one country and one variable before exporting.'
-      );
+      alert(t('export.errors.csvSelectPrompt'));
       return;
     }
 
@@ -389,7 +358,6 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
 
       if (error) throw error;
 
-      // Cast through unknown to avoid GenericStringError[] type error
       const records = (data ?? []) as unknown as Array<
         Record<string, unknown>
       >;
@@ -407,10 +375,12 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
       );
 
       const headers = [
-        'Country',
-        'Year',
-        ...filters.variables.map(
-          (key) => VARIABLE_LABELS[key] ?? key
+        t('export.csv.countryHeader'),
+        t('export.csv.yearHeader'),
+        ...filters.variables.map((key) =>
+          t(`variables.${key}.header`, {
+            defaultValue: key,
+          })
         ),
       ];
 
@@ -426,7 +396,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
       const rows = records.map((row) => {
         const countryName =
           countryMap.get(Number(row.country_id)) ??
-          `Country ${row.country_id}`;
+          t('export.csv.countryFallback', { id: row.country_id });
 
         return [
           escapeCsv(countryName),
@@ -454,7 +424,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
       URL.revokeObjectURL(url);
     } catch (error) {
       console.error('Failed to export CSV:', error);
-      alert('Failed to export CSV. Please try again.');
+      alert(t('export.errors.csvExport'));
     } finally {
       setIsExportingCsv(false);
     }
@@ -475,7 +445,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
         {isExportingCsv ? (
           <>
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-400 border-t-transparent" />
-            Exporting CSV...
+            {t('export.buttons.exportingCsv')}
           </>
         ) : (
           <>
@@ -493,7 +463,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
                 d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
               />
             </svg>
-            Export CSV
+            {t('export.buttons.exportCsv')}
           </>
         )}
       </button>
@@ -508,7 +478,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
         {isDownloadingPng ? (
           <>
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-gray-400 border-t-transparent" />
-            Generating PNG...
+            {t('export.buttons.generatingPng')}
           </>
         ) : (
           <>
@@ -526,7 +496,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
                 d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
               />
             </svg>
-            Download PNG
+            {t('export.buttons.downloadPng')}
           </>
         )}
       </button>
@@ -541,7 +511,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
         {isDownloadingPdf ? (
           <>
             <span className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-            Generating PDF...
+            {t('export.buttons.generatingPdf')}
           </>
         ) : (
           <>
@@ -559,7 +529,7 @@ const ExportButtons: React.FC<ExportButtonsProps> = ({
                 d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
               />
             </svg>
-            Download PDF
+            {t('export.buttons.downloadPdf')}
           </>
         )}
       </button>

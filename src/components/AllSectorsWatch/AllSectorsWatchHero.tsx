@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createClient } from '@/lib/supabase/client';
 import { ChevronDown } from 'lucide-react';
 import RealDataCrossSectorSnapshot from '@/components/AllSectorsWatch/RealDataCrossSectorSnapshot';
@@ -9,6 +10,7 @@ import SimulatedCrossSectorSnapshot from '@/components/AllSectorsWatch/Simulated
 type DataMode = 'real' | 'simulated';
 
 export default function AllSectorsWatchHero() {
+  const { t } = useTranslation('common');
   const [coverageLabel, setCoverageLabel] = useState<string>('—');
   const [isLoading, setIsLoading] = useState(true);
   const [selectedData, setSelectedData] = useState<DataMode>('real');
@@ -20,7 +22,6 @@ export default function AllSectorsWatchHero() {
     async function loadProfile() {
       try {
         const supabase = createClient();
-
         const {
           data: { user },
           error: authError,
@@ -35,7 +36,7 @@ export default function AllSectorsWatchHero() {
         }
 
         if (mounted) {
-          setCoverageLabel('ECOWAS Regional View');
+          setCoverageLabel(t('allSectorsWatch.coverage.ecowas'));
           setIsLoading(false);
         }
       } catch (err: unknown) {
@@ -51,9 +52,8 @@ export default function AllSectorsWatchHero() {
     return () => {
       mounted = false;
     };
-  }, []);
+  }, [t]);
 
-  // Scroll hint every 5 seconds
   useEffect(() => {
     const show = () => {
       setShowScrollHint(true);
@@ -78,12 +78,6 @@ export default function AllSectorsWatchHero() {
   }, []);
 
   const isValidated = selectedData === 'real';
-  const dataStatusLabel = isValidated
-    ? 'Validated Raw Data'
-    : 'Simulated Data';
-  const dataStatusHint = isValidated
-    ? 'Official numbers from real records'
-    : 'Example numbers for learning & testing';
 
   return (
     <>
@@ -91,7 +85,6 @@ export default function AllSectorsWatchHero() {
         className="relative isolate overflow-hidden bg-gradient-to-br from-[var(--dark-green)] via-[#075b3d] to-[#0a3d2a] text-white"
         aria-labelledby="all-sectors-watch-heading"
       >
-        {/* Background image */}
         <div
           className="pointer-events-none absolute inset-0 opacity-25"
           aria-hidden="true"
@@ -102,7 +95,6 @@ export default function AllSectorsWatchHero() {
           }}
         />
 
-        {/* Soft light layers */}
         <div
           className="pointer-events-none absolute inset-0 opacity-50"
           aria-hidden="true"
@@ -112,7 +104,6 @@ export default function AllSectorsWatchHero() {
           }}
         />
 
-        {/* Grid texture */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.04]"
           aria-hidden="true"
@@ -127,40 +118,33 @@ export default function AllSectorsWatchHero() {
 
         <div className="relative mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-8 md:py-10 lg:px-8 lg:py-12">
           <div className="grid grid-cols-1 items-start gap-5 lg:grid-cols-2 lg:gap-10 xl:gap-12">
-            {/* ═══════ LEFT COLUMN ═══════ */}
             <div className="flex flex-col gap-3 sm:gap-4">
-              {/* Badge */}
               <div className="inline-flex w-fit items-center gap-2 rounded-full border border-[var(--yellow)]/25 bg-white/10 px-3 py-1 backdrop-blur-md">
                 <span className="h-1.5 w-1.5 rounded-full bg-[var(--yellow)]" />
                 <p className="text-[10px] font-semibold uppercase tracking-[0.18em] text-[var(--yellow)] sm:text-xs">
-                  Ecoagris Intelligence
+                  {t('allSectorsWatch.badge')}
                 </p>
               </div>
 
-              {/* Title + plain language */}
               <div>
                 <h1
                   id="all-sectors-watch-heading"
                   className="text-[clamp(1.6rem,5vw+0.5rem,4.4rem)] font-bold leading-[1.1] tracking-tight text-white sm:leading-[1.08]"
                 >
-                  All Sectors Watch
+                  {t('allSectorsWatch.title')}
                 </h1>
                 <p className="max-w-xl text-[clamp(0.95rem,2vw+0.4rem,1.5rem)] font-medium leading-snug text-emerald-50/95">
-                One view. Multiple sectors. Smarter decisions.
-              </p>
+                  {t('allSectorsWatch.tagline')}
+                </p>
                 <p className="mt-1.5 max-w-lg text-[13px] leading-relaxed text-white/80 sm:text-sm md:text-[15px]">
-                  See agriculture, livestock and other sector numbers in one
-                  place. Choose real (validated) data or practice with
-                  simulated data. Scroll down to explore charts and compare
-                  countries.
+                  {t('allSectorsWatch.description')}
                 </p>
               </div>
 
-              {/* Info cards — Data Status follows the toggle */}
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-3 sm:gap-3">
                 <div className="rounded-xl border border-white/15 bg-white/10 px-3 py-2.5 backdrop-blur-md">
                   <p className="text-[10px] font-medium uppercase tracking-wider text-emerald-100/80">
-                    Your Coverage
+                    {t('allSectorsWatch.cards.coverage')}
                   </p>
                   <p className="mt-0.5 truncate text-[13px] font-semibold text-white sm:text-sm">
                     {isLoading ? (
@@ -173,16 +157,16 @@ export default function AllSectorsWatchHero() {
 
                 <div className="rounded-xl border border-white/15 bg-white/10 px-3 py-2.5 backdrop-blur-md">
                   <p className="text-[10px] font-medium uppercase tracking-wider text-emerald-100/80">
-                    Data Period
+                    {t('allSectorsWatch.cards.period')}
                   </p>
                   <p className="mt-0.5 text-[13px] font-semibold text-white sm:text-sm">
-                    2006–2025
+                    {t('allSectorsWatch.periodValue')}
                   </p>
                 </div>
 
                 <div className="rounded-xl border border-white/15 bg-white/10 px-3 py-2.5 backdrop-blur-md">
                   <p className="text-[10px] font-medium uppercase tracking-wider text-emerald-100/80">
-                    Data Status
+                    {t('allSectorsWatch.cards.status')}
                   </p>
                   <p className="mt-0.5 flex items-center gap-2 text-[13px] font-semibold text-white sm:text-sm">
                     <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
@@ -197,22 +181,24 @@ export default function AllSectorsWatchHero() {
                         }`}
                       />
                     </span>
-                    {dataStatusLabel}
+                    {isValidated
+                      ? t('allSectorsWatch.status.validated')
+                      : t('allSectorsWatch.status.simulated')}
                   </p>
                   <p className="mt-0.5 text-[10px] leading-snug text-white/60">
-                    {dataStatusHint}
+                    {isValidated
+                      ? t('allSectorsWatch.status.validatedHint')
+                      : t('allSectorsWatch.status.simulatedHint')}
                   </p>
                 </div>
               </div>
             </div>
 
-            {/* ═══════ RIGHT COLUMN — toggle + chart panel ═══════ */}
             <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
-              {/* Toggle at top of right column */}
               <div
                 className="mb-3 inline-flex w-full rounded-xl border border-white/20 bg-black/20 p-1 backdrop-blur-md"
                 role="group"
-                aria-label="Choose data type"
+                aria-label={t('allSectorsWatch.toggle.aria')}
               >
                 <button
                   type="button"
@@ -223,7 +209,7 @@ export default function AllSectorsWatchHero() {
                       : 'text-white/80 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  Validated Raw Data
+                  {t('allSectorsWatch.toggle.validated')}
                 </button>
                 <button
                   type="button"
@@ -234,19 +220,17 @@ export default function AllSectorsWatchHero() {
                       : 'text-white/80 hover:bg-white/10 hover:text-white'
                   }`}
                 >
-                  Simulated Data
+                  {t('allSectorsWatch.toggle.simulated')}
                 </button>
               </div>
 
-              {/* Visual panel with chart inside */}
               <div className="relative aspect-[5/3] w-full overflow-hidden rounded-2xl border border-[var(--yellow)]/20 bg-gradient-to-br from-[var(--dark-green)] via-[#0b4a32] to-[#083826] shadow-2xl shadow-black/25">
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(250,204,21,0.14),transparent_40%),radial-gradient(circle_at_80%_70%,rgba(52,211,153,0.12),transparent_45%)]" />
 
-                {/* Chart inside the panel */}
                 <div className="absolute inset-0 flex flex-col p-3 sm:p-4">
                   <div className="mb-2 flex flex-wrap items-center justify-between gap-2">
                     <p className="text-[10px] font-semibold uppercase tracking-wider text-emerald-100/90 sm:text-[11px]">
-                      Preview · View the available data for all sectors in one place
+                      {t('allSectorsWatch.preview.label')}
                     </p>
                     <span
                       className={`rounded-full px-2.5 py-0.5 text-[10px] font-bold uppercase tracking-wide ${
@@ -255,7 +239,9 @@ export default function AllSectorsWatchHero() {
                           : 'bg-sky-400/20 text-sky-200'
                       }`}
                     >
-                      {isValidated ? 'Validated Raw Data' : 'Simulated Data'}
+                      {isValidated
+                        ? t('allSectorsWatch.status.validated')
+                        : t('allSectorsWatch.status.simulated')}
                     </span>
                   </div>
 
@@ -270,7 +256,6 @@ export default function AllSectorsWatchHero() {
                       <line x1="0" y1="40" x2="400" y2="40" stroke="rgba(255,255,255,0.08)" />
                       <line x1="0" y1="80" x2="400" y2="80" stroke="rgba(255,255,255,0.08)" />
                       <line x1="0" y1="120" x2="400" y2="120" stroke="rgba(255,255,255,0.08)" />
-
                       <path
                         d={
                           isValidated
@@ -295,18 +280,8 @@ export default function AllSectorsWatchHero() {
                         strokeLinecap="round"
                       />
                       {(isValidated
-                        ? [
-                            [80, 95],
-                            [160, 85],
-                            [240, 70],
-                            [320, 55],
-                          ]
-                        : [
-                            [80, 85],
-                            [160, 80],
-                            [240, 70],
-                            [320, 75],
-                          ]
+                        ? [[80, 95], [160, 85], [240, 70], [320, 55]]
+                        : [[80, 85], [160, 80], [240, 70], [320, 75]]
                       ).map(([x, y], i) => (
                         <circle
                           key={i}
@@ -321,8 +296,8 @@ export default function AllSectorsWatchHero() {
 
                   <p className="mt-1 text-[10px] leading-snug text-white/65 sm:text-[11px]">
                     {isValidated
-                      ? 'You are looking at official, checked numbers from real records.'
-                      : 'You are looking at example numbers for practice — not official records.'}
+                      ? t('allSectorsWatch.preview.validatedNote')
+                      : t('allSectorsWatch.preview.simulatedNote')}
                   </p>
                 </div>
               </div>
@@ -330,17 +305,14 @@ export default function AllSectorsWatchHero() {
           </div>
         </div>
 
-        {/* Scroll-down hint */}
         <div
           className={`pointer-events-none absolute bottom-3 left-1/2 z-20 flex -translate-x-1/2 flex-col items-center gap-1 transition-all duration-500 sm:bottom-4 ${
-            showScrollHint
-              ? 'translate-y-0 opacity-100'
-              : 'translate-y-3 opacity-0'
+            showScrollHint ? 'translate-y-0 opacity-100' : 'translate-y-3 opacity-0'
           }`}
           aria-hidden={!showScrollHint}
         >
           <p className="rounded-full border border-white/20 bg-black/40 px-3 py-1 text-[11px] font-medium text-white/90 backdrop-blur-md sm:text-xs">
-            Scroll down to see more data
+            {t('allSectorsWatch.scrollHint')}
           </p>
           <div className="flex h-8 w-8 items-center justify-center rounded-full border border-white/25 bg-black/35 backdrop-blur-md">
             <ChevronDown className="h-5 w-5 animate-bounce text-[var(--yellow)] motion-reduce:animate-none" />

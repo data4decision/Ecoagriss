@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   CartesianGrid,
@@ -68,161 +69,41 @@ interface VariableDefinition {
 const DATA_START_YEAR = 2006;
 const DATA_END_YEAR = 2025;
 
-const AGRICULTURAL_INPUT_VARIABLES: VariableDefinition[] = [
-  {
-    key: 'cereal_seeds_tons',
-    label: 'Cereal Seeds',
-    unit: 'tons',
-  },
-  {
-    key: 'fertilizer_tons',
-    label: 'Fertilizer',
-    unit: 'tons',
-  },
-  {
-    key: 'pesticide_liters',
-    label: 'Pesticide',
-    unit: 'litres',
-  },
-  {
-    key: 'improved_seed_use_pct',
-    label: 'Improved Seed Use',
-    unit: '%',
-  },
-  {
-    key: 'fertilizer_kg_per_ha',
-    label: 'Fertilizer',
-    unit: 'kg/ha',
-  },
-  {
-    key: 'input_price_index_2006_base',
-    label: 'Input Price Index',
-    unit: '2006 base',
-  },
-  {
-    key: 'agro_dealer_count',
-    label: 'Agro-dealer Count',
-    unit: 'count',
-  },
-  {
-    key: 'input_subsidy_budget_usd',
-    label: 'Input Subsidy Budget',
-    unit: 'USD',
-  },
-  {
-    key: 'distribution_timeliness_pct',
-    label: 'Distribution Timeliness',
-    unit: '%',
-  },
-  {
-    key: 'stockouts_days_per_year',
-    label: 'Stockouts',
-    unit: 'days/year',
-  },
-  {
-    key: 'input_import_value_usd',
-    label: 'Input Import Value',
-    unit: 'USD',
-  },
-  {
-    key: 'local_production_inputs_tons',
-    label: 'Local Input Production',
-    unit: 'tons',
-  },
-  {
-    key: 'mechanization_units_per_1000_farms',
-    label: 'Mechanization',
-    unit: 'units/1,000 farms',
-  },
-  {
-    key: 'credit_access_pct',
-    label: 'Credit Access',
-    unit: '%',
-  },
-];
+const AGRICULTURAL_INPUT_VARIABLE_KEYS = [
+  { key: 'cereal_seeds_tons', unitKey: 'tons' },
+  { key: 'fertilizer_tons', unitKey: 'tons' },
+  { key: 'pesticide_liters', unitKey: 'litres' },
+  { key: 'improved_seed_use_pct', unitKey: 'pct' },
+  { key: 'fertilizer_kg_per_ha', unitKey: 'kgHa' },
+  { key: 'input_price_index_2006_base', unitKey: 'base2006' },
+  { key: 'agro_dealer_count', unitKey: 'count' },
+  { key: 'input_subsidy_budget_usd', unitKey: 'usd' },
+  { key: 'distribution_timeliness_pct', unitKey: 'pct' },
+  { key: 'stockouts_days_per_year', unitKey: 'daysYear' },
+  { key: 'input_import_value_usd', unitKey: 'usd' },
+  { key: 'local_production_inputs_tons', unitKey: 'tons' },
+  { key: 'mechanization_units_per_1000_farms', unitKey: 'unitsPer1000Farms' },
+  { key: 'credit_access_pct', unitKey: 'pct' },
+] as const;
 
-const LIVESTOCK_VARIABLES: VariableDefinition[] = [
-  {
-    key: 'cattle_head',
-    label: 'Cattle Population',
-    unit: 'head',
-  },
-  {
-    key: 'small_ruminants_head',
-    label: 'Small Ruminants',
-    unit: 'head',
-  },
-  {
-    key: 'pigs_head',
-    label: 'Pig Population',
-    unit: 'head',
-  },
-  {
-    key: 'poultry_head',
-    label: 'Poultry Population',
-    unit: 'head',
-  },
-  {
-    key: 'milk_production_tons',
-    label: 'Milk Production',
-    unit: 'tons',
-  },
-  {
-    key: 'meat_production_tons',
-    label: 'Meat Production',
-    unit: 'tons',
-  },
-  {
-    key: 'livestock_price_index_2006_base',
-    label: 'Livestock Price Index',
-    unit: '2006 base',
-  },
-  {
-    key: 'vaccination_coverage_pct',
-    label: 'Vaccination Coverage',
-    unit: '%',
-  },
-  {
-    key: 'fmd_incidents_count',
-    label: 'FMD Incidents',
-    unit: 'count',
-  },
-  {
-    key: 'grazing_area_ha',
-    label: 'Grazing Area',
-    unit: 'ha',
-  },
-  {
-    key: 'transhumance_events',
-    label: 'Transhumance Events',
-    unit: 'count',
-  },
-  {
-    key: 'veterinary_facilities_count',
-    label: 'Veterinary Facilities',
-    unit: 'count',
-  },
-  {
-    key: 'feed_imports_tons',
-    label: 'Feed Imports',
-    unit: 'tons',
-  },
-  {
-    key: 'local_feed_production_tons',
-    label: 'Local Feed Production',
-    unit: 'tons',
-  },
-  {
-    key: 'livestock_exports_tons',
-    label: 'Livestock Exports',
-    unit: 'tons',
-  },
-  {
-    key: 'offtake_rate_pct',
-    label: 'Offtake Rate',
-    unit: '%',
-  },
-];
+const LIVESTOCK_VARIABLE_KEYS = [
+  { key: 'cattle_head', unitKey: 'head' },
+  { key: 'small_ruminants_head', unitKey: 'head' },
+  { key: 'pigs_head', unitKey: 'head' },
+  { key: 'poultry_head', unitKey: 'head' },
+  { key: 'milk_production_tons', unitKey: 'tons' },
+  { key: 'meat_production_tons', unitKey: 'tons' },
+  { key: 'livestock_price_index_2006_base', unitKey: 'base2006' },
+  { key: 'vaccination_coverage_pct', unitKey: 'pct' },
+  { key: 'fmd_incidents_count', unitKey: 'count' },
+  { key: 'grazing_area_ha', unitKey: 'ha' },
+  { key: 'transhumance_events', unitKey: 'count' },
+  { key: 'veterinary_facilities_count', unitKey: 'count' },
+  { key: 'feed_imports_tons', unitKey: 'tons' },
+  { key: 'local_feed_production_tons', unitKey: 'tons' },
+  { key: 'livestock_exports_tons', unitKey: 'tons' },
+  { key: 'offtake_rate_pct', unitKey: 'pct' },
+] as const;
 
 const CHART_COLORS = [
   '#0B6B3A',
@@ -237,31 +118,26 @@ const CHART_COLORS = [
   '#DB2777',
 ];
 
-function getVariablesForSector(
-  sector: SectorKey
-): VariableDefinition[] {
+function getVariableKeysForSector(sector: SectorKey) {
   return sector === 'agricultural_inputs'
-    ? AGRICULTURAL_INPUT_VARIABLES
-    : LIVESTOCK_VARIABLES;
+    ? AGRICULTURAL_INPUT_VARIABLE_KEYS
+    : LIVESTOCK_VARIABLE_KEYS;
 }
 
-function isNumericValue(
-  value: unknown
-): value is number {
+function isNumericValue(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value);
 }
 
-function formatChartValue(value: unknown): string {
+function formatChartValue(value: unknown, locale: string): string {
   if (!isNumericValue(value)) {
     return '—';
   }
 
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat(locale, {
     maximumFractionDigits: 2,
   }).format(value);
 }
 
-/** Build Y-axis ticks every 10K (0, 10K, 20K, …) with headroom above the data max */
 function buildYTicks(data: ChartRow[], seriesKeys: string[]): number[] {
   let max = 0;
 
@@ -275,9 +151,6 @@ function buildYTicks(data: ChartRow[], seriesKeys: string[]): number[] {
   });
 
   const step = 10_000;
-
-  // Add ~10% headroom so the line is not stuck at the top edge
-  // e.g. max 88K → 96.8K → rounds up to 100K
   const paddedMax = max * 1.1;
   const top = Math.max(step, Math.ceil(paddedMax / step) * step);
 
@@ -293,6 +166,9 @@ export default function SectorComparisonTrend({
   filters,
   onFiltersChange,
 }: SectorComparisonTrendProps) {
+  const { t, i18n } = useTranslation('common');
+  const locale = i18n.language || 'en';
+
   const supabase = useMemo(() => createClient(), []);
 
   const [countries, setCountries] = useState<Country[]>([]);
@@ -313,18 +189,20 @@ export default function SectorComparisonTrend({
     () =>
       Array.from(
         {
-          length:
-            DATA_END_YEAR - DATA_START_YEAR + 1,
+          length: DATA_END_YEAR - DATA_START_YEAR + 1,
         },
         (_, index) => DATA_START_YEAR + index
       ),
     []
   );
 
-  const availableVariables = useMemo(
-    () => getVariablesForSector(filters.sector),
-    [filters.sector]
-  );
+  const availableVariables = useMemo((): VariableDefinition[] => {
+    return getVariableKeysForSector(filters.sector).map((v) => ({
+      key: v.key,
+      label: t(`sectorComparisonTrend.variables.${v.key}`),
+      unit: t(`sectorComparisonTrend.units.${v.unitKey}`),
+    }));
+  }, [filters.sector, t]);
 
   const countryNameMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -360,9 +238,7 @@ export default function SectorComparisonTrend({
   );
 
   const updateFilters = useCallback(
-    (
-      updates: Partial<SectorExplorerFilters>
-    ) => {
+    (updates: Partial<SectorExplorerFilters>) => {
       onFiltersChange({
         ...filters,
         ...updates,
@@ -386,13 +262,10 @@ export default function SectorComparisonTrend({
       }
 
       if (!user) {
-        setError(
-          'You must be logged in to view sector comparisons.'
-        );
+        setError(t('sectorComparisonTrend.errors.mustBeLoggedIn'));
         return;
       }
 
-      // Load ALL countries for every logged-in user (same as previous admin access)
       const {
         data: countryData,
         error: countryError,
@@ -412,7 +285,6 @@ export default function SectorComparisonTrend({
 
       setCountries(loadedCountries);
 
-      // Default to first country if none selected
       if (filters.countryIds.length === 0 && loadedCountries.length > 0) {
         onFiltersChange({
           ...filters,
@@ -423,17 +295,13 @@ export default function SectorComparisonTrend({
       const message =
         caughtError instanceof Error
           ? caughtError.message
-          : 'Unable to load sector comparison filters.';
+          : t('sectorComparisonTrend.errors.unableToLoadFilters');
 
       setError(message);
     } finally {
       setLoadingMetadata(false);
     }
-  }, [
-    filters,
-    onFiltersChange,
-    supabase,
-  ]);
+  }, [filters, onFiltersChange, supabase, t]);
 
   useEffect(() => {
     void loadMetadata();
@@ -447,7 +315,7 @@ export default function SectorComparisonTrend({
         )
     );
 
-    if (validVariables.length === 0) {
+    if (validVariables.length === 0 && availableVariables.length > 0) {
       updateFilters({
         variables: [availableVariables[0].key],
       });
@@ -456,24 +324,16 @@ export default function SectorComparisonTrend({
       return;
     }
 
-    if (
-      validVariables.length !== filters.variables.length
-    ) {
+    if (validVariables.length !== filters.variables.length) {
       updateFilters({
         variables: validVariables,
       });
     }
 
     setChartData([]);
-  }, [
-    availableVariables,
-    filters.variables,
-    updateFilters,
-  ]);
+  }, [availableVariables, filters.variables, updateFilters]);
 
-  const toggleCountry = (
-    countryIdToToggle: number
-  ) => {
+  const toggleCountry = (countryIdToToggle: number) => {
     const currentCountryIds = filters.countryIds;
 
     if (currentCountryIds.includes(countryIdToToggle)) {
@@ -491,16 +351,11 @@ export default function SectorComparisonTrend({
     }
 
     updateFilters({
-      countryIds: [
-        ...currentCountryIds,
-        countryIdToToggle,
-      ],
+      countryIds: [...currentCountryIds, countryIdToToggle],
     });
   };
 
-  const toggleVariable = (
-    variableKey: string
-  ) => {
+  const toggleVariable = (variableKey: string) => {
     const currentVariables = filters.variables;
 
     if (currentVariables.includes(variableKey)) {
@@ -518,18 +373,13 @@ export default function SectorComparisonTrend({
     }
 
     updateFilters({
-      variables: [
-        ...currentVariables,
-        variableKey,
-      ],
+      variables: [...currentVariables, variableKey],
     });
   };
 
   const selectAllCountries = () => {
     updateFilters({
-      countryIds: countries.map(
-        (country) => country.id
-      ),
+      countryIds: countries.map((country) => country.id),
     });
   };
 
@@ -543,41 +393,27 @@ export default function SectorComparisonTrend({
     });
   };
 
-  const handleStartYearChange = (
-    value: number
-  ) => {
+  const handleStartYearChange = (value: number) => {
     updateFilters({
       startYear: value,
-      endYear:
-        value > filters.endYear
-          ? value
-          : filters.endYear,
+      endYear: value > filters.endYear ? value : filters.endYear,
     });
   };
 
-  const handleEndYearChange = (
-    value: number
-  ) => {
+  const handleEndYearChange = (value: number) => {
     updateFilters({
       endYear: value,
       startYear:
-        value < filters.startYear
-          ? value
-          : filters.startYear,
+        value < filters.startYear ? value : filters.startYear,
     });
   };
 
-  const handleSectorChange = (
-    value: SectorKey
-  ) => {
-    const nextVariables =
-      getVariablesForSector(value);
+  const handleSectorChange = (value: SectorKey) => {
+    const nextKeys = getVariableKeysForSector(value);
 
     updateFilters({
       sector: value,
-      variables: [
-        nextVariables[0].key,
-      ],
+      variables: [nextKeys[0].key],
     });
 
     setChartData([]);
@@ -598,8 +434,7 @@ export default function SectorComparisonTrend({
 
     try {
       const tableName =
-        filters.sector ===
-        'agricultural_inputs'
+        filters.sector === 'agricultural_inputs'
           ? 'agricultural_inputs'
           : 'livestock_data';
 
@@ -610,24 +445,12 @@ export default function SectorComparisonTrend({
         ...filters.variables,
       ].join(', ');
 
-      const {
-        data,
-        error: queryError,
-      } = await supabase
+      const { data, error: queryError } = await supabase
         .from(tableName)
         .select(selectedColumns)
-        .in(
-          'country_id',
-          filters.countryIds
-        )
-        .gte(
-          'year',
-          filters.startYear
-        )
-        .lte(
-          'year',
-          filters.endYear
-        )
+        .in('country_id', filters.countryIds)
+        .gte('year', filters.startYear)
+        .lte('year', filters.endYear)
         .order('year', {
           ascending: true,
         });
@@ -639,8 +462,7 @@ export default function SectorComparisonTrend({
       const records =
         (data ?? []) as unknown as DataRecord[];
 
-      const rows =
-        new Map<number, ChartRow>();
+      const rows = new Map<number, ChartRow>();
 
       records.forEach((record) => {
         const year = record.year;
@@ -657,21 +479,17 @@ export default function SectorComparisonTrend({
           return;
         }
 
-        filters.variables.forEach(
-          (variableKey) => {
-            const value =
-              record[variableKey];
+        filters.variables.forEach((variableKey) => {
+          const value = record[variableKey];
 
-            if (!isNumericValue(value)) {
-              return;
-            }
-
-            const seriesKey =
-              `${record.country_id}_${variableKey}`;
-
-            row[seriesKey] = value;
+          if (!isNumericValue(value)) {
+            return;
           }
-        );
+
+          const seriesKey = `${record.country_id}_${variableKey}`;
+
+          row[seriesKey] = value;
+        });
       });
 
       setChartData(
@@ -683,17 +501,14 @@ export default function SectorComparisonTrend({
       const message =
         caughtError instanceof Error
           ? caughtError.message
-          : 'Unable to load comparison data.';
+          : t('sectorComparisonTrend.errors.unableToLoadData');
 
       setError(message);
       setChartData([]);
     } finally {
       setLoadingChart(false);
     }
-  }, [
-    filters,
-    supabase,
-  ]);
+  }, [filters, supabase, t]);
 
   useEffect(() => {
     if (loadingMetadata) {
@@ -701,10 +516,7 @@ export default function SectorComparisonTrend({
     }
 
     void loadChartData();
-  }, [
-    loadChartData,
-    loadingMetadata,
-  ]);
+  }, [loadChartData, loadingMetadata]);
 
   const chartSeries = useMemo(() => {
     const series: Array<{
@@ -717,44 +529,34 @@ export default function SectorComparisonTrend({
 
     let colorIndex = 0;
 
-    filters.countryIds.forEach(
-      (selectedId) => {
-        const countryName =
-          countryNameMap.get(selectedId) ??
-          `Country ${selectedId}`;
+    filters.countryIds.forEach((selectedId) => {
+      const countryName =
+        countryNameMap.get(selectedId) ??
+        t('sectorComparisonTrend.countryFallback', { id: selectedId });
 
-        filters.variables.forEach(
-          (variableKey) => {
-            const variable =
-              availableVariables.find(
-                (item) =>
-                  item.key ===
-                  variableKey
-              );
-
-            if (!variable) {
-              return;
-            }
-
-            series.push({
-              dataKey:
-                `${selectedId}_${variableKey}`,
-              label:
-                `${countryName} — ${variable.label}`,
-              color:
-                CHART_COLORS[
-                  colorIndex %
-                    CHART_COLORS.length
-                ],
-              variable,
-              countryName,
-            });
-
-            colorIndex += 1;
-          }
+      filters.variables.forEach((variableKey) => {
+        const variable = availableVariables.find(
+          (item) => item.key === variableKey
         );
-      }
-    );
+
+        if (!variable) {
+          return;
+        }
+
+        series.push({
+          dataKey: `${selectedId}_${variableKey}`,
+          label: t('sectorComparisonTrend.seriesName', {
+            country: countryName,
+            indicator: variable.label,
+          }),
+          color: CHART_COLORS[colorIndex % CHART_COLORS.length],
+          variable,
+          countryName,
+        });
+
+        colorIndex += 1;
+      });
+    });
 
     return series;
   }, [
@@ -762,6 +564,7 @@ export default function SectorComparisonTrend({
     countryNameMap,
     filters.countryIds,
     filters.variables,
+    t,
   ]);
 
   const yTicks = useMemo(
@@ -773,14 +576,16 @@ export default function SectorComparisonTrend({
     [chartData, chartSeries]
   );
 
+  const sectorLabel = t(
+    `sectorComparisonTrend.sectors.${filters.sector}`
+  );
+
   if (loadingMetadata) {
     return (
       <section className="rounded-2xl border border-gray-200 bg-white p-6 shadow-sm">
         <div className="flex items-center justify-center gap-2 py-10 text-gray-500">
           <Loader2 className="h-5 w-5 animate-spin" />
-          <span>
-            Loading sector comparison...
-          </span>
+          <span>{t('sectorComparisonTrend.loading')}</span>
         </div>
       </section>
     );
@@ -788,7 +593,6 @@ export default function SectorComparisonTrend({
 
   return (
     <section className="overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
-      {/* Header */}
       <div className="bg-gradient-to-r from-[var(--dark-green)] via-[#005f00] to-[#003d00] px-5 py-6 text-white sm:px-7">
         <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
           <div>
@@ -796,25 +600,22 @@ export default function SectorComparisonTrend({
               <Filter className="h-5 w-5" />
 
               <span className="text-sm font-semibold uppercase tracking-wider text-green-100">
-                Sector Data Explorer
+                {t('sectorComparisonTrend.badge')}
               </span>
             </div>
 
             <h2 className="text-xl font-bold sm:text-2xl">
-              Compare Sector Trends
+              {t('sectorComparisonTrend.title')}
             </h2>
 
             <p className="mt-1 max-w-3xl text-sm leading-6 text-green-50">
-              Compare countries, select a year
-              range, and explore different
-              sector variables from the
-              2006–2025 dataset.
+              {t('sectorComparisonTrend.subtitle')}
             </p>
           </div>
 
           <div className="rounded-xl border border-white/20 bg-white/10 px-4 py-3 text-sm backdrop-blur-sm">
             <p className="text-green-100">
-              Dataset period
+              {t('sectorComparisonTrend.datasetPeriod')}
             </p>
 
             <p className="mt-1 font-bold">
@@ -824,39 +625,34 @@ export default function SectorComparisonTrend({
         </div>
       </div>
 
-      {/* Filters */}
       <div className="border-b border-gray-200 bg-gray-50/80 p-4 sm:p-6">
         <div className="grid grid-cols-1 gap-4 lg:grid-cols-5">
-          {/* Country – available to ALL users */}
           <div className="lg:col-span-2">
             <label className="mb-2 block text-sm font-semibold text-gray-700">
-              Country
+              {t('sectorComparisonTrend.filters.country')}
             </label>
 
             <div className="relative">
               <button
                 type="button"
                 onClick={() =>
-                  setCountryDropdownOpen(
-                    (current) => !current
-                  )
+                  setCountryDropdownOpen((current) => !current)
                 }
                 className="flex min-h-[46px] w-full items-center justify-between rounded-xl border border-gray-300 bg-white px-4 py-2 text-left text-sm shadow-sm transition hover:border-[var(--dark-green)]"
               >
                 <span className="truncate text-gray-700">
                   {selectedCountries.length === 0
-                    ? 'Select countries'
-                    : selectedCountries.length ===
-                      1
+                    ? t('sectorComparisonTrend.filters.selectCountries')
+                    : selectedCountries.length === 1
                       ? selectedCountries[0].name
-                      : `${selectedCountries.length} countries selected`}
+                      : t('sectorComparisonTrend.filters.countriesSelected', {
+                          count: selectedCountries.length,
+                        })}
                 </span>
 
                 <ChevronDown
                   className={`h-4 w-4 shrink-0 transition-transform ${
-                    countryDropdownOpen
-                      ? 'rotate-180'
-                      : ''
+                    countryDropdownOpen ? 'rotate-180' : ''
                   }`}
                 />
               </button>
@@ -866,211 +662,34 @@ export default function SectorComparisonTrend({
                   <div className="mb-2 flex items-center justify-between border-b border-gray-100 px-2 pb-2">
                     <button
                       type="button"
-                      onClick={
-                        selectAllCountries
-                      }
+                      onClick={selectAllCountries}
                       className="text-xs font-semibold text-[var(--dark-green)] hover:underline"
                     >
-                      Select all
+                      {t('sectorComparisonTrend.filters.selectAll')}
                     </button>
 
                     <button
                       type="button"
-                      onClick={
-                        clearAdditionalCountries
-                      }
+                      onClick={clearAdditionalCountries}
                       className="text-xs font-semibold text-gray-500 hover:text-gray-700"
                     >
-                      Reset
+                      {t('sectorComparisonTrend.filters.reset')}
                     </button>
                   </div>
 
-                  {countries.map(
-                    (country) => {
-                      const selected =
-                        filters.countryIds.includes(
-                          country.id
-                        );
-
-                      return (
-                        <button
-                          key={country.id}
-                          type="button"
-                          onClick={() =>
-                            toggleCountry(
-                              country.id
-                            )
-                          }
-                          className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm hover:bg-gray-50"
-                        >
-                          <span
-                            className={`flex h-5 w-5 items-center justify-center rounded border ${
-                              selected
-                                ? 'border-[var(--dark-green)] bg-[var(--dark-green)] text-white'
-                                : 'border-gray-300 bg-white'
-                            }`}
-                          >
-                            {selected && (
-                              <Check className="h-3.5 w-3.5" />
-                            )}
-                          </span>
-
-                          <span className="text-gray-700">
-                            {country.name}
-                          </span>
-                        </button>
-                      );
-                    }
-                  )}
-                </div>
-              )}
-            </div>
-          </div>
-
-          {/* Start Year */}
-          <div>
-            <label
-              htmlFor="sector-start-year"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              Start Year
-            </label>
-
-            <select
-              id="sector-start-year"
-              value={filters.startYear}
-              onChange={(event) =>
-                handleStartYearChange(
-                  Number(event.target.value)
-                )
-              }
-              className="min-h-[46px] w-full rounded-xl border border-gray-300 bg-white px-3 text-sm text-gray-700 outline-none transition focus:border-[var(--dark-green)] focus:ring-2 focus:ring-[var(--dark-green)]/10"
-            >
-              {years.map((year) => (
-                <option
-                  key={year}
-                  value={year}
-                >
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* End Year */}
-          <div>
-            <label
-              htmlFor="sector-end-year"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              End Year
-            </label>
-
-            <select
-              id="sector-end-year"
-              value={filters.endYear}
-              onChange={(event) =>
-                handleEndYearChange(
-                  Number(event.target.value)
-                )
-              }
-              className="min-h-[46px] w-full rounded-xl border border-gray-300 bg-white px-3 text-sm text-gray-700 outline-none transition focus:border-[var(--dark-green)] focus:ring-2 focus:ring-[var(--dark-green)]/10"
-            >
-              {years.map((year) => (
-                <option
-                  key={year}
-                  value={year}
-                >
-                  {year}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          {/* Sector */}
-          <div>
-            <label
-              htmlFor="sector-select"
-              className="mb-2 block text-sm font-semibold text-gray-700"
-            >
-              Sector
-            </label>
-
-            <select
-              id="sector-select"
-              value={filters.sector}
-              onChange={(event) =>
-                handleSectorChange(
-                  event.target.value as SectorKey
-                )
-              }
-              className="min-h-[46px] w-full rounded-xl border border-gray-300 bg-white px-3 text-sm text-gray-700 outline-none transition focus:border-[var(--dark-green)] focus:ring-2 focus:ring-[var(--dark-green)]/10"
-            >
-              <option value="agricultural_inputs">
-                Agricultural Inputs
-              </option>
-
-              <option value="livestock">
-                Livestock
-              </option>
-            </select>
-          </div>
-        </div>
-
-        {/* Variables */}
-        <div className="mt-4">
-          <label className="mb-2 block text-sm font-semibold text-gray-700">
-            Variables
-          </label>
-
-          <div className="relative">
-            <button
-              type="button"
-              onClick={() =>
-                setVariableDropdownOpen(
-                  (current) => !current
-                )
-              }
-              className="flex min-h-[46px] w-full items-center justify-between rounded-xl border border-gray-300 bg-white px-4 py-2 text-left text-sm shadow-sm transition hover:border-[var(--dark-green)]"
-            >
-              <span className="truncate text-gray-700">
-                {selectedVariableLabels.length ===
-                1
-                  ? selectedVariableLabels[0]
-                  : `${selectedVariableLabels.length} variables selected`}
-              </span>
-
-              <ChevronDown
-                className={`h-4 w-4 shrink-0 transition-transform ${
-                  variableDropdownOpen
-                    ? 'rotate-180'
-                    : ''
-                }`}
-              />
-            </button>
-
-            {variableDropdownOpen && (
-              <div className="absolute z-20 mt-2 max-h-80 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-xl">
-                {availableVariables.map(
-                  (variable) => {
+                  {countries.map((country) => {
                     const selected =
-                      filters.variables.includes(
-                        variable.key
-                      );
+                      filters.countryIds.includes(country.id);
 
                     return (
                       <button
-                        key={variable.key}
+                        key={country.id}
                         type="button"
-                        onClick={() =>
-                          toggleVariable(
-                            variable.key
-                          )
-                        }
-                        className="flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-gray-50"
+                        onClick={() => toggleCountry(country.id)}
+                        className="flex w-full items-center gap-3 rounded-lg px-3 py-2.5 text-left text-sm hover:bg-gray-50"
                       >
                         <span
-                          className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
+                          className={`flex h-5 w-5 items-center justify-center rounded border ${
                             selected
                               ? 'border-[var(--dark-green)] bg-[var(--dark-green)] text-white'
                               : 'border-gray-300 bg-white'
@@ -1081,61 +700,191 @@ export default function SectorComparisonTrend({
                           )}
                         </span>
 
-                        <span>
-                          <span className="block text-sm font-medium text-gray-700">
-                            {variable.label}
-                          </span>
-
-                          <span className="block text-xs text-gray-400">
-                            {variable.unit}
-                          </span>
+                        <span className="text-gray-700">
+                          {country.name}
                         </span>
                       </button>
                     );
-                  }
-                )}
+                  })}
+                </div>
+              )}
+            </div>
+          </div>
+
+          <div>
+            <label
+              htmlFor="sector-start-year"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              {t('sectorComparisonTrend.filters.startYear')}
+            </label>
+
+            <select
+              id="sector-start-year"
+              value={filters.startYear}
+              onChange={(event) =>
+                handleStartYearChange(Number(event.target.value))
+              }
+              className="min-h-[46px] w-full rounded-xl border border-gray-300 bg-white px-3 text-sm text-gray-700 outline-none transition focus:border-[var(--dark-green)] focus:ring-2 focus:ring-[var(--dark-green)]/10"
+            >
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="sector-end-year"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              {t('sectorComparisonTrend.filters.endYear')}
+            </label>
+
+            <select
+              id="sector-end-year"
+              value={filters.endYear}
+              onChange={(event) =>
+                handleEndYearChange(Number(event.target.value))
+              }
+              className="min-h-[46px] w-full rounded-xl border border-gray-300 bg-white px-3 text-sm text-gray-700 outline-none transition focus:border-[var(--dark-green)] focus:ring-2 focus:ring-[var(--dark-green)]/10"
+            >
+              {years.map((year) => (
+                <option key={year} value={year}>
+                  {year}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          <div>
+            <label
+              htmlFor="sector-select"
+              className="mb-2 block text-sm font-semibold text-gray-700"
+            >
+              {t('sectorComparisonTrend.filters.sector')}
+            </label>
+
+            <select
+              id="sector-select"
+              value={filters.sector}
+              onChange={(event) =>
+                handleSectorChange(event.target.value as SectorKey)
+              }
+              className="min-h-[46px] w-full rounded-xl border border-gray-300 bg-white px-3 text-sm text-gray-700 outline-none transition focus:border-[var(--dark-green)] focus:ring-2 focus:ring-[var(--dark-green)]/10"
+            >
+              <option value="agricultural_inputs">
+                {t('sectorComparisonTrend.sectors.agricultural_inputs')}
+              </option>
+
+              <option value="livestock">
+                {t('sectorComparisonTrend.sectors.livestock')}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div className="mt-4">
+          <label className="mb-2 block text-sm font-semibold text-gray-700">
+            {t('sectorComparisonTrend.filters.variables')}
+          </label>
+
+          <div className="relative">
+            <button
+              type="button"
+              onClick={() =>
+                setVariableDropdownOpen((current) => !current)
+              }
+              className="flex min-h-[46px] w-full items-center justify-between rounded-xl border border-gray-300 bg-white px-4 py-2 text-left text-sm shadow-sm transition hover:border-[var(--dark-green)]"
+            >
+              <span className="truncate text-gray-700">
+                {selectedVariableLabels.length === 1
+                  ? selectedVariableLabels[0]
+                  : t('sectorComparisonTrend.filters.variablesSelected', {
+                      count: selectedVariableLabels.length,
+                    })}
+              </span>
+
+              <ChevronDown
+                className={`h-4 w-4 shrink-0 transition-transform ${
+                  variableDropdownOpen ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+
+            {variableDropdownOpen && (
+              <div className="absolute z-20 mt-2 max-h-80 w-full overflow-y-auto rounded-xl border border-gray-200 bg-white p-2 shadow-xl">
+                {availableVariables.map((variable) => {
+                  const selected =
+                    filters.variables.includes(variable.key);
+
+                  return (
+                    <button
+                      key={variable.key}
+                      type="button"
+                      onClick={() => toggleVariable(variable.key)}
+                      className="flex w-full items-start gap-3 rounded-lg px-3 py-2.5 text-left hover:bg-gray-50"
+                    >
+                      <span
+                        className={`mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center rounded border ${
+                          selected
+                            ? 'border-[var(--dark-green)] bg-[var(--dark-green)] text-white'
+                            : 'border-gray-300 bg-white'
+                        }`}
+                      >
+                        {selected && (
+                          <Check className="h-3.5 w-3.5" />
+                        )}
+                      </span>
+
+                      <span>
+                        <span className="block text-sm font-medium text-gray-700">
+                          {variable.label}
+                        </span>
+
+                        <span className="block text-xs text-gray-400">
+                          {variable.unit}
+                        </span>
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
             )}
           </div>
         </div>
 
-        {/* Selected filters */}
         <div className="mt-4 flex flex-wrap items-center gap-2">
           <span className="text-xs font-medium text-gray-500">
-            Active filters:
+            {t('sectorComparisonTrend.activeFilters')}
           </span>
 
           <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-800">
-            {filters.startYear}–
-            {filters.endYear}
+            {filters.startYear}–{filters.endYear}
           </span>
 
           <span className="rounded-full bg-blue-100 px-3 py-1 text-xs font-semibold text-blue-800">
-            {filters.sector ===
-            'agricultural_inputs'
-              ? 'Agricultural Inputs'
-              : 'Livestock'}
+            {sectorLabel}
           </span>
 
           {selectedCountries.length > 0 && (
             <span className="rounded-full bg-purple-100 px-3 py-1 text-xs font-semibold text-purple-800">
-              {selectedCountries.length}{' '}
-              {selectedCountries.length === 1
-                ? 'country'
-                : 'countries'}
+              {t('sectorComparisonTrend.countryCount', {
+                count: selectedCountries.length,
+              })}
             </span>
           )}
 
           <span className="rounded-full bg-orange-100 px-3 py-1 text-xs font-semibold text-orange-800">
-            {filters.variables.length}{' '}
-            {filters.variables.length === 1
-              ? 'variable'
-              : 'variables'}
+            {t('sectorComparisonTrend.variableCount', {
+              count: filters.variables.length,
+            })}
           </span>
         </div>
       </div>
 
-      {/* Chart */}
       <div className="p-4 sm:p-6">
         {error && (
           <div className="mb-5 rounded-xl border border-red-200 bg-red-50 p-4 text-sm text-red-700">
@@ -1147,19 +896,18 @@ export default function SectorComparisonTrend({
           <div className="flex min-h-[400px] items-center justify-center">
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <Loader2 className="h-5 w-5 animate-spin" />
-              Loading comparison data...
+              {t('sectorComparisonTrend.loadingChart')}
             </div>
           </div>
         ) : chartData.length === 0 ? (
           <div className="flex min-h-[400px] items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 text-center">
             <div>
               <p className="font-semibold text-gray-700">
-                No comparison data available
+                {t('sectorComparisonTrend.emptyTitle')}
               </p>
 
               <p className="mt-1 text-sm text-gray-500">
-                Try selecting another country,
-                year range, sector, or variable.
+                {t('sectorComparisonTrend.emptyDescription')}
               </p>
             </div>
           </div>
@@ -1168,39 +916,32 @@ export default function SectorComparisonTrend({
             <div className="mb-5 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <h3 className="text-lg font-bold text-gray-800">
-                  {filters.sector ===
-                  'agricultural_inputs'
-                    ? 'Agricultural Inputs'
-                    : 'Livestock'}{' '}
-                  Trends
+                  {t('sectorComparisonTrend.trendsTitle', {
+                    sector: sectorLabel,
+                  })}
                 </h3>
 
                 <p className="text-sm text-gray-500">
-                  {filters.startYear}–
-                  {filters.endYear} ·{' '}
-                  {selectedCountries.length}{' '}
-                  {selectedCountries.length ===
-                  1
-                    ? 'country'
-                    : 'countries'}{' '}
-                  · {filters.variables.length}{' '}
-                  {filters.variables.length ===
-                  1
-                    ? 'variable'
-                    : 'variables'}
+                  {filters.startYear}–{filters.endYear} ·{' '}
+                  {t('sectorComparisonTrend.countryCount', {
+                    count: selectedCountries.length,
+                  })}{' '}
+                  ·{' '}
+                  {t('sectorComparisonTrend.variableCount', {
+                    count: filters.variables.length,
+                  })}
                 </p>
               </div>
 
               <div className="text-xs text-gray-400">
-                {chartData.length} years displayed
+                {t('sectorComparisonTrend.yearsDisplayed', {
+                  count: chartData.length,
+                })}
               </div>
             </div>
 
             <div className="h-[420px] w-full">
-              <ResponsiveContainer
-                width="100%"
-                height="100%"
-              >
+              <ResponsiveContainer width="100%" height="100%">
                 <LineChart
                   data={chartData}
                   margin={{
@@ -1237,21 +978,17 @@ export default function SectorComparisonTrend({
                     }}
                     width={55}
                     tickFormatter={(value: number) =>
-                      new Intl.NumberFormat(
-                        'en-US',
-                        {
-                          notation: 'compact',
-                          maximumFractionDigits: 1,
-                        }
-                      ).format(value)
+                      new Intl.NumberFormat(locale, {
+                        notation: 'compact',
+                        maximumFractionDigits: 1,
+                      }).format(value)
                     }
                   />
 
                   <Tooltip
                     contentStyle={{
                       borderRadius: '12px',
-                      border:
-                        '1px solid #E5E7EB',
+                      border: '1px solid #E5E7EB',
                       boxShadow:
                         '0 10px 25px rgba(0,0,0,0.08)',
                     }}
@@ -1264,17 +1001,13 @@ export default function SectorComparisonTrend({
                       value: unknown,
                       name: unknown
                     ) => {
-                      const series =
-                        chartSeries.find(
-                          (item) =>
-                            item.dataKey ===
-                            String(name)
-                        );
+                      const series = chartSeries.find(
+                        (item) => item.dataKey === String(name)
+                      );
 
                       return [
-                        formatChartValue(value),
-                        series?.label ??
-                          String(name),
+                        formatChartValue(value, locale),
+                        series?.label ?? String(name),
                       ];
                     }}
                   />
@@ -1286,44 +1019,34 @@ export default function SectorComparisonTrend({
                     }}
                   />
 
-                  {chartSeries.map(
-                    (series) => (
-                      <Line
-                        key={series.dataKey}
-                        type="monotone"
-                        dataKey={series.dataKey}
-                        name={`${series.countryName} — ${series.variable.label}`}
-                        stroke={series.color}
-                        strokeWidth={2.5}
-                        dot={{
-                          r: 3,
-                          strokeWidth: 1,
-                        }}
-                        activeDot={{
-                          r: 5,
-                        }}
-                        connectNulls
-                      />
-                    )
-                  )}
+                  {chartSeries.map((series) => (
+                    <Line
+                      key={series.dataKey}
+                      type="monotone"
+                      dataKey={series.dataKey}
+                      name={series.label}
+                      stroke={series.color}
+                      strokeWidth={2.5}
+                      dot={{
+                        r: 3,
+                        strokeWidth: 1,
+                      }}
+                      activeDot={{
+                        r: 5,
+                      }}
+                      connectNulls
+                    />
+                  ))}
                 </LineChart>
               </ResponsiveContainer>
             </div>
 
-            {/* Interpretation note */}
             <div className="mt-5 rounded-xl border border-amber-200 bg-amber-50 p-4">
               <p className="text-xs leading-5 text-amber-800">
                 <strong>
-                  Interpretation note:
+                  {t('sectorComparisonTrend.interpretationNoteTitle')}
                 </strong>{' '}
-                Variables may use different units,
-                such as tons, percentages, head,
-                USD, or hectares. When multiple
-                variables are selected, use the
-                chart primarily to compare their
-                trends rather than directly
-                comparing their absolute
-                magnitudes.
+                {t('sectorComparisonTrend.interpretationNoteBody')}
               </p>
             </div>
           </>

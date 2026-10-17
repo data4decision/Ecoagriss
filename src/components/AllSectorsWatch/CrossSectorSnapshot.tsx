@@ -1,8 +1,8 @@
-
 'use client';
 
 import { useEffect, useState } from 'react';
 import type { ReactNode } from 'react';
+import { useTranslation } from 'react-i18next';
 import { createClient } from '@/lib/supabase/client';
 import { Wheat, Beef, CalendarDays } from 'lucide-react';
 
@@ -205,10 +205,12 @@ function SectorRow({
   sector: SnapshotSector;
   maxRecords: number;
 }) {
+  const { t } = useTranslation('common');
+
   const countryLabel =
     sector.countryCount === 1
-      ? '1 Country'
-      : `${sector.countryCount} Countries`;
+      ? t('crossSector.oneCountry')
+      : t('crossSector.nCountries', { count: sector.countryCount });
 
   const barWidth =
     maxRecords > 0
@@ -239,7 +241,7 @@ function SectorRow({
       <div className="mt-3 sm:mt-0">
         <div className="flex items-baseline justify-between gap-2 sm:block">
           <span className="text-xs text-[var(--olive-green)]/70 sm:hidden">
-            Records
+            {t('crossSector.col.records')}
           </span>
 
           <span className="text-sm font-medium tabular-nums text-[var(--dark-green)]">
@@ -260,7 +262,7 @@ function SectorRow({
 
       <div className="mt-2 flex items-baseline justify-between gap-2 sm:mt-0 sm:block">
         <span className="text-xs text-[var(--olive-green)]/70 sm:hidden">
-          Countries
+          {t('crossSector.col.countries')}
         </span>
 
         <span className="text-sm text-[var(--olive-green)]/90">
@@ -270,7 +272,7 @@ function SectorRow({
 
       <div className="mt-2 flex items-baseline justify-between gap-2 sm:mt-0 sm:block">
         <span className="text-xs text-[var(--olive-green)]/70 sm:hidden">
-          Period
+          {t('crossSector.col.period')}
         </span>
 
         <span className="inline-flex items-center gap-1.5 text-sm text-[var(--olive-green)]/90">
@@ -292,6 +294,7 @@ function SectorRow({
 export default function CrossSectorSnapshot({
   countryId = null,
 }: CrossSectorSnapshotProps) {
+  const { t } = useTranslation('common');
   const [state, setState] = useState<LoadState>('loading');
   const [sectors, setSectors] = useState<SnapshotSector[]>([]);
 
@@ -310,14 +313,14 @@ export default function CrossSectorSnapshot({
         const stats: SnapshotSector[] = [
           computeStats(
             inputs,
-            'Agricultural Inputs',
-            'Fertilizers, seeds, pesticides and related agricultural input indicators.',
+            t('crossSector.sectors.inputs.name'),
+            t('crossSector.sectors.inputs.description'),
             <Wheat className="h-4 w-4" strokeWidth={1.75} />
           ),
           computeStats(
             livestock,
-            'Livestock',
-            'Herd sizes, production and livestock sector indicators.',
+            t('crossSector.sectors.livestock.name'),
+            t('crossSector.sectors.livestock.description'),
             <Beef className="h-4 w-4" strokeWidth={1.75} />
           ),
         ];
@@ -345,12 +348,19 @@ export default function CrossSectorSnapshot({
     return () => {
       mounted = false;
     };
-  }, [countryId]);
+  }, [countryId, t]);
 
   const maxRecords =
     sectors.length > 0
       ? Math.max(...sectors.map((sector) => sector.recordCount), 0)
       : 0;
+
+  const tableHeadings = [
+    t('crossSector.col.sector'),
+    t('crossSector.col.records'),
+    t('crossSector.col.countries'),
+    t('crossSector.col.period'),
+  ];
 
   return (
     <section
@@ -382,30 +392,32 @@ export default function CrossSectorSnapshot({
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="mb-8 max-w-2xl sm:mb-10">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--dark-green)] sm:text-xs">
-            Real Data Cross-Sector Snapshot
+            {t('crossSector.eyebrow')}
           </p>
 
           <h2
             id="cross-sector-snapshot-heading"
             className="mt-2 text-[clamp(1.5rem,3vw+0.5rem,2.25rem)] font-bold leading-tight tracking-tight text-[var(--dark-green)]"
           >
-            A quick view across ECOAGRIS sectors
+            {t('crossSector.title')}
           </h2>
 
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--olive-green)] sm:text-base">
-            Explore agricultural inputs and livestock data across all
-            countries represented in the available dataset.
+            {t('crossSector.subtitle')}
           </p>
 
           <p className="mt-2 text-xs text-[var(--olive-green)]/80">
             {countryId === null
-              ? 'Showing all accessible countries'
-              : 'Showing the selected country'}
+              ? t('crossSector.scopeAll')
+              : t('crossSector.scopeSelected')}
           </p>
         </div>
 
         {state === 'loading' && (
-          <div aria-busy="true" aria-label="Loading cross-sector snapshot">
+          <div
+            aria-busy="true"
+            aria-label={t('crossSector.loadingAria')}
+          >
             <SnapshotSkeleton />
           </div>
         )}
@@ -416,10 +428,10 @@ export default function CrossSectorSnapshot({
             role="alert"
           >
             <p className="text-base font-medium text-[var(--dark-green)]">
-              We couldn&apos;t load the cross-sector snapshot right now.
+              {t('crossSector.errorTitle')}
             </p>
             <p className="mt-1 text-sm text-[var(--olive-green)]/70">
-              Please try again later.
+              {t('crossSector.errorHint')}
             </p>
           </div>
         )}
@@ -427,11 +439,10 @@ export default function CrossSectorSnapshot({
         {state === 'empty' && (
           <div className="rounded-2xl border border-[var(--green)]/20 bg-[var(--white)] px-6 py-10 text-center shadow-sm">
             <p className="text-base font-medium text-[var(--dark-green)]">
-              No sector snapshot data is currently available.
+              {t('crossSector.emptyTitle')}
             </p>
             <p className="mt-1 text-sm text-[var(--olive-green)]/70">
-              Data coverage information will appear here when records are
-              available for the selected scope.
+              {t('crossSector.emptyHint')}
             </p>
           </div>
         )}
@@ -445,16 +456,14 @@ export default function CrossSectorSnapshot({
 
             <div className="p-4 sm:p-5 lg:p-6">
               <div className="mb-1 hidden grid-cols-4 gap-4 border-b border-[var(--green)]/10 pb-3 sm:grid">
-                {['Sector', 'Records', 'Countries', 'Coverage period'].map(
-                  (heading) => (
-                    <span
-                      key={heading}
-                      className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--olive-green)]/70"
-                    >
-                      {heading}
-                    </span>
-                  )
-                )}
+                {tableHeadings.map((heading) => (
+                  <span
+                    key={heading}
+                    className="text-[11px] font-semibold uppercase tracking-[0.14em] text-[var(--olive-green)]/70"
+                  >
+                    {heading}
+                  </span>
+                ))}
               </div>
 
               <div role="list">

@@ -6,6 +6,7 @@ import {
   useMemo,
   useState,
 } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   Bar,
@@ -83,44 +84,44 @@ interface PredictiveAnalysisProps {
 }
 
 /* ─────────────────────────────────────────────
-   Constants
+   Constants (keys only — labels from i18n)
 ───────────────────────────────────────────── */
 
-const AGRICULTURAL_INPUT_VARIABLES: VariableDefinition[] = [
-  { key: 'cereal_seeds_tons', label: 'Cereal Seeds', unit: 'tons' },
-  { key: 'fertilizer_tons', label: 'Fertilizer', unit: 'tons' },
-  { key: 'pesticide_liters', label: 'Pesticide', unit: 'litres' },
-  { key: 'improved_seed_use_pct', label: 'Improved Seed Use', unit: '%' },
-  { key: 'fertilizer_kg_per_ha', label: 'Fertilizer', unit: 'kg/ha' },
-  { key: 'input_price_index_2006_base', label: 'Input Price Index', unit: '2006 base' },
-  { key: 'agro_dealer_count', label: 'Agro-dealer Count', unit: 'count' },
-  { key: 'input_subsidy_budget_usd', label: 'Input Subsidy Budget', unit: 'USD' },
-  { key: 'distribution_timeliness_pct', label: 'Distribution Timeliness', unit: '%' },
-  { key: 'stockouts_days_per_year', label: 'Stockouts', unit: 'days/year' },
-  { key: 'input_import_value_usd', label: 'Input Import Value', unit: 'USD' },
-  { key: 'local_production_inputs_tons', label: 'Local Input Production', unit: 'tons' },
-  { key: 'mechanization_units_per_1000_farms', label: 'Mechanization', unit: 'units/1,000 farms' },
-  { key: 'credit_access_pct', label: 'Credit Access', unit: '%' },
-];
+const AGRICULTURAL_INPUT_VARIABLE_KEYS = [
+  { key: 'cereal_seeds_tons', unitKey: 'tons' },
+  { key: 'fertilizer_tons', unitKey: 'tons' },
+  { key: 'pesticide_liters', unitKey: 'litres' },
+  { key: 'improved_seed_use_pct', unitKey: 'pct' },
+  { key: 'fertilizer_kg_per_ha', unitKey: 'kgHa' },
+  { key: 'input_price_index_2006_base', unitKey: 'base2006' },
+  { key: 'agro_dealer_count', unitKey: 'count' },
+  { key: 'input_subsidy_budget_usd', unitKey: 'usd' },
+  { key: 'distribution_timeliness_pct', unitKey: 'pct' },
+  { key: 'stockouts_days_per_year', unitKey: 'daysYear' },
+  { key: 'input_import_value_usd', unitKey: 'usd' },
+  { key: 'local_production_inputs_tons', unitKey: 'tons' },
+  { key: 'mechanization_units_per_1000_farms', unitKey: 'unitsPer1000Farms' },
+  { key: 'credit_access_pct', unitKey: 'pct' },
+] as const;
 
-const LIVESTOCK_VARIABLES: VariableDefinition[] = [
-  { key: 'cattle_head', label: 'Cattle Population', unit: 'head' },
-  { key: 'small_ruminants_head', label: 'Small Ruminants', unit: 'head' },
-  { key: 'pigs_head', label: 'Pig Population', unit: 'head' },
-  { key: 'poultry_head', label: 'Poultry Population', unit: 'head' },
-  { key: 'milk_production_tons', label: 'Milk Production', unit: 'tons' },
-  { key: 'meat_production_tons', label: 'Meat Production', unit: 'tons' },
-  { key: 'livestock_price_index_2006_base', label: 'Livestock Price Index', unit: '2006 base' },
-  { key: 'vaccination_coverage_pct', label: 'Vaccination Coverage', unit: '%' },
-  { key: 'fmd_incidents_count', label: 'FMD Incidents', unit: 'count' },
-  { key: 'grazing_area_ha', label: 'Grazing Area', unit: 'ha' },
-  { key: 'transhumance_events', label: 'Transhumance Events', unit: 'count' },
-  { key: 'veterinary_facilities_count', label: 'Veterinary Facilities', unit: 'count' },
-  { key: 'feed_imports_tons', label: 'Feed Imports', unit: 'tons' },
-  { key: 'local_feed_production_tons', label: 'Local Feed Production', unit: 'tons' },
-  { key: 'livestock_exports_tons', label: 'Livestock Exports', unit: 'tons' },
-  { key: 'offtake_rate_pct', label: 'Offtake Rate', unit: '%' },
-];
+const LIVESTOCK_VARIABLE_KEYS = [
+  { key: 'cattle_head', unitKey: 'head' },
+  { key: 'small_ruminants_head', unitKey: 'head' },
+  { key: 'pigs_head', unitKey: 'head' },
+  { key: 'poultry_head', unitKey: 'head' },
+  { key: 'milk_production_tons', unitKey: 'tons' },
+  { key: 'meat_production_tons', unitKey: 'tons' },
+  { key: 'livestock_price_index_2006_base', unitKey: 'base2006' },
+  { key: 'vaccination_coverage_pct', unitKey: 'pct' },
+  { key: 'fmd_incidents_count', unitKey: 'count' },
+  { key: 'grazing_area_ha', unitKey: 'ha' },
+  { key: 'transhumance_events', unitKey: 'count' },
+  { key: 'veterinary_facilities_count', unitKey: 'count' },
+  { key: 'feed_imports_tons', unitKey: 'tons' },
+  { key: 'local_feed_production_tons', unitKey: 'tons' },
+  { key: 'livestock_exports_tons', unitKey: 'tons' },
+  { key: 'offtake_rate_pct', unitKey: 'pct' },
+] as const;
 
 const CHART_COLORS = [
   '#0B6B3A',
@@ -139,26 +140,25 @@ const CHART_COLORS = [
    Helpers
 ───────────────────────────────────────────── */
 
-function getVariablesForSector(
+function getVariableKeysForSector(
   sector: SectorExplorerFilters['sector']
-): VariableDefinition[] {
+): readonly { key: string; unitKey: string }[] {
   return sector === 'agricultural_inputs'
-    ? AGRICULTURAL_INPUT_VARIABLES
-    : LIVESTOCK_VARIABLES;
+    ? AGRICULTURAL_INPUT_VARIABLE_KEYS
+    : LIVESTOCK_VARIABLE_KEYS;
 }
 
 function isNumericValue(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value);
 }
 
-function formatValue(value: unknown): string {
+function formatValue(value: unknown, locale: string): string {
   if (!isNumericValue(value)) return '—';
-  return new Intl.NumberFormat('en-US', {
+  return new Intl.NumberFormat(locale, {
     maximumFractionDigits: 2,
   }).format(value);
 }
 
-/** Y-axis ticks every 10K (0, 10K, 20K, …) with ~10% headroom */
 function buildYTicks(
   data: ChartRow[],
   seriesKeys: string[]
@@ -242,6 +242,18 @@ function growthRate(points: { value: number }[]): number {
 export default function PredictiveAnalysis({
   filters,
 }: PredictiveAnalysisProps) {
+  const { t, i18n } = useTranslation('common');
+
+  /** Normalized for API: en | fr | pt */
+  const apiLocale = useMemo(() => {
+    const base = (i18n.language || 'en').toLowerCase().split('-')[0];
+    if (base === 'fr' || base === 'pt') return base;
+    return 'en';
+  }, [i18n.language]);
+
+  /** Full locale for number formatting */
+  const numberLocale = i18n.language || 'en';
+
   const supabase = useMemo(() => createClient(), []);
 
   const [chartType, setChartType] = useState<ChartType>('line');
@@ -261,10 +273,13 @@ export default function PredictiveAnalysis({
   const [aiLoading, setAiLoading] = useState(false);
   const [aiError, setAiError] = useState<string | null>(null);
 
-  const availableVariables = useMemo(
-    () => getVariablesForSector(filters.sector),
-    [filters.sector]
-  );
+  const availableVariables = useMemo((): VariableDefinition[] => {
+    return getVariableKeysForSector(filters.sector).map((v) => ({
+      key: v.key,
+      label: t(`predictiveAnalysis.variables.${v.key}`),
+      unit: t(`predictiveAnalysis.units.${v.unitKey}`),
+    }));
+  }, [filters.sector, t]);
 
   const countryNameMap = useMemo(() => {
     const map = new Map<number, string>();
@@ -272,7 +287,9 @@ export default function PredictiveAnalysis({
     return map;
   }, [countries]);
 
-  const sectorLabel =
+  const sectorLabel = t(`predictiveAnalysis.sectors.${filters.sector}`);
+
+  const sectorLabelEn =
     filters.sector === 'agricultural_inputs'
       ? 'Agricultural Inputs'
       : 'Livestock';
@@ -371,9 +388,7 @@ export default function PredictiveAnalysis({
         setChartData([]);
         setMetrics([]);
         setAiBriefing(null);
-        setAiError(
-          'Not enough historical data to generate a forecast for the current filters.'
-        );
+        setAiError(t('predictiveAnalysis.errors.notEnoughHistorical'));
         setLoading(false);
         return;
       }
@@ -433,43 +448,36 @@ export default function PredictiveAnalysis({
       const endYear = lastHistoricalYear + horizon;
       const projectedSummary =
         endProjections.length > 0
-          ? formatValue(average(endProjections))
+          ? formatValue(average(endProjections), numberLocale)
           : '—';
-
-      const confidenceLabel =
-        historicalRows.length >= 10
-          ? 'Medium–High'
-          : historicalRows.length >= 5
-            ? 'Medium'
-            : 'Low';
 
       const confidenceKey =
         historicalRows.length >= 10
-          ? 'medium_high'
+          ? 'mediumHigh'
           : historicalRows.length >= 5
             ? 'medium'
             : 'low';
 
       setMetrics([
         {
-          label: `Projected (${endYear})`,
+          label: t('predictiveAnalysis.metrics.projected', { year: endYear }),
           value: projectedSummary,
-          sub: 'Avg across selected series',
+          sub: t('predictiveAnalysis.metrics.projectedSub'),
         },
         {
-          label: 'Avg. annual growth',
+          label: t('predictiveAnalysis.metrics.avgAnnualGrowth'),
           value: `${avgGrowth > 0 ? '+' : ''}${avgGrowth.toFixed(1)}%`,
-          sub: 'Historical trend',
+          sub: t('predictiveAnalysis.metrics.avgAnnualGrowthSub'),
         },
         {
-          label: 'Direction',
-          value: dir,
-          sub: `${horizon}-year outlook`,
+          label: t('predictiveAnalysis.metrics.direction'),
+          value: t(`predictiveAnalysis.direction.${dir}`),
+          sub: t('predictiveAnalysis.metrics.directionSub', { horizon }),
         },
         {
-          label: 'Confidence',
-          value: confidenceLabel,
-          sub: 'Based on data coverage',
+          label: t('predictiveAnalysis.metrics.confidence'),
+          value: t(`predictiveAnalysis.confidence.${confidenceKey}`),
+          sub: t('predictiveAnalysis.metrics.confidenceSub'),
         },
       ]);
 
@@ -494,9 +502,76 @@ export default function PredictiveAnalysis({
         };
       }> = [];
 
+      const enVariableLabels: Record<string, string> = {
+        cereal_seeds_tons: 'Cereal Seeds',
+        fertilizer_tons: 'Fertilizer',
+        pesticide_liters: 'Pesticide',
+        improved_seed_use_pct: 'Improved Seed Use',
+        fertilizer_kg_per_ha: 'Fertilizer',
+        input_price_index_2006_base: 'Input Price Index',
+        agro_dealer_count: 'Agro-dealer Count',
+        input_subsidy_budget_usd: 'Input Subsidy Budget',
+        distribution_timeliness_pct: 'Distribution Timeliness',
+        stockouts_days_per_year: 'Stockouts',
+        input_import_value_usd: 'Input Import Value',
+        local_production_inputs_tons: 'Local Input Production',
+        mechanization_units_per_1000_farms: 'Mechanization',
+        credit_access_pct: 'Credit Access',
+        cattle_head: 'Cattle Population',
+        small_ruminants_head: 'Small Ruminants',
+        pigs_head: 'Pig Population',
+        poultry_head: 'Poultry Population',
+        milk_production_tons: 'Milk Production',
+        meat_production_tons: 'Meat Production',
+        livestock_price_index_2006_base: 'Livestock Price Index',
+        vaccination_coverage_pct: 'Vaccination Coverage',
+        fmd_incidents_count: 'FMD Incidents',
+        grazing_area_ha: 'Grazing Area',
+        transhumance_events: 'Transhumance Events',
+        veterinary_facilities_count: 'Veterinary Facilities',
+        feed_imports_tons: 'Feed Imports',
+        local_feed_production_tons: 'Local Feed Production',
+        livestock_exports_tons: 'Livestock Exports',
+        offtake_rate_pct: 'Offtake Rate',
+      };
+
+      const enUnits: Record<string, string> = {
+        cereal_seeds_tons: 'tons',
+        fertilizer_tons: 'tons',
+        pesticide_liters: 'litres',
+        improved_seed_use_pct: '%',
+        fertilizer_kg_per_ha: 'kg/ha',
+        input_price_index_2006_base: '2006 base',
+        agro_dealer_count: 'count',
+        input_subsidy_budget_usd: 'USD',
+        distribution_timeliness_pct: '%',
+        stockouts_days_per_year: 'days/year',
+        input_import_value_usd: 'USD',
+        local_production_inputs_tons: 'tons',
+        mechanization_units_per_1000_farms: 'units/1,000 farms',
+        credit_access_pct: '%',
+        cattle_head: 'head',
+        small_ruminants_head: 'head',
+        pigs_head: 'head',
+        poultry_head: 'head',
+        milk_production_tons: 'tons',
+        meat_production_tons: 'tons',
+        livestock_price_index_2006_base: '2006 base',
+        vaccination_coverage_pct: '%',
+        fmd_incidents_count: 'count',
+        grazing_area_ha: 'ha',
+        transhumance_events: 'count',
+        veterinary_facilities_count: 'count',
+        feed_imports_tons: 'tons',
+        local_feed_production_tons: 'tons',
+        livestock_exports_tons: 'tons',
+        offtake_rate_pct: '%',
+      };
+
       for (const countryId of filters.countryIds) {
         const countryName =
-          countryNameMap.get(countryId) ?? `Country ${countryId}`;
+          countryNameMap.get(countryId) ??
+          t('predictiveAnalysis.countryFallback', { id: countryId });
 
         for (const variableKey of filters.variables) {
           const variable = availableVariables.find(
@@ -545,8 +620,8 @@ export default function PredictiveAnalysis({
 
           seriesPayload.push({
             country: countryName,
-            indicator: variable.label,
-            unit: variable.unit,
+            indicator: enVariableLabels[variableKey] ?? variable.label,
+            unit: enUnits[variableKey] ?? variable.unit,
             performance: 'neutral',
             historical,
             forecast: forecastPts,
@@ -565,9 +640,7 @@ export default function PredictiveAnalysis({
       }
 
       if (seriesPayload.length === 0) {
-        setAiError(
-          'Not enough series data to generate an AI interpretation.'
-        );
+        setAiError(t('predictiveAnalysis.errors.notEnoughSeries'));
         return;
       }
 
@@ -578,15 +651,16 @@ export default function PredictiveAnalysis({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            sector: sectorLabel,
+            sector: sectorLabelEn,
             historicalPeriod: `${filters.startYear}–${filters.endYear}`,
             forecastHorizonYears: horizon,
             countries: filters.countryIds.map(
-              (id) => countryNameMap.get(id) ?? `Country ${id}`
+              (id) =>
+                countryNameMap.get(id) ??
+                t('predictiveAnalysis.countryFallback', { id })
             ),
             variables: filters.variables.map(
-              (k) =>
-                availableVariables.find((v) => v.key === k)?.label ?? k
+              (k) => enVariableLabels[k] ?? k
             ),
             series: seriesPayload,
             overall: {
@@ -598,8 +672,12 @@ export default function PredictiveAnalysis({
                     : 'declining',
               avgProjectedGrowthPercent:
                 growthRates.length > 0 ? avgGrowth : null,
-              confidence: confidenceKey,
+              confidence:
+                confidenceKey === 'mediumHigh'
+                  ? 'medium_high'
+                  : confidenceKey,
             },
+            locale: apiLocale,
           }),
         });
 
@@ -609,7 +687,7 @@ export default function PredictiveAnalysis({
           throw new Error(
             typeof json.error === 'string'
               ? json.error
-              : 'AI request failed'
+              : t('predictiveAnalysis.errors.aiRequestFailed')
           );
         }
 
@@ -626,14 +704,16 @@ export default function PredictiveAnalysis({
         setAiError(
           aiErr instanceof Error
             ? aiErr.message
-            : 'Unable to generate AI interpretation.'
+            : t('predictiveAnalysis.errors.unableAi')
         );
       } finally {
         setAiLoading(false);
       }
     } catch (err) {
       const message =
-        err instanceof Error ? err.message : 'Unable to build forecast.';
+        err instanceof Error
+          ? err.message
+          : t('predictiveAnalysis.errors.unableForecast');
       setError(message);
       setChartData([]);
       setMetrics([]);
@@ -647,8 +727,11 @@ export default function PredictiveAnalysis({
     supabase,
     availableVariables,
     countryNameMap,
-    sectorLabel,
+    sectorLabelEn,
     countries.length,
+    t,
+    numberLocale,
+    apiLocale,
   ]);
 
   useEffect(() => {
@@ -666,7 +749,8 @@ export default function PredictiveAnalysis({
 
     filters.countryIds.forEach((countryId) => {
       const countryName =
-        countryNameMap.get(countryId) ?? `Country ${countryId}`;
+        countryNameMap.get(countryId) ??
+        t('predictiveAnalysis.countryFallback', { id: countryId });
 
       filters.variables.forEach((variableKey) => {
         const variable = availableVariables.find(
@@ -676,7 +760,10 @@ export default function PredictiveAnalysis({
 
         series.push({
           dataKey: `${countryId}_${variableKey}`,
-          name: `${countryName} — ${variable.label}`,
+          name: t('predictiveAnalysis.seriesName', {
+            country: countryName,
+            indicator: variable.label,
+          }),
           color: CHART_COLORS[colorIndex % CHART_COLORS.length],
         });
         colorIndex += 1;
@@ -689,7 +776,9 @@ export default function PredictiveAnalysis({
     filters.variables,
     countryNameMap,
     availableVariables,
+    t,
   ]);
+
   const yTicks = useMemo(
     () =>
       buildYTicks(
@@ -698,11 +787,14 @@ export default function PredictiveAnalysis({
       ),
     [chartData, chartSeries]
   );
+
   const lastHistoricalYear = useMemo(() => {
     const historical = chartData.filter((r) => !r.isForecast);
     if (historical.length === 0) return null;
     return historical[historical.length - 1].year as number;
   }, [chartData]);
+
+  const directionMetricLabel = t('predictiveAnalysis.metrics.direction');
 
   return (
     <section className="mt-6 overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm">
@@ -712,15 +804,14 @@ export default function PredictiveAnalysis({
             <div className="mb-1.5 flex items-center gap-2">
               <Sparkles className="h-4 w-4 text-[var(--yellow)]" />
               <span className="text-xs font-semibold uppercase tracking-wider text-green-100">
-                AI-assisted forecast
+                {t('predictiveAnalysis.badge')}
               </span>
             </div>
             <h2 className="text-xl font-bold sm:text-2xl">
-              Predictive Analysis
+              {t('predictiveAnalysis.title')}
             </h2>
             <p className="mt-1 max-w-2xl text-sm text-green-50">
-              Forecast based on your selected filters. Historical trend is
-              extended {horizon} years beyond the last available data year.
+              {t('predictiveAnalysis.subtitle', { horizon })}
             </p>
           </div>
         </div>
@@ -730,7 +821,7 @@ export default function PredictiveAnalysis({
         <div className="flex flex-wrap items-center gap-3">
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-gray-500">
-              Horizon
+              {t('predictiveAnalysis.horizon')}
             </span>
             <div className="inline-flex rounded-lg border border-gray-200 bg-white p-0.5">
               {([3, 5] as Horizon[]).map((h) => (
@@ -744,7 +835,7 @@ export default function PredictiveAnalysis({
                       : 'text-gray-600 hover:bg-gray-50'
                   }`}
                 >
-                  {h} years
+                  {t('predictiveAnalysis.years', { count: h })}
                 </button>
               ))}
             </div>
@@ -752,7 +843,7 @@ export default function PredictiveAnalysis({
 
           <div className="flex items-center gap-2">
             <span className="text-xs font-semibold text-gray-500">
-              Chart
+              {t('predictiveAnalysis.chart')}
             </span>
             <div className="inline-flex rounded-lg border border-gray-200 bg-white p-0.5">
               <button
@@ -765,7 +856,7 @@ export default function PredictiveAnalysis({
                 }`}
               >
                 <LineChartIcon className="h-3.5 w-3.5" />
-                Line
+                {t('predictiveAnalysis.line')}
               </button>
               <button
                 type="button"
@@ -777,17 +868,21 @@ export default function PredictiveAnalysis({
                 }`}
               >
                 <BarChart3 className="h-3.5 w-3.5" />
-                Bar
+                {t('predictiveAnalysis.bar')}
               </button>
             </div>
           </div>
         </div>
 
         <p className="text-xs text-gray-400">
-          {sectorLabel} · {filters.countryIds.length} countr
-          {filters.countryIds.length === 1 ? 'y' : 'ies'} ·{' '}
-          {filters.variables.length} variable
-          {filters.variables.length === 1 ? '' : 's'}
+          {t('predictiveAnalysis.sectorSummary', {
+            sector: sectorLabel,
+            count: filters.countryIds.length,
+          })}
+          {' · '}
+          {t('predictiveAnalysis.variableSummary', {
+            count: filters.variables.length,
+          })}
         </p>
       </div>
 
@@ -802,17 +897,17 @@ export default function PredictiveAnalysis({
           <div className="flex min-h-[360px] items-center justify-center">
             <div className="flex items-center gap-2 text-sm text-gray-500">
               <Loader2 className="h-5 w-5 animate-spin" />
-              Building forecast...
+              {t('predictiveAnalysis.buildingForecast')}
             </div>
           </div>
         ) : chartData.length === 0 ? (
           <div className="flex min-h-[280px] items-center justify-center rounded-xl border border-dashed border-gray-300 bg-gray-50 px-6 text-center">
             <div>
               <p className="font-semibold text-gray-700">
-                No forecast available
+                {t('predictiveAnalysis.noForecastTitle')}
               </p>
               <p className="mt-1 text-sm text-gray-500">
-                Select at least one country and variable in the chart above.
+                {t('predictiveAnalysis.noForecastDescription')}
               </p>
             </div>
           </div>
@@ -821,12 +916,19 @@ export default function PredictiveAnalysis({
             <div className="mb-4 flex items-end justify-between gap-2">
               <div>
                 <h3 className="text-lg font-bold text-gray-800">
-                  {sectorLabel} Forecast
+                  {t('predictiveAnalysis.forecastTitle', {
+                    sector: sectorLabel,
+                  })}
                 </h3>
                 <p className="text-sm text-gray-500">
-                  Solid = historical · Projected years follow the split
+                  {t('predictiveAnalysis.forecastLegend')}
                   {lastHistoricalYear != null && (
-                    <> · Split at {lastHistoricalYear}</>
+                    <>
+                      {' '}
+                      {t('predictiveAnalysis.splitAt', {
+                        year: lastHistoricalYear,
+                      })}
+                    </>
                   )}
                 </p>
               </div>
@@ -847,19 +949,19 @@ export default function PredictiveAnalysis({
                       axisLine={{ stroke: '#D1D5DB' }}
                     />
                     <YAxis
-  ticks={yTicks}
-  domain={[0, yTicks[yTicks.length - 1] ?? 'auto']}
-  tick={{ fontSize: 12 }}
-  tickLine={false}
-  axisLine={{ stroke: '#D1D5DB' }}
-  width={55}
-  tickFormatter={(v: number) =>
-    new Intl.NumberFormat('en-US', {
-      notation: 'compact',
-      maximumFractionDigits: 1,
-    }).format(v)
-  }
-/>
+                      ticks={yTicks}
+                      domain={[0, yTicks[yTicks.length - 1] ?? 'auto']}
+                      tick={{ fontSize: 12 }}
+                      tickLine={false}
+                      axisLine={{ stroke: '#D1D5DB' }}
+                      width={55}
+                      tickFormatter={(v: number) =>
+                        new Intl.NumberFormat(numberLocale, {
+                          notation: 'compact',
+                          maximumFractionDigits: 1,
+                        }).format(v)
+                      }
+                    />
                     <Tooltip
                       contentStyle={{
                         borderRadius: '12px',
@@ -867,7 +969,7 @@ export default function PredictiveAnalysis({
                         boxShadow: '0 10px 25px rgba(0,0,0,0.08)',
                       }}
                       formatter={(value: unknown, name: unknown) => [
-                        formatValue(value),
+                        formatValue(value, numberLocale),
                         String(name),
                       ]}
                     />
@@ -880,7 +982,7 @@ export default function PredictiveAnalysis({
                         stroke="#9CA3AF"
                         strokeDasharray="4 4"
                         label={{
-                          value: 'Forecast →',
+                          value: t('predictiveAnalysis.forecastArrow'),
                           position: 'insideTopRight',
                           fill: '#6B7280',
                           fontSize: 11,
@@ -914,19 +1016,19 @@ export default function PredictiveAnalysis({
                       axisLine={{ stroke: '#D1D5DB' }}
                     />
                     <YAxis
-  ticks={yTicks}
-  domain={[0, yTicks[yTicks.length - 1] ?? 'auto']}
-  tick={{ fontSize: 12 }}
-  tickLine={false}
-  axisLine={{ stroke: '#D1D5DB' }}
-  width={55}
-  tickFormatter={(v: number) =>
-    new Intl.NumberFormat('en-US', {
-      notation: 'compact',
-      maximumFractionDigits: 1,
-    }).format(v)
-  }
-/>
+                      ticks={yTicks}
+                      domain={[0, yTicks[yTicks.length - 1] ?? 'auto']}
+                      tick={{ fontSize: 12 }}
+                      tickLine={false}
+                      axisLine={{ stroke: '#D1D5DB' }}
+                      width={55}
+                      tickFormatter={(v: number) =>
+                        new Intl.NumberFormat(numberLocale, {
+                          notation: 'compact',
+                          maximumFractionDigits: 1,
+                        }).format(v)
+                      }
+                    />
                     <Tooltip
                       contentStyle={{
                         borderRadius: '12px',
@@ -934,7 +1036,7 @@ export default function PredictiveAnalysis({
                         boxShadow: '0 10px 25px rgba(0,0,0,0.08)',
                       }}
                       formatter={(value: unknown, name: unknown) => [
-                        formatValue(value),
+                        formatValue(value, numberLocale),
                         String(name),
                       ]}
                     />
@@ -973,16 +1075,18 @@ export default function PredictiveAnalysis({
                     {m.label}
                   </p>
                   <p className="mt-1 flex items-center gap-1.5 text-lg font-bold text-gray-900">
-                    {m.label === 'Direction' && direction === 'Rising' && (
-                      <TrendingUp className="h-4 w-4 text-emerald-600" />
-                    )}
-                    {m.label === 'Direction' &&
+                    {m.label === directionMetricLabel &&
+                      direction === 'Rising' && (
+                        <TrendingUp className="h-4 w-4 text-emerald-600" />
+                      )}
+                    {m.label === directionMetricLabel &&
                       direction === 'Declining' && (
                         <TrendingDown className="h-4 w-4 text-red-500" />
                       )}
-                    {m.label === 'Direction' && direction === 'Stable' && (
-                      <Minus className="h-4 w-4 text-gray-500" />
-                    )}
+                    {m.label === directionMetricLabel &&
+                      direction === 'Stable' && (
+                        <Minus className="h-4 w-4 text-gray-500" />
+                      )}
                     {m.value}
                   </p>
                   {m.sub && (
@@ -999,10 +1103,10 @@ export default function PredictiveAnalysis({
                 </div>
                 <div>
                   <h3 className="text-base font-bold text-gray-900">
-                    AI Interpretation
+                    {t('predictiveAnalysis.aiInterpretation')}
                   </h3>
                   <p className="text-xs text-gray-500">
-                    Model-assisted reading of the forecast above
+                    {t('predictiveAnalysis.aiInterpretationSub')}
                   </p>
                 </div>
               </div>
@@ -1010,7 +1114,7 @@ export default function PredictiveAnalysis({
               {aiLoading && (
                 <div className="flex items-center gap-2 py-6 text-sm text-gray-500">
                   <Loader2 className="h-4 w-4 animate-spin" />
-                  Generating interpretation...
+                  {t('predictiveAnalysis.generatingInterpretation')}
                 </div>
               )}
 
@@ -1024,7 +1128,7 @@ export default function PredictiveAnalysis({
                 <div className="space-y-4">
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
-                      Summary
+                      {t('predictiveAnalysis.summary')}
                     </p>
                     <p className="mt-1 text-sm leading-relaxed text-gray-700">
                       {aiBriefing.summary}
@@ -1033,7 +1137,7 @@ export default function PredictiveAnalysis({
 
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
-                      Key signals
+                      {t('predictiveAnalysis.keySignals')}
                     </p>
                     <ul className="mt-1.5 list-disc space-y-1 pl-5 text-sm text-gray-700">
                       {aiBriefing.keySignals.map((signal, i) => (
@@ -1044,7 +1148,7 @@ export default function PredictiveAnalysis({
 
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
-                      Attention
+                      {t('predictiveAnalysis.attention')}
                     </p>
                     <p className="mt-1 text-sm leading-relaxed text-gray-700">
                       {aiBriefing.attention}
@@ -1053,7 +1157,7 @@ export default function PredictiveAnalysis({
 
                   <div>
                     <p className="text-xs font-semibold uppercase tracking-wider text-indigo-600">
-                      Outlook
+                      {t('predictiveAnalysis.outlook')}
                     </p>
                     <p className="mt-1 text-sm leading-relaxed text-gray-700">
                       {aiBriefing.outlook}
@@ -1063,10 +1167,7 @@ export default function PredictiveAnalysis({
               )}
 
               <p className="mt-4 border-t border-indigo-100 pt-3 text-[11px] text-gray-400">
-                Forecast uses a linear trend model on historical data. AI
-                interpretation is constrained to the supplied facts and does
-                not invent causes or unsupported recommendations. Pair with
-                expert judgment before decisions.
+                {t('predictiveAnalysis.disclaimer')}
               </p>
             </div>
           </>

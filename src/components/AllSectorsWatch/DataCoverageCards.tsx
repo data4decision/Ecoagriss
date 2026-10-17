@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { createClient } from '@/lib/supabase/client';
 
@@ -68,17 +69,6 @@ function computeStats(
 ): DatasetStats {
   const recordCount = records.length;
 
-  /*
-   * The dataset tables use country_id.
-   *
-   * RLS controls which records are returned to the current user:
-   * - Normal users receive only their country's records.
-   * - Admins receive all authorised regional records.
-   *
-   * When an admin selects a country, the query is additionally
-   * filtered by countryId before these statistics are calculated.
-   */
-
   const countrySet = new Set<number>();
 
   records.forEach((record) => {
@@ -137,16 +127,13 @@ function SkeletonCard() {
 
         <div className="flex-1 space-y-3">
           <div className="h-5 w-40 animate-pulse rounded bg-[var(--green)]/10 motion-reduce:animate-none" />
-
           <div className="h-4 w-56 animate-pulse rounded bg-[var(--green)]/8 motion-reduce:animate-none" />
         </div>
       </div>
 
       <div className="mt-8 space-y-3">
         <div className="h-10 w-28 animate-pulse rounded bg-[var(--green)]/10 motion-reduce:animate-none" />
-
         <div className="h-4 w-48 animate-pulse rounded bg-[var(--green)]/8 motion-reduce:animate-none" />
-
         <div className="h-4 w-24 animate-pulse rounded bg-[var(--green)]/8 motion-reduce:animate-none" />
       </div>
     </div>
@@ -158,22 +145,20 @@ function SkeletonCard() {
 /* -------------------------------------------------------------------------- */
 
 function CoverageCard({ stats }: { stats: DatasetStats }) {
+  const { t } = useTranslation('common');
+
   const countryLabel =
     stats.countryCount === 1
-      ? '1 Country'
-      : `${stats.countryCount} Countries`;
+      ? t('dataCoverage.oneCountry')
+      : t('dataCoverage.nCountries', { count: stats.countryCount });
 
   return (
-    <article
-      className="group relative overflow-hidden rounded-2xl border border-[var(--green)]/15 bg-[var(--white)] p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--green)]/35 hover:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0"
-    >
-      {/* Top accent bar */}
+    <article className="group relative overflow-hidden rounded-2xl border border-[var(--green)]/15 bg-[var(--white)] p-6 shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:border-[var(--green)]/35 hover:shadow-md motion-reduce:transition-none motion-reduce:hover:translate-y-0">
       <div
         className="absolute inset-x-0 top-0 h-0.5 bg-gradient-to-r from-[var(--dark-green)] via-[var(--yellow)] to-[var(--dark-green)] opacity-70 transition-opacity group-hover:opacity-100"
         aria-hidden="true"
       />
 
-      {/* Header */}
       <div className="flex items-start gap-4">
         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-[var(--green)]/10 text-[var(--dark-green)] transition-colors group-hover:bg-[var(--green)]/15 group-hover:text-[var(--green)]">
           <span aria-hidden="true">{stats.icon}</span>
@@ -190,7 +175,6 @@ function CoverageCard({ stats }: { stats: DatasetStats }) {
         </div>
       </div>
 
-      {/* Primary statistic */}
       <div className="mt-7">
         <p className="flex flex-wrap items-baseline gap-x-2 gap-y-1">
           <span className="text-3xl font-bold tracking-tight text-[var(--dark-green)] sm:text-4xl">
@@ -198,26 +182,21 @@ function CoverageCard({ stats }: { stats: DatasetStats }) {
           </span>
 
           <span className="ml-0.5 text-sm font-medium text-[var(--olive-green)]/70">
-            Records
+            {t('dataCoverage.records')}
           </span>
         </p>
       </div>
 
-      {/* Secondary metadata */}
       <div className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-sm text-[var(--olive-green)]/85">
         <span className="inline-flex items-center gap-1.5 whitespace-nowrap">
           <Globe2
             className="h-3.5 w-3.5 shrink-0 opacity-70"
             aria-hidden="true"
           />
-
           <span>{countryLabel}</span>
         </span>
 
-        <span
-          className="text-[var(--green)]/40"
-          aria-hidden="true"
-        >
+        <span className="text-[var(--green)]/40" aria-hidden="true">
           •
         </span>
 
@@ -226,12 +205,10 @@ function CoverageCard({ stats }: { stats: DatasetStats }) {
             className="h-3.5 w-3.5 shrink-0 opacity-70"
             aria-hidden="true"
           />
-
           <span>{stats.period}</span>
         </span>
       </div>
 
-      {/* Status */}
       <div className="mt-5 flex items-center gap-2">
         {stats.available ? (
           <>
@@ -240,12 +217,11 @@ function CoverageCard({ stats }: { stats: DatasetStats }) {
               aria-hidden="true"
             >
               <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-[var(--green)] opacity-40 motion-reduce:animate-none" />
-
               <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--green)]" />
             </span>
 
             <span className="text-sm font-medium text-[var(--dark-green)]">
-              Available
+              {t('dataCoverage.available')}
             </span>
           </>
         ) : (
@@ -256,7 +232,7 @@ function CoverageCard({ stats }: { stats: DatasetStats }) {
             />
 
             <span className="text-sm font-medium text-[var(--wine)]/80">
-              No data
+              {t('dataCoverage.noData')}
             </span>
           </>
         )}
@@ -272,6 +248,7 @@ function CoverageCard({ stats }: { stats: DatasetStats }) {
 export default function DataCoverageCards({
   countryId = null,
 }: DataCoverageCardsProps) {
+  const { t } = useTranslation('common');
   const [state, setState] = useState<LoadState>('loading');
   const [datasets, setDatasets] = useState<DatasetStats[]>([]);
 
@@ -283,18 +260,6 @@ export default function DataCoverageCards({
 
       try {
         const supabase = createClient();
-
-        /*
-         * RLS remains the primary security layer.
-         *
-         * For admins:
-         * - countryId === null → all countries allowed by RLS
-         * - countryId !== null → selected country
-         *
-         * For normal users:
-         * - RLS still restricts the returned records to their country.
-         * - The additional countryId filter cannot bypass RLS.
-         */
 
         const inputsQuery = supabase
           .from('agricultural_inputs')
@@ -319,7 +284,6 @@ export default function DataCoverageCards({
             'agricultural_inputs fetch error:',
             inputsResult.error
           );
-
           throw inputsResult.error;
         }
 
@@ -328,41 +292,30 @@ export default function DataCoverageCards({
             'livestock_data fetch error:',
             livestockResult.error
           );
-
           throw livestockResult.error;
         }
 
         const inputs = (inputsResult.data ?? []) as DatasetRecord[];
-
         const livestock = (livestockResult.data ?? []) as DatasetRecord[];
 
         const stats: DatasetStats[] = [
           computeStats(
             inputs,
-            'Agricultural Inputs',
-            'Fertilizers, seeds, pesticides and related input indicators',
-            <Wheat
-              className="h-5 w-5"
-              strokeWidth={1.75}
-            />
+            t('dataCoverage.sectors.inputs.name'),
+            t('dataCoverage.sectors.inputs.description'),
+            <Wheat className="h-5 w-5" strokeWidth={1.75} />
           ),
-
           computeStats(
             livestock,
-            'Livestock',
-            'Herd sizes, production and livestock sector indicators',
-            <Beef
-              className="h-5 w-5"
-              strokeWidth={1.75}
-            />
+            t('dataCoverage.sectors.livestock.name'),
+            t('dataCoverage.sectors.livestock.description'),
+            <Beef className="h-5 w-5" strokeWidth={1.75} />
           ),
         ];
 
         if (!mounted) return;
 
-        const hasAnyData = stats.some(
-          (dataset) => dataset.recordCount > 0
-        );
+        const hasAnyData = stats.some((dataset) => dataset.recordCount > 0);
 
         setDatasets(stats);
         setState(hasAnyData ? 'success' : 'empty');
@@ -380,14 +333,13 @@ export default function DataCoverageCards({
     return () => {
       mounted = false;
     };
-  }, [countryId]);
+  }, [countryId, t]);
 
   return (
     <section
       className="relative isolate overflow-hidden bg-gradient-to-b from-[var(--white)] via-[#f7faf7] to-[#f0f5f0] py-14 sm:py-16 lg:py-20"
       aria-labelledby="data-coverage-heading"
     >
-      {/* Subtle grid pattern */}
       <div
         className="pointer-events-none absolute inset-0 opacity-[0.03]"
         aria-hidden="true"
@@ -400,7 +352,6 @@ export default function DataCoverageCards({
         }}
       />
 
-      {/* Soft green glow */}
       <div
         className="pointer-events-none absolute -right-20 top-10 h-64 w-64 rounded-full bg-[var(--green)]/5 blur-3xl"
         aria-hidden="true"
@@ -412,31 +363,28 @@ export default function DataCoverageCards({
       />
 
       <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Section header */}
         <div className="mb-10 max-w-2xl sm:mb-12">
           <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-[var(--green)] sm:text-xs">
-            Data Coverage
+            {t('dataCoverage.eyebrow')}
           </p>
 
           <h2
             id="data-coverage-heading"
             className="mt-2 text-[clamp(1.5rem,3vw+0.5rem,2.25rem)] font-bold leading-tight tracking-tight text-[var(--dark-green)]"
           >
-            Explore the data behind Ecoagris intelligence
+            {t('dataCoverage.title')}
           </h2>
 
           <p className="mt-3 max-w-xl text-sm leading-relaxed text-[var(--olive-green)]/80 sm:text-base">
-            Monitor the sectors, countries and historical periods covered by
-            the Ecoagris data platform.
+            {t('dataCoverage.subtitle')}
           </p>
         </div>
 
-        {/* Content states */}
         {state === 'loading' && (
           <div
             className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6"
             aria-busy="true"
-            aria-label="Loading coverage data"
+            aria-label={t('dataCoverage.loadingAria')}
           >
             <SkeletonCard />
             <SkeletonCard />
@@ -449,11 +397,11 @@ export default function DataCoverageCards({
             role="alert"
           >
             <p className="text-base font-medium text-[var(--dark-green)]">
-              We couldn&apos;t load coverage information right now.
+              {t('dataCoverage.errorTitle')}
             </p>
 
             <p className="mt-1 text-sm text-[var(--olive-green)]/70">
-              Please try again later.
+              {t('dataCoverage.errorHint')}
             </p>
           </div>
         )}
@@ -461,7 +409,7 @@ export default function DataCoverageCards({
         {state === 'empty' && (
           <div className="rounded-2xl border border-[var(--green)]/15 bg-[var(--white)] px-6 py-10 text-center shadow-sm">
             <p className="text-base font-medium text-[var(--dark-green)]">
-              No coverage data is currently available.
+              {t('dataCoverage.emptyTitle')}
             </p>
           </div>
         )}
@@ -469,10 +417,7 @@ export default function DataCoverageCards({
         {state === 'success' && (
           <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 sm:gap-6">
             {datasets.map((dataset) => (
-              <CoverageCard
-                key={dataset.name}
-                stats={dataset}
-              />
+              <CoverageCard key={dataset.name} stats={dataset} />
             ))}
           </div>
         )}

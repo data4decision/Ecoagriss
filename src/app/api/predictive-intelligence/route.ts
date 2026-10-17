@@ -37,7 +37,6 @@ const SeriesForecastSchema = z.object({
     .min(1)
     .max(20),
 
-  // Pre-computed — model must use these, not invent
   analysis: z.object({
     lastHistoricalYear: z.number().int(),
     lastHistoricalValue: z.number().finite(),
@@ -67,6 +66,9 @@ const PredictivePayloadSchema = z.object({
     avgProjectedGrowthPercent: z.number().finite().nullable(),
     confidence: z.enum(['low', 'medium', 'medium_high', 'high']),
   }),
+
+  /** UI language: en | fr | pt (also accepts en-US, fr-FR, etc.) */
+  locale: z.string().min(2).max(10).optional().default('en'),
 });
 
 const AiForecastBriefingSchema = z.object({
@@ -79,14 +81,48 @@ const AiForecastBriefingSchema = z.object({
 type PredictivePayload = z.infer<typeof PredictivePayloadSchema>;
 
 /* ─────────────────────────────────────────────
+   Language helpers
+───────────────────────────────────────────── */
+
+function normalizeLocale(locale: string): 'en' | 'fr' | 'pt' {
+  const base = locale.toLowerCase().split('-')[0];
+  if (base === 'fr' || base === 'pt') return base;
+  return 'en';
+}
+
+function languageName(locale: 'en' | 'fr' | 'pt'): string {
+  switch (locale) {
+    case 'fr':
+      return 'French';
+    case 'pt':
+      return 'Portuguese';
+    default:
+      return 'English';
+  }
+}
+
+/* ─────────────────────────────────────────────
    Prompt
 ───────────────────────────────────────────── */
 
-function buildPrompt(payload: PredictivePayload): string {
+function buildPrompt(
+  payload: PredictivePayload,
+  responseLanguage: string
+): string {
+  const { locale: _locale, ...facts } = payload;
+
   return `
 You are an agricultural sector forecasting analyst.
 
 Your task is to interpret a structured forecast dataset (historical observations + model projections) and produce a concise, evidence-based predictive intelligence briefing for decision-makers.
+
+LANGUAGE RULES (MANDATORY):
+
+1. Write the ENTIRE briefing in ${responseLanguage}.
+2. Every string in the JSON response (summary, keySignals items, attention, outlook) MUST be in ${responseLanguage}.
+3. Do not mix languages. Do not respond in English unless ${responseLanguage} is English.
+4. Keep country names as provided in the data. Translate indicator descriptions only if natural in ${responseLanguage}; otherwise keep the supplied indicator names.
+5. Numbers, years, percentages and units may stay as numerals / symbols.
 
 IMPORTANT DATA RULES:
 
@@ -131,19 +167,19 @@ Return JSON only. Do not use Markdown.
 Use exactly this structure:
 
 {
-  "summary": "6-7 sentence overall predictive assessment",
+  "summary": "6-7 sentence overall predictive assessment in ${responseLanguage}",
   "keySignals": [
-    "signal 1",
-    "signal 2",
-    "signal 3"
+    "signal 1 in ${responseLanguage}",
+    "signal 2 in ${responseLanguage}",
+    "signal 3 in ${responseLanguage}"
   ],
-  "attention": "who or what needs attention under the forecast and why (1-2 sentences)",
-  "outlook": "what decision-makers should monitor over the forecast horizon (1-2 sentences)"
+  "attention": "who or what needs attention under the forecast and why (1-2 sentences) in ${responseLanguage}",
+  "outlook": "what decision-makers should monitor over the forecast horizon (1-2 sentences) in ${responseLanguage}"
 }
 
 FACTS:
 
-${JSON.stringify(payload, null, 2)}
+${JSON.stringify(facts, null, 2)}
 `.trim();
 }
 
@@ -194,6 +230,8 @@ export async function POST(request: NextRequest) {
     }
 
     const payload = parsedPayload.data;
+    const locale = normalizeLocale(payload.locale ?? 'en');
+    const responseLanguage = languageName(locale);
 
     const apiKey = process.env.OPENROUTER_API_KEY?.trim();
 
@@ -229,12 +267,11 @@ export async function POST(request: NextRequest) {
           messages: [
             {
               role: 'system',
-              content:
-                'You generate structured agricultural predictive intelligence briefings. Respond with valid JSON only. Distinguish historical data from forecasts. Do not invent metrics, values, countries, years, or causes.',
+              content: `You generate structured agricultural predictive intelligence briefings. Respond with valid JSON only. Write all narrative text in ${responseLanguage}. Distinguish historical data from forecasts. Do not invent metrics, values, countries, years, or causes.`,
             },
             {
               role: 'user',
-              content: buildPrompt(payload),
+              content: buildPrompt(payload, responseLanguage),
             },
           ],
         }),
